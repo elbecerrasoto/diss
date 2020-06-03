@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning</title>
+  <meta name="description" content="Emanuel Becerra Soto Dissertation." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Emanuel Becerra Soto Dissertation." />
+  <meta name="github-repo" content="elbecerrasoto/thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning" />
+  
+  <meta name="twitter:description" content="Emanuel Becerra Soto Dissertation." />
+  
+
+<meta name="author" content="Emanuel Becerra Soto" />
+
+
+<meta name="date" content="2020-06-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="reinforcement.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Cellular Automata Control with Deep Reinforcement Learning</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#acknowledgments"><i class="fa fa-check"></i><b>1.2</b> Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#motivations"><i class="fa fa-check"></i><b>2.1</b> Motivations</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#objectives"><i class="fa fa-check"></i><b>2.2</b> Objectives</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="introduction.html"><a href="introduction.html#main-objectives"><i class="fa fa-check"></i><b>2.2.1</b> Main Objectives</a></li>
+<li class="chapter" data-level="2.2.2" data-path="introduction.html"><a href="introduction.html#specific-objectives"><i class="fa fa-check"></i><b>2.2.2</b> Specific Objectives</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cellular-automata.html"><a href="cellular-automata.html"><i class="fa fa-check"></i><b>3</b> Cellular Automata</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="cellular-automata.html"><a href="cellular-automata.html#history"><i class="fa fa-check"></i><b>3.1</b> History</a></li>
+<li class="chapter" data-level="3.2" data-path="cellular-automata.html"><a href="cellular-automata.html#motivation"><i class="fa fa-check"></i><b>3.2</b> Motivation</a></li>
+<li class="chapter" data-level="3.3" data-path="cellular-automata.html"><a href="cellular-automata.html#complex-systems"><i class="fa fa-check"></i><b>3.3</b> Complex Systems</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="cellular-automata.html"><a href="cellular-automata.html#tips-for-paraphrasing"><i class="fa fa-check"></i><b>3.3.1</b> Tips for paraphrasing</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="reinforcement.html"><a href="reinforcement.html"><i class="fa fa-check"></i><b>4</b> Reinforcement</a></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cellular Automata Control with Deep Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cellular-automata" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Cellular Automata</h1>
+<p>Cellular Automata are mathematical systems that are mainly characterized by <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><p>A discrete lattice of cells:
+A n-dimesional arragement of cells, usually 1-D, 2-D or 3-D.</p></li>
+<li><p>Homogenity:
+Cells are equivalent in the sense that they share an update function and a set of possible states.</p></li>
+<li><p>Discrete states:
+Each cell is in one state from a finite set of possible states.</p></li>
+<li><p>Local Interactions:
+Cell interactions are local, this is given by the update function being dependant on neighbouring cells.</p></li>
+<li><p>Discrete Dynamics:
+The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.</p></li>
+</ol>
+<p>CA have been used as protoypical models of</p>
+<div id="history" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> History</h2>
+<p>Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms <span class="citation">(Von Neumann and others <a href="#ref-von1951general" role="doc-biblioref">1951</a>)</span> <span class="citation">(Von Neumann, Burks, and others <a href="#ref-von1966theory" role="doc-biblioref">1966</a>)</span>. The basic idea was to build a lattice in <span class="math inline">\(\mathds{Z}^2\)</span> capable of copying itself, to another location in <span class="math inline">\(\mathds{Z}^2\)</span>. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states <span class="citation">(Codd <a href="#ref-codd1968cellular" role="doc-biblioref">1968</a>)</span>. Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth <span class="citation">(Weiner and Rosenblunth <a href="#ref-weiner1946mathematical" role="doc-biblioref">1946</a>)</span>.</p>
+<p>A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created “Life” as a solitaire or simulation type game. To play “Life” a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 <span class="citation">(Gardner <a href="#ref-gardner1970mathematical" role="doc-biblioref">1970</a>)</span>. Despite its name and interesting properties “Life” has little biological meaning <span class="citation">(Ermentrout and Edelstein-Keshet <a href="#ref-ermentrout1993cellular" role="doc-biblioref">1993</a>)</span>.</p>
+<p>During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span> and that the seminal review article of Stephen Wolfram was published <span class="citation">(Wolfram <a href="#ref-wolfram1983statistical" role="doc-biblioref">1983</a>)</span>.</p>
+<p>Since then applications have been coming. In a review article of 1993</p>
+<table>
+<caption>Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span>.</caption>
+<thead>
+<tr class="header">
+<th align="left">Year</th>
+<th align="left">Researcher</th>
+<th align="left">Discovery</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1936</td>
+<td align="left">Turing</td>
+<td align="left">Formalized the concept of computability, universal turing machine.</td>
+</tr>
+<tr class="even">
+<td align="left">1948</td>
+<td align="left">von Neumann</td>
+<td align="left">Introduced self-reproducing automata.</td>
+</tr>
+<tr class="odd">
+<td align="left">1950</td>
+<td align="left">Ulam</td>
+<td align="left">Insisted on the need of more realistic models for the behavior of complex extended systems.</td>
+</tr>
+<tr class="even">
+<td align="left">1966</td>
+<td align="left">Burks</td>
+<td align="left">Extended von Neumann’s work.</td>
+</tr>
+<tr class="odd">
+<td align="left">1967</td>
+<td align="left">von Bertalanffy, et al</td>
+<td align="left">Applied System Theory to human systems.</td>
+</tr>
+<tr class="even">
+<td align="left">1969</td>
+<td align="left">Zuse</td>
+<td align="left">Introduced the concept of “computing spaces”.</td>
+</tr>
+<tr class="odd">
+<td align="left">1970</td>
+<td align="left">Conway</td>
+<td align="left">Introduced the CA “Game of Life”.</td>
+</tr>
+<tr class="even">
+<td align="left">1977</td>
+<td align="left">Toffoli</td>
+<td align="left">Applied CAs to modeling physical laws.</td>
+</tr>
+<tr class="odd">
+<td align="left">1983</td>
+<td align="left">Wolfram</td>
+<td align="left">Authored a seminal review article about CAs.</td>
+</tr>
+<tr class="even">
+<td align="left">1984</td>
+<td align="left">Cowan, et al</td>
+<td align="left">The Santa Fe Institute is founded for interdisciplinary research of complex systems.</td>
+</tr>
+<tr class="odd">
+<td align="left">1987</td>
+<td align="left">Toffoli, Wolfram</td>
+<td align="left">First CA conference held at MIT.</td>
+</tr>
+<tr class="even">
+<td align="left">1992</td>
+<td align="left">Varela, et al</td>
+<td align="left">First European conference on artificial life.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="motivation" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Motivation</h2>
+<p>Rolando’s Directrices
+1. Sell the idea originality
+2. Sell that automata are general
+3. Show that are useful</p>
+<p>CA are one of the simplest representations of
+complex systems (dynamical systems with nonlinearly interacting parts)
+[Ilachinski]</p>
+</div>
+<div id="complex-systems" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Complex Systems</h2>
+<p>CA are specilly useful for modeling discrete time and space.</p>
+<p>The origins of Cellular Automata can beJonh von Neumanm<br />
+The origins of Cellular Automata can be traced back to
+a 1948 seminal paper by von Neumann and Ulam <em>Probabilistic CA, 174, 208</em></p>
+<p>Cellular Automata are lattices of interconnected finite-state
+automata (cells), which evolve synchronously in discrete time
+steps according to deterministic rules.
+invoving the states of</p>
+<p>When the updating rules of CA are allowed to be made
+A natural extension of CA are Probabilistic Cellular Automata(PCA)</p>
+<div id="tips-for-paraphrasing" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Tips for paraphrasing</h3>
+<ol style="list-style-type: decimal">
+<li>Translate to own words.</li>
+<li>Flip sentence. Move the beginning to the end.</li>
+<li>Add a signal phrase. First the source.</li>
+<li>Citation afterward. At last the source.</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="cellular-automata.html#cb1-1"></a><span class="co"># Current</span></span>
+<span id="cb1-2"><a href="cellular-automata.html#cb1-2"></a>rate &lt;-<span class="st"> </span><span class="fl">3.3</span><span class="op">/</span><span class="fl">6e6</span></span>
+<span id="cb1-3"><a href="cellular-automata.html#cb1-3"></a>epoch &lt;-<span class="st"> </span><span class="fl">2e6</span></span>
+<span id="cb1-4"><a href="cellular-automata.html#cb1-4"></a><span class="kw">exp</span>(<span class="op">-</span>rate<span class="op">*</span>epoch)</span></code></pre></div>
+<pre><code>## [1] 0.3328711</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cellular-automata.html#cb3-1"></a><span class="co"># Proposed New</span></span>
+<span id="cb3-2"><a href="cellular-automata.html#cb3-2"></a>rate &lt;-<span class="st"> </span><span class="fl">5.5</span><span class="op">/</span><span class="fl">6e6</span></span>
+<span id="cb3-3"><a href="cellular-automata.html#cb3-3"></a>epoch &lt;-<span class="st"> </span><span class="fl">3e6</span></span>
+<span id="cb3-4"><a href="cellular-automata.html#cb3-4"></a><span class="kw">exp</span>(<span class="op">-</span>rate<span class="op">*</span>epoch)</span></code></pre></div>
+<pre><code>## [1] 0.06392786</code></pre>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-codd1968cellular">
+<p>Codd, EF. 1968. “Cellular Automata, Academic Press.” <em>New York</em>.</p>
+</div>
+<div id="ref-ermentrout1993cellular">
+<p>Ermentrout, G Bard, and Leah Edelstein-Keshet. 1993. “Cellular Automata Approaches to Biological Modeling.” <em>Journal of Theoretical Biology</em> 160 (1): 97–133.</p>
+</div>
+<div id="ref-gardner1970mathematical">
+<p>Gardner, Martin. 1970. “Mathematical Games.” <em>Scientific American</em> 222 (6): 132–40.</p>
+</div>
+<div id="ref-ilachinski2001cellular">
+<p>Ilachinski, Andrew. 2001. <em>Cellular Automata: A Discrete Universe</em>. World Scientific Publishing Company.</p>
+</div>
+<div id="ref-von1966theory">
+<p>Von Neumann, John, Arthur W Burks, and others. 1966. “Theory of Self-Reproducing Automata.” <em>IEEE Transactions on Neural Networks</em> 5 (1): 3–14.</p>
+</div>
+<div id="ref-von1951general">
+<p>Von Neumann, John, and others. 1951. “The General and Logical Theory of Automata.” <em>1951</em>, 1–41.</p>
+</div>
+<div id="ref-weiner1946mathematical">
+<p>Weiner, N, and A Rosenblunth. 1946. “The Mathematical Formulation of the Problem of Conduction of Impulses in a Network of Connected Excitable Elements Specifically in Cardiac Muscle.”</p>
+</div>
+<div id="ref-wolfram1983statistical">
+<p>Wolfram, Stephen. 1983. “Statistical Mechanics of Cellular Automata.” <em>Reviews of Modern Physics</em> 55 (3): 601.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reinforcement.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

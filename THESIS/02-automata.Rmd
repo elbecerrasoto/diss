@@ -1,0 +1,104 @@
+# Cellular Automata
+
+Cellular Automata are mathematical systems that are mainly characterized by [@ilachinski2001cellular]:
+
+1. A discrete lattice of cells:
+A n-dimesional arragement of cells, usually 1-D, 2-D or 3-D.
+
+2. Homogenity:
+Cells are equivalent in the sense that they share an update function and a set of possible states.
+
+3. Discrete states:
+Each cell is in one state from a finite set of possible states.
+
+4. Local Interactions:
+Cell interactions are local, this is given by the update function being dependant on neighbouring cells.
+
+5. Discrete Dynamics:
+The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.
+
+CA have been used as protoypical models of 
+
+## History
+
+Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms [@von1951general] [@von1966theory]. The basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth [@weiner1946mathematical].
+
+A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire or simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning [@ermentrout1993cellular].
+
+During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held [@ilachinski2001cellular] and that the seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
+
+Since then applications have been coming. In a review article of 1993 
+
+
+Table: Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
+
+Year             Researcher                Discovery
+---------------- ------------------------- -----------
+1936              Turing                    Formalized the concept of computability, universal turing machine.
+1948              von Neumann               Introduced self-reproducing automata.      
+1950              Ulam                      Insisted on the need of more realistic models for the behavior of complex extended systems.
+1966              Burks                     Extended von Neumann's work.   
+1967              von Bertalanffy, et al    Applied System Theory to human systems.
+1969              Zuse                      Introduced the concept of "computing spaces".
+1970              Conway                    Introduced the CA "Game of Life".
+1977              Toffoli                   Applied CAs to modeling physical laws.
+1983              Wolfram                   Authored a seminal review article about CAs.
+1984              Cowan, et al              The Santa Fe Institute is founded for interdisciplinary research of complex systems.
+1987              Toffoli, Wolfram          First CA conference held at MIT.
+1992              Varela, et al             First European conference on artificial life.
+
+## Motivation
+
+Rolando's Directrices
+1. Sell the idea originality
+2. Sell that automata are general
+3. Show that are useful
+
+CA are one of the simplest representations of
+complex systems (dynamical systems with nonlinearly interacting parts)
+[Ilachinski]
+
+
+
+## Complex Systems
+
+
+CA are specilly useful for modeling discrete time and space.
+
+
+The origins of Cellular Automata can beJonh von Neumanm  
+The origins of Cellular Automata can be traced back to
+a 1948 seminal paper by von Neumann and Ulam _Probabilistic CA, 174, 208_
+
+
+Cellular Automata are lattices of interconnected finite-state
+automata (cells), which evolve synchronously in discrete time
+steps according to deterministic rules.
+invoving the states of 
+
+When the updating rules of CA are allowed to be made 
+A natural extension of CA are Probabilistic Cellular Automata(PCA)
+
+### Tips for paraphrasing
+1. Translate to own words.
+2. Flip sentence. Move the beginning to the end.
+3. Add a signal phrase. First the source.
+4. Citation afterward. At last the source.
+
+```{r}
+# Current
+rate <- 3.3/6e6
+epoch <- 2e6
+exp(-rate*epoch)
+```
+
+```{r}
+# Proposed New
+rate <- 5.5/6e6
+epoch <- 3e6
+exp(-rate*epoch)
+```
+
+
+
+

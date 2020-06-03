@@ -1,0 +1,19 @@
+# Introduction
+
+## Motivations
+
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation.  A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+
+## Objectives
+
+### Main Objectives
+
++ To propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
++ Characterize the proposed environment by solving it by state of the art methods.
+
+### Specific Objectives
+
++ Select the a Cellular Automaton model for the environment and program it, in this case the forest fire cellular automaton.
++ Propose a RL task to be realized on top of the CA.
++ Program the RL environment, following the Open AI gym API.
++ Apply Dual? Q-networks with its variants.

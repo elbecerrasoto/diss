@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590535505960.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3926500862",
+    "id" : "F8D62EDE",
+    "lastKnownWriteTime" : 1591210966,
+    "last_content_update" : 1591210966589,
+    "path" : "~/Dissertation/WRITING/THESIS/02-automata.Rmd",
+    "project_path" : "02-automata.Rmd",
+    "properties" : {
+        "cursorPosition" : "17,74",
+        "scrollLine" : "12"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
