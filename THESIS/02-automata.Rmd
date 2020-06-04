@@ -17,18 +17,15 @@ Cell interactions are local, this is given by the update function being dependan
 5. Discrete Dynamics:
 The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.
 
-CA have been used as protoypical models of 
-
 ## History
 
 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms [@von1951general] [@von1966theory]. The basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth [@weiner1946mathematical].
 
-A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire or simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning [@ermentrout1993cellular].
+A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire or simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a methapor [@ermentrout1993cellular].
 
-During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held [@ilachinski2001cellular] and that the seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
+During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that the seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
 
-Since then applications have been coming. In a review article of 1993 
-
+Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expresing physical laws [@vichniac1984simulating].
 
 Table: Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
 
