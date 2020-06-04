@@ -17,6 +17,24 @@ Cell interactions are local, this is given by the update function being dependan
 5. Discrete Dynamics:
 The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.
 
+## Mathematical Definition
+
+The following is adapted from the book Probabilistic Cellular Automata [@louis2018probabilistic].
+
+The main mathematical aspects of a CA are:
+
+* The network $G$:
+A graph $G$.
+$$ G = (V(G), E(G)) $$
+The set of vertices $V(G)$ represents the location of the automata (cells). The set of edges $E(G)$ describes the interaction between automata.
+
+* The alphabet $S$:
+Defines the states that each automata can take. In the majority of setting $S$ is a finite set. It is also called _local space_ or _spin space_.
+
+* The configuration space $S^{V(G)}$: This is the set of all posible states of the CA. An specific configuration is denoted as $$\sigma = \{\sigma_k \in V(G)\}$$
+
+
+
 ## History
 
 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms [@von1951general] [@von1966theory]. The basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth [@weiner1946mathematical].

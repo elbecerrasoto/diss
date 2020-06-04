@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "218931139",
+    "hash" : "3284603935",
     "id" : "F8D62EDE",
-    "lastKnownWriteTime" : 1591223856,
-    "last_content_update" : 1591223856507,
+    "lastKnownWriteTime" : 1591244990,
+    "last_content_update" : 1591244990504,
     "path" : "~/Dissertation/WRITING/diss/THESIS/02-automata.Rmd",
     "project_path" : "02-automata.Rmd",
     "properties" : {
-        "cursorPosition" : "19,10",
-        "scrollLine" : "1"
+        "cursorPosition" : "32,0",
+        "scrollLine" : "18"
     },
     "relative_order" : 5,
     "source_on_save" : false,

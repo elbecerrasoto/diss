@@ -1,0 +1,386 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Cellular Automata Control with Deep Reinforcement Learning},
+  pdfauthor={Emanuel Becerra Soto},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{dsfont}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
+  {\par}
+
+\title{Cellular Automata Control with Deep Reinforcement Learning}
+\author{Emanuel Becerra Soto}
+\date{2020-06-03}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{cellular-automata-control-with-deep-reinforcement-learning}{%
+\chapter{Cellular Automata Control with Deep Reinforcement Learning}\label{cellular-automata-control-with-deep-reinforcement-learning}}
+
+\hypertarget{abstract}{%
+\section{Abstract}\label{abstract}}
+
+\hypertarget{acknowledgments}{%
+\section{Acknowledgments}\label{acknowledgments}}
+
+\hypertarget{introduction}{%
+\chapter{Introduction}\label{introduction}}
+
+\hypertarget{motivations}{%
+\section{Motivations}\label{motivations}}
+
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+
+\hypertarget{objectives}{%
+\section{Objectives}\label{objectives}}
+
+\hypertarget{main-objectives}{%
+\subsection{Main Objectives}\label{main-objectives}}
+
+\begin{itemize}
+\tightlist
+\item
+  To propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
+\item
+  Characterize the proposed environment by solving it by state of the art methods.
+\end{itemize}
+
+\hypertarget{specific-objectives}{%
+\subsection{Specific Objectives}\label{specific-objectives}}
+
+\begin{itemize}
+\tightlist
+\item
+  Select the a Cellular Automaton model for the environment and program it, in this case the forest fire cellular automaton.
+\item
+  Propose a RL task to be realized on top of the CA.
+\item
+  Program the RL environment, following the Open AI gym API.
+\item
+  Apply Dual? Q-networks with its variants.
+\end{itemize}
+
+\hypertarget{cellular-automata}{%
+\chapter{Cellular Automata}\label{cellular-automata}}
+
+Cellular Automata are mathematical systems that are mainly characterized by (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  A discrete lattice of cells:
+  A n-dimesional arragement of cells, usually 1-D, 2-D or 3-D.
+\item
+  Homogenity:
+  Cells are equivalent in the sense that they share an update function and a set of possible states.
+\item
+  Discrete states:
+  Each cell is in one state from a finite set of possible states.
+\item
+  Local Interactions:
+  Cell interactions are local, this is given by the update function being dependant on neighbouring cells.
+\item
+  Discrete Dynamics:
+  The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.
+\end{enumerate}
+
+\hypertarget{mathematical-definition}{%
+\section{Mathematical Definition}\label{mathematical-definition}}
+
+The following is adapted from the book Probabilistic Cellular Automata (Louis and Nardi \protect\hyperlink{ref-louis2018probabilistic}{2018}).
+
+The main mathematical aspects of a CA are:
+
+\begin{itemize}
+\item
+  The network \(G\):
+  A graph \(G\).
+  \[ G = (V(G), E(G)) \]
+  The set of vertices \(V(G)\) represents the location of the automata (cells). The set of edges \(E(G)\) describes the interaction between automata.
+\item
+  The alphabet \(S\):
+  Defines the states that each automata can take. In the majority of setting \(S\) is a finite set. It is also called \emph{local space} or \emph{spin space}.
+\item
+  The configuration space \(S^{V(G)}\): This is the set of all posible states of the CA. An specific configuration is denoted as \[\sigma = \{\sigma_k \in V(G)\}\]
+\end{itemize}
+
+\hypertarget{history}{%
+\section{History}\label{history}}
+
+Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms (Von Neumann and others \protect\hyperlink{ref-von1951general}{1951}) (Von Neumann, Burks, and others \protect\hyperlink{ref-von1966theory}{1966}). The basic idea was to build a lattice in \(\mathds{Z}^2\) capable of copying itself, to another location in \(\mathds{Z}^2\). The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states (Codd \protect\hyperlink{ref-codd1968cellular}{1968}). Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth (Weiner and Rosenblunth \protect\hyperlink{ref-weiner1946mathematical}{1946}).
+
+A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created ``Life'' as a solitaire or simulation type game. To play ``Life'' a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 (Gardner \protect\hyperlink{ref-gardner1970mathematical}{1970}). Despite its name and interesting properties ``Life'' has little biological meaning and should be only interpreted as a methapor (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}).
+
+During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held at MIT (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and that the seminal review article of Stephen Wolfram was published (Wolfram \protect\hyperlink{ref-wolfram1983statistical}{1983}).
+
+Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}). CA can be applied in image processing for noise removal and border detection (Popovici and Popovici \protect\hyperlink{ref-popovici2002cellular}{2002}). For physical systems fluid and gas dynamics are well suited for CA modeling (Margolus \protect\hyperlink{ref-margolus1984physics}{1984}). Also they have been proposed as a discrete approach to expresing physical laws (Vichniac \protect\hyperlink{ref-vichniac1984simulating}{1984}).
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).}\tabularnewline
+\toprule
+Year & Researcher & Discovery\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Year & Researcher & Discovery\tabularnewline
+\midrule
+\endhead
+1936 & Turing & Formalized the concept of computability, universal turing machine.\tabularnewline
+1948 & von Neumann & Introduced self-reproducing automata.\tabularnewline
+1950 & Ulam & Insisted on the need of more realistic models for the behavior of complex extended systems.\tabularnewline
+1966 & Burks & Extended von Neumann's work.\tabularnewline
+1967 & von Bertalanffy, et al & Applied System Theory to human systems.\tabularnewline
+1969 & Zuse & Introduced the concept of ``computing spaces''.\tabularnewline
+1970 & Conway & Introduced the CA ``Game of Life''.\tabularnewline
+1977 & Toffoli & Applied CAs to modeling physical laws.\tabularnewline
+1983 & Wolfram & Authored a seminal review article about CAs.\tabularnewline
+1984 & Cowan, et al & The Santa Fe Institute is founded for interdisciplinary research of complex systems.\tabularnewline
+1987 & Toffoli, Wolfram & First CA conference held at MIT.\tabularnewline
+1992 & Varela, et al & First European conference on artificial life.\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{motivation}{%
+\section{Motivation}\label{motivation}}
+
+Rolando's Directrices
+1. Sell the idea originality
+2. Sell that automata are general
+3. Show that are useful
+
+CA are one of the simplest representations of
+complex systems (dynamical systems with nonlinearly interacting parts)
+{[}Ilachinski{]}
+
+\hypertarget{complex-systems}{%
+\section{Complex Systems}\label{complex-systems}}
+
+CA are specilly useful for modeling discrete time and space.
+
+The origins of Cellular Automata can beJonh von Neumanm\\
+The origins of Cellular Automata can be traced back to
+a 1948 seminal paper by von Neumann and Ulam \emph{Probabilistic CA, 174, 208}
+
+Cellular Automata are lattices of interconnected finite-state
+automata (cells), which evolve synchronously in discrete time
+steps according to deterministic rules.
+invoving the states of
+
+When the updating rules of CA are allowed to be made
+A natural extension of CA are Probabilistic Cellular Automata(PCA)
+
+\hypertarget{tips-for-paraphrasing}{%
+\subsection{Tips for paraphrasing}\label{tips-for-paraphrasing}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Translate to own words.
+\item
+  Flip sentence. Move the beginning to the end.
+\item
+  Add a signal phrase. First the source.
+\item
+  Citation afterward. At last the source.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Current}
+\NormalTok{rate \textless{}{-}}\StringTok{ }\FloatTok{3.3}\OperatorTok{/}\FloatTok{6e6}
+\NormalTok{epoch \textless{}{-}}\StringTok{ }\FloatTok{2e6}
+\KeywordTok{exp}\NormalTok{(}\OperatorTok{{-}}\NormalTok{rate}\OperatorTok{*}\NormalTok{epoch)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3328711
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Proposed New}
+\NormalTok{rate \textless{}{-}}\StringTok{ }\FloatTok{5.5}\OperatorTok{/}\FloatTok{6e6}
+\NormalTok{epoch \textless{}{-}}\StringTok{ }\FloatTok{3e6}
+\KeywordTok{exp}\NormalTok{(}\OperatorTok{{-}}\NormalTok{rate}\OperatorTok{*}\NormalTok{epoch)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.06392786
+\end{verbatim}
+
+\hypertarget{reinforcement}{%
+\chapter{Reinforcement}\label{reinforcement}}
+
+We describe our methods in this chapter.
+
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
+
+Some \emph{significant} applications are demonstrated in this chapter.
+
+\hypertarget{example-one}{%
+\section{Example one}\label{example-one}}
+
+\hypertarget{example-two}{%
+\section{Example two}\label{example-two}}
+
+\hypertarget{conclusion}{%
+\chapter{Conclusion}\label{conclusion}}
+
+We have finished a nice book.
+
+\hypertarget{refs}{}
+\begin{cslreferences}
+\leavevmode\hypertarget{ref-codd1968cellular}{}%
+Codd, EF. 1968. ``Cellular Automata, Academic Press.'' \emph{New York}.
+
+\leavevmode\hypertarget{ref-ermentrout1993cellular}{}%
+Ermentrout, G Bard, and Leah Edelstein-Keshet. 1993. ``Cellular Automata Approaches to Biological Modeling.'' \emph{Journal of Theoretical Biology} 160 (1): 97--133.
+
+\leavevmode\hypertarget{ref-gardner1970mathematical}{}%
+Gardner, Martin. 1970. ``Mathematical Games.'' \emph{Scientific American} 222 (6): 132--40.
+
+\leavevmode\hypertarget{ref-ilachinski2001cellular}{}%
+Ilachinski, Andrew. 2001. \emph{Cellular Automata: A Discrete Universe}. World Scientific Publishing Company.
+
+\leavevmode\hypertarget{ref-louis2018probabilistic}{}%
+Louis, Pierre-Yves, and Francesca R Nardi. 2018. \emph{Probabilistic Cellular Automata}. Springer.
+
+\leavevmode\hypertarget{ref-margolus1984physics}{}%
+Margolus, Norman. 1984. ``Physics-Like Models of Computation.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 81--95.
+
+\leavevmode\hypertarget{ref-popovici2002cellular}{}%
+Popovici, Adriana, and Dan Popovici. 2002. ``Cellular Automata in Image Processing.'' In \emph{Fifteenth International Symposium on Mathematical Theory of Networks and Systems}, 1:1--6. Citeseer.
+
+\leavevmode\hypertarget{ref-vichniac1984simulating}{}%
+Vichniac, Gérard Y. 1984. ``Simulating Physics with Cellular Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 96--116.
+
+\leavevmode\hypertarget{ref-von1966theory}{}%
+Von Neumann, John, Arthur W Burks, and others. 1966. ``Theory of Self-Reproducing Automata.'' \emph{IEEE Transactions on Neural Networks} 5 (1): 3--14.
+
+\leavevmode\hypertarget{ref-von1951general}{}%
+Von Neumann, John, and others. 1951. ``The General and Logical Theory of Automata.'' \emph{1951}, 1--41.
+
+\leavevmode\hypertarget{ref-weiner1946mathematical}{}%
+Weiner, N, and A Rosenblunth. 1946. ``The Mathematical Formulation of the Problem of Conduction of Impulses in a Network of Connected Excitable Elements Specifically in Cardiac Muscle.''
+
+\leavevmode\hypertarget{ref-wolfram1983statistical}{}%
+Wolfram, Stephen. 1983. ``Statistical Mechanics of Cellular Automata.'' \emph{Reviews of Modern Physics} 55 (3): 601.
+\end{cslreferences}
+
+\end{document}
