@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2599775798",
+    "hash" : "0",
     "id" : "838DF6C0",
-    "lastKnownWriteTime" : 1590267119,
-    "last_content_update" : 1590267119,
+    "lastKnownWriteTime" : 1591318761,
+    "last_content_update" : 1591318761329,
     "path" : "~/Dissertation/WRITING/diss/THESIS/04-results.Rmd",
     "project_path" : "04-results.Rmd",
     "properties" : {
+        "cursorPosition" : "18,0",
+        "scrollLine" : "5"
     },
     "relative_order" : 7,
     "source_on_save" : false,

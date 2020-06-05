@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "1703094780",
+    "hash" : "0",
     "id" : "9C01A6B1",
-    "lastKnownWriteTime" : 1590267117,
-    "last_content_update" : 1590267117,
+    "lastKnownWriteTime" : 1591214158,
+    "last_content_update" : 1591214158,
     "path" : "~/Dissertation/WRITING/diss/THESIS/05-conclusion.Rmd",
     "project_path" : "05-conclusion.Rmd",
     "properties" : {
+        "cursorPosition" : "3,0",
+        "scrollLine" : "0"
     },
     "relative_order" : 8,
     "source_on_save" : false,
