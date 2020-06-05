@@ -2,18 +2,18 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1590535505960.000,
-    "dirty" : false,
+    "dirty" : true,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
     "id" : "F8D62EDE",
-    "lastKnownWriteTime" : 1591385648,
-    "last_content_update" : 1591385648645,
+    "lastKnownWriteTime" : 1591389902,
+    "last_content_update" : 1591390165621,
     "path" : "~/Dissertation/WRITING/diss/THESIS/02-automata.Rmd",
     "project_path" : "02-automata.Rmd",
     "properties" : {
-        "cursorPosition" : "27,21",
-        "scrollLine" : "17"
+        "cursorPosition" : "102,281",
+        "scrollLine" : "97"
     },
     "relative_order" : 5,
     "source_on_save" : false,

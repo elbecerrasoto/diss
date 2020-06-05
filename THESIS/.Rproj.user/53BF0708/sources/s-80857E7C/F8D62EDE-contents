@@ -4,6 +4,23 @@
 
 ## Complex Systems
 
+CA are specilly useful for modeling discrete time and space.
+
+
+The origins of Cellular Automata can beJonh von Neumanm  
+The origins of Cellular Automata can be traced back to
+a 1948 seminal paper by von Neumann and Ulam _Probabilistic CA, 174, 208_
+
+
+Cellular Automata are lattices of interconnected finite-state
+automata (cells), which evolve synchronously in discrete time
+steps according to deterministic rules.
+invoving the states of 
+
+When the updating rules of CA are allowed to be made 
+A natural extension of CA are Probabilistic Cellular Automata(PCA)
+
+
 ## Cellular Automata
 
 Cellular Automata are mathematical systems that are mainly characterized by [@ilachinski2001cellular]:
@@ -26,8 +43,6 @@ The system evolves in discrete time steps. At each step the update function is a
 Despite this apparent simplicity CA are capable of complex behaviour. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behaviour is rich enough to be used to model natural systems.
 
 ## CA and Computation
-
-## Motivations
 
 ## Mathematical Definition
 
@@ -61,11 +76,21 @@ The global update $F$ is calculated by applying a local function $f_k$ per autom
 
 ## Probabilistic Cellular Automata
 
-Generalizations to the classical attributes of CA can be made, some of this sutdied extensions are:
+Generalizations to the classical attributes of CA can be made allowing for extensions like [@ilachinski2001cellular]:
 
+* Asynchronous CA:
 
+* Coupled-map Lattices:
 
+* Probabilistic CA:
 
+* Non-homogenenous CA:
+
+* Mobile CA:
+
+* Structurally Dynamics CA:
+
+## Forest Fire Model
 
 ## History
 
@@ -73,9 +98,13 @@ Earlier precusor ideas about Cellular Automata (CA) can be traced back to 1946 c
 
 Von Neumann's basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. 
 
+In the 1960's theoretical studies of CA were made, especially as intances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem [@hedlund1969endomorphisms], which characterizes translation-invariant CA transformations. 
+
+In 1969 Konrad Zuse publisehd the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundametally discrete and the product of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith introduced 1-D CA and 
+
 A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a methapor [@ermentrout1993cellular].
 
-During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
+During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards  CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
 
 Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expresing physical laws [@vichniac1984simulating].
 
@@ -95,59 +124,3 @@ Year             Researcher                Discovery
 1984              Cowan, et al              The Santa Fe Institute is founded for interdisciplinary research of complex systems.
 1987              Toffoli, Wolfram          First CA conference held at MIT.
 1992              Varela, et al             First European conference on artificial life.
-
-## Motivation
-
-Rolando's Directrices
-1. Sell the idea originality
-2. Sell that automata are general
-3. Show that are useful
-
-CA are one of the simplest representations of
-complex systems (dynamical systems with nonlinearly interacting parts)
-[Ilachinski]
-
-
-
-## Complex Systems
-
-
-CA are specilly useful for modeling discrete time and space.
-
-
-The origins of Cellular Automata can beJonh von Neumanm  
-The origins of Cellular Automata can be traced back to
-a 1948 seminal paper by von Neumann and Ulam _Probabilistic CA, 174, 208_
-
-
-Cellular Automata are lattices of interconnected finite-state
-automata (cells), which evolve synchronously in discrete time
-steps according to deterministic rules.
-invoving the states of 
-
-When the updating rules of CA are allowed to be made 
-A natural extension of CA are Probabilistic Cellular Automata(PCA)
-
-### Tips for paraphrasing
-1. Translate to own words.
-2. Flip sentence. Move the beginning to the end.
-3. Add a signal phrase. First the source.
-4. Citation afterward. At last the source.
-
-```{r}
-# Current
-rate <- 3.3/6e6
-epoch <- 2e6
-exp(-rate*epoch)
-```
-
-```{r}
-# Proposed New
-rate <- 5.5/6e6
-epoch <- 3e6
-exp(-rate*epoch)
-```
-
-
-
-
