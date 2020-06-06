@@ -4,23 +4,6 @@
 
 ## Complex Systems
 
-CA are specilly useful for modeling discrete time and space.
-
-
-The origins of Cellular Automata can beJonh von Neumanm  
-The origins of Cellular Automata can be traced back to
-a 1948 seminal paper by von Neumann and Ulam _Probabilistic CA, 174, 208_
-
-
-Cellular Automata are lattices of interconnected finite-state
-automata (cells), which evolve synchronously in discrete time
-steps according to deterministic rules.
-invoving the states of 
-
-When the updating rules of CA are allowed to be made 
-A natural extension of CA are Probabilistic Cellular Automata(PCA)
-
-
 ## Cellular Automata
 
 Cellular Automata are mathematical systems that are mainly characterized by [@ilachinski2001cellular]:
@@ -76,17 +59,22 @@ The global update $F$ is calculated by applying a local function $f_k$ per autom
 
 ## Probabilistic Cellular Automata
 
-Generalizations to the classical attributes of CA can be made allowing for extensions like [@ilachinski2001cellular]:
+Generalizations to the classical attributes of CA can be conceived [@ilachinski2001cellular] enabling extensions like:
 
 * Asynchronous CA:
+Allows asyncronous updating of the CA.
 
 * Coupled-map Lattices:
+Allows real valued cell states. This systems are simpler than partial differential equations but more complex that standard CA.
 
 * Probabilistic CA:
+The rules are allowed to be stochastic, assigning probabilities to cell state transitions.
 
-* Non-homogenenous CA:
+Non-homogenenous CA:
+Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assignation of all boolean functions of $k$ inputs [@kauffman1984emergent].
 
 * Mobile CA:
+
 
 * Structurally Dynamics CA:
 
@@ -94,23 +82,21 @@ Generalizations to the classical attributes of CA can be made allowing for exten
 
 ## History
 
-Earlier precusor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of exitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed inception was when in 1948 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
+Precusor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of exitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed upon inception was when in 1948 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
 
 Von Neumann's basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. 
 
 In the 1960's theoretical studies of CA were made, especially as intances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem [@hedlund1969endomorphisms], which characterizes translation-invariant CA transformations. 
 
-In 1969 Konrad Zuse publisehd the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundametally discrete and the product of the computations of a CA-like machinery.
-
-Likewise in 1969 
+In 1969 Konrad Zuse publisehd the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundametally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demostrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second [@smith1971simple].
 
 A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a methapor [@ermentrout1993cellular].
 
-During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards  CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
+During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
 
 Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expresing physical laws [@vichniac1984simulating].
 
-Table: Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
+Table: Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
 
 Year             Researcher                Discovery
 ---------------- ------------------------- -----------
