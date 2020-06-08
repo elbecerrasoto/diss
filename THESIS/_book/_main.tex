@@ -41,46 +41,6 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -108,6 +68,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage{dsfont}
+\usepackage{amsmath}
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -117,7 +78,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-03}
+\date{2020-06-07}
 
 \begin{document}
 \maketitle
@@ -175,6 +136,17 @@ Since antiquity the idea of building a thinking machine has always been in the m
 \hypertarget{cellular-automata}{%
 \chapter{Cellular Automata}\label{cellular-automata}}
 
+\hypertarget{introduction-1}{%
+\section{Introduction}\label{introduction-1}}
+
+\hypertarget{modeling-of-complex-systems}{%
+\section{Modeling of Complex Systems}\label{modeling-of-complex-systems}}
+
+Since the solidification of the scientific method in the XVII century
+
+\hypertarget{cellular-automata-1}{%
+\section{Cellular Automata}\label{cellular-automata-1}}
+
 Cellular Automata are mathematical systems that are mainly characterized by (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}):
 
 \begin{enumerate}
@@ -193,13 +165,20 @@ Cellular Automata are mathematical systems that are mainly characterized by (Ila
   Cell interactions are local, this is given by the update function being dependant on neighbouring cells.
 \item
   Discrete Dynamics:
-  The system evolves in discrete time steps. At each step the update function is applied to simultaneously (synchronously) to all cells.
+  The system evolves in discrete time steps. At each step the update function is applied simultaneously (synchronously) to all cells.
 \end{enumerate}
+
+Despite this apparent simplicity CA are capable of complex behaviour. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behaviour is rich enough to be used to model natural systems.
+
+\hypertarget{ca-and-computation}{%
+\section{CA and Computation}\label{ca-and-computation}}
 
 \hypertarget{mathematical-definition}{%
 \section{Mathematical Definition}\label{mathematical-definition}}
 
 The following is adapted from the book Probabilistic Cellular Automata (Louis and Nardi \protect\hyperlink{ref-louis2018probabilistic}{2018}).
+
+Cellullar Automata (CA) are dynanimal systems of interconnected finite-state automata (cells). The automata evolution is thorugh discrete time steps and it is dictated by a function dependant on a neighborhood of interacting automata.
 
 The main mathematical aspects of a CA are:
 
@@ -208,27 +187,157 @@ The main mathematical aspects of a CA are:
   The network \(G\):
   A graph \(G\).
   \[ G = (V(G), E(G)) \]
-  The set of vertices \(V(G)\) represents the location of the automata (cells). The set of edges \(E(G)\) describes the interaction between automata.
+  The set of vertices \(V(G)\) represents the location of the automata (cells). The set of edges \(E(G)\) describes the spatial relations between automata.
 \item
   The alphabet \(S\):
-  Defines the states that each automata can take. In the majority of setting \(S\) is a finite set. It is also called \emph{local space} or \emph{spin space}.
+  Defines the states that each automata can take. In common CA settings \(S\) is a finite set. It is also called \emph{local space} or \emph{spin space}.
 \item
-  The configuration space \(S^{V(G)}\): This is the set of all posible states of the CA. An specific configuration is denoted as \[\sigma = \{\sigma_k \in V(G)\}\]
+  The configuration space \(S^{V(G)}\):
+  This is the set of all posible states of the CA. A specific configuration is denoted as:
+  \[ \sigma = \{\sigma_k \in V(G)\} \]
+  \(\sigma_k\) is the configuration of the automaton at position \(k\).
+\item
+  The neighborhoods \(V_k\):
+  \[ V_k \subset  V(G) \]
+  The subset of nodes that can influence or interact with the automaton at \(k \in V(G)\) (ordinarily it includes itself). A typical configuration for \(V_k\) is: \(G = \mathds{Z}^2\), and \(V_k = \{k, k \pm e_1, k \pm e_2\}\), where \((e_1, e_2)\) is the canonical basis of \(\mathds{Z}^2\), (north/south, east/west). This is known as the \emph{von Neumman neighborhood}.
+\item
+  The global update \(F\):
+  \[ F: S^{V(G)} \rightarrow S^{V(G)} \]
+  \[ (F(\sigma))_k = f_k(\sigma_{V_k}) \]
+  The global update \(F\) is calculated by applying a local function \(f_k\) per automata at \(k\). In the classical setting \(f_k\) is the same for all the automata.
+\end{itemize}
+
+\hypertarget{cellular-automata-extensions}{%
+\section{Cellular Automata Extensions}\label{cellular-automata-extensions}}
+
+Generalizations to the classical attributes of CA can be conceived (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) enabling extensions like:
+
+\begin{itemize}
+\item
+  Asynchronous CA:
+  Allows asyncronous updating of the CA.
+\item
+  Coupled-map Lattices:
+  Allows real valued cell states. These systems are simpler than partial differential equations but more complex that standard CA.
+\item
+  Probabilistic CA:
+  The rules are allowed to be stochastic, assigning probabilities to cell state transitions.
+\item
+  Non-homogenenous CA:
+  Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assigment of all boolean functions with small number of inputs (Kauffman \protect\hyperlink{ref-kauffman1984emergent}{1984}).
+\item
+  Mobile CA:
+  In this model some cells can move thorugh the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.
+\item
+  Structurally Dynamic CA:
+  Considers the possibility of evolving cell arragment. In standard CA the lattice is only a substrate for the ongoing computation, but what happens when this passivity is removed.
+\end{itemize}
+
+\hypertarget{forest-fire-models}{%
+\section{Forest Fire Models}\label{forest-fire-models}}
+
+Forest fire models are a type of Probabilistic Cellular Automata (PCA). They try to capture the dynamics and general patterns of tree clusters that emerge from an evolving forest subject to perturbations.
+
+They trace their origins to statistical physics and are closely related with percolation phenomena and dissipative structures. However they have been proved a valuable tool for ecological and natural hazard sciences as simple but powerful modeling tools (Zinck, Johst, and Grimm \protect\hyperlink{ref-zinck2010wildfire}{2010}).
+
+Forest fire models help to tackle questions like: Will the tree population eventually dies out?, What is the general shape of tree clusters?, What is the shape of the boundary between the forest and the fire?
+
+At first glance forest fire models seem similar to epidemeliogical cellular automata models though they place emphasis on finite population and the persistence of a pathology over time in contrast to the infinite forest population and the emphasis on the spatial extension of the fire.
+
+They broadly have the following characteristics (Louis and Nardi \protect\hyperlink{ref-louis2018probabilistic}{2018}):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Cells of at least three types:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Non-burning tree
+\item
+  Burning tree
+\item
+  No tree (empty)
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  A rule for fire initiation:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  A starting configuration with fire cells, usually randomly choosen fire positions.
+\item
+  Accident simulation, like with a small probability self-ignition of a tree cell.
+\item
+  Space-time distributed ignition instances (e.g.~Poisson distributed).
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  A rule for fire propagation. It involves a stochastic rule for fire spreading between neighborhoods that can be based on actual terrain conditions.
+\end{enumerate}
+
+\hypertarget{the-drossel-and-schwabl-forest-fire-model}{%
+\subsection{The Drossel and Schwabl forest fire model}\label{the-drossel-and-schwabl-forest-fire-model}}
+
+The forest fire model that will be used through this document is the Drossel and Schwabl model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}).
+
+DSM was born from research on statistical physics about phase transitions and self-organized criticality (Bak, Chen, and Tang \protect\hyperlink{ref-bak1990forest}{1990})(Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). For this reason the CA was not intended as a modeling tool for real wildfires and was only a methaphor.
+
+Nevertheless data from real wildfires was compared against DSM predictions with the, no so surprsing, observation that the model did not perfectly match real world datasets, as it was build with the only concern of generating fire sizes following a power law. DSM was overstimating the frecuency of large fires (Millington, Perry, and Malamud \protect\hyperlink{ref-millington2006models}{2006}). Even though its origins and pitfalls DMS is still valuable, as it has a strong advantage against other wildfire models due to its simplicity and analytical tractability (Zinck, Johst, and Grimm \protect\hyperlink{ref-zinck2010wildfire}{2010}). Likewise it provides a set of starting assumptions that can be augmented to the required complexity along with the usually seen trade-off between increasing a model's predictive capabilities and its generalizing power.
+
+Consenquently success have been achivied using this simple model, for example fire shape patterns have been obtained that closely resemble actual wildfires (Zinck and Grimm \protect\hyperlink{ref-zinck2008more}{2008})(Zinck, Johst, and Grimm \protect\hyperlink{ref-zinck2010wildfire}{2010}).
+
+The Drossel and Schwabl model consist of a lattice in \(\mathds{Z}^2\) populated with three type of cells: \(0\) (no tree), \(1\) (burning tree), and \(2\) (non-burning tree). All cells are syncronously updated according to the following rules:
+For each state \(\sigma_k(n)\) at site \(k\) and time step \(n\).
+
+\begin{itemize}
+\item
+  A burning tree is consumed at next time step:
+  \[\sigma_k(n) = 1 \mapsto  \sigma_k(n) = 0 \textrm{\quad With probability}\ 1\]
+\item
+  A new tree grows from an empty position \(k\), dictated by parameter \(p \in [0,1]:\)
+  \[\sigma_k(n) = 0 \mapsto  \sigma_k(n) = 2 \textrm{\quad With probability}\ p\]
+\item
+  The fire is propagated through the vecinity or a lightining event occurs, which ignites a tree and is tuned by \(f \in [0,1]:\)
+  \[\sigma_k(n) = 2 \mapsto  \sigma_k(n) = 1\]
+  \[\textrm{With probability} \begin{cases}
+  1, & \textrm{if at least one neighboring tree is burning}\\
+  f, & \textrm{if no neighboring tree is burning}
+  \end{cases}\]
 \end{itemize}
 
 \hypertarget{history}{%
 \section{History}\label{history}}
 
-Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced Cellular Automata (CA) on 1948 to study self replicating systems, particularly biological organisms (Von Neumann and others \protect\hyperlink{ref-von1951general}{1951}) (Von Neumann, Burks, and others \protect\hyperlink{ref-von1966theory}{1966}). The basic idea was to build a lattice in \(\mathds{Z}^2\) capable of copying itself, to another location in \(\mathds{Z}^2\). The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states (Codd \protect\hyperlink{ref-codd1968cellular}{1968}). Some earlier precusor ideas can be traced back to 1946 cibernetics models by Wiener and Rosenbluth (Weiner and Rosenblunth \protect\hyperlink{ref-weiner1946mathematical}{1946}).
+Precusor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of exitable media of Wiener and Rosenbluth (Weiner and Rosenblunth \protect\hyperlink{ref-weiner1946mathematical}{1946}), however their usual agreed upon inception was when in 1948 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones (Von Neumann and others \protect\hyperlink{ref-von1951general}{1951})(Von Neumann, Burks, and others \protect\hyperlink{ref-von1966theory}{1966}).
 
-A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created ``Life'' as a solitaire or simulation type game. To play ``Life'' a checkboard was needed, then counters or chips were put on top of some cells. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 (Gardner \protect\hyperlink{ref-gardner1970mathematical}{1970}). Despite its name and interesting properties ``Life'' has little biological meaning and should be only interpreted as a methapor (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}).
+Von Neumann's basic idea was to build a lattice in \(\mathds{Z}^2\) capable of copying itself, to another location in \(\mathds{Z}^2\). The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states (Codd \protect\hyperlink{ref-codd1968cellular}{1968}).
 
-During the 80s the notoriety of CA was boosted to the current status and CA studies became quintessential examples of complex systems and useful modeling tools. Is in this decade that the first CA conference was held at MIT (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and that the seminal review article of Stephen Wolfram was published (Wolfram \protect\hyperlink{ref-wolfram1983statistical}{1983}).
+In the 1960's theoretical studies of CA were made, especially as intances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem (Hedlund \protect\hyperlink{ref-hedlund1969endomorphisms}{1969}), which characterizes translation-invariant CA transformations.
+
+In 1969 Konrad Zuse publisehd the book \emph{Calculating Space} (Zuse \protect\hyperlink{ref-zuse1970calculating}{1970}) with the thesis that the universe is fundametally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demostrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second (Smith III \protect\hyperlink{ref-smith1971simple}{1971}).
+
+A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created ``Life'' as a solitaire and simulation type game. To play ``Life'' a checkboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 (Gardner \protect\hyperlink{ref-gardner1970mathematical}{1970}). Despite its name and interesting properties ``Life'' has little biological meaning and should be only interpreted as a methapor (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}).
+
+During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and that a seminal review article of Stephen Wolfram was published (Wolfram \protect\hyperlink{ref-wolfram1983statistical}{1983}).
 
 Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}). CA can be applied in image processing for noise removal and border detection (Popovici and Popovici \protect\hyperlink{ref-popovici2002cellular}{2002}). For physical systems fluid and gas dynamics are well suited for CA modeling (Margolus \protect\hyperlink{ref-margolus1984physics}{1984}). Also they have been proposed as a discrete approach to expresing physical laws (Vichniac \protect\hyperlink{ref-vichniac1984simulating}{1984}).
 
 \begin{longtable}[]{@{}lll@{}}
-\caption{Key events in the history of Cellular Automata and Complex Systems. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).}\tabularnewline
+\caption{Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).}\tabularnewline
 \toprule
 Year & Researcher & Discovery\tabularnewline
 \midrule
@@ -252,92 +361,80 @@ Year & Researcher & Discovery\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{motivation}{%
-\section{Motivation}\label{motivation}}
-
-Rolando's Directrices
-1. Sell the idea originality
-2. Sell that automata are general
-3. Show that are useful
-
-CA are one of the simplest representations of
-complex systems (dynamical systems with nonlinearly interacting parts)
-{[}Ilachinski{]}
-
-\hypertarget{complex-systems}{%
-\section{Complex Systems}\label{complex-systems}}
-
-CA are specilly useful for modeling discrete time and space.
-
-The origins of Cellular Automata can beJonh von Neumanm\\
-The origins of Cellular Automata can be traced back to
-a 1948 seminal paper by von Neumann and Ulam \emph{Probabilistic CA, 174, 208}
-
-Cellular Automata are lattices of interconnected finite-state
-automata (cells), which evolve synchronously in discrete time
-steps according to deterministic rules.
-invoving the states of
-
-When the updating rules of CA are allowed to be made
-A natural extension of CA are Probabilistic Cellular Automata(PCA)
-
-\hypertarget{tips-for-paraphrasing}{%
-\subsection{Tips for paraphrasing}\label{tips-for-paraphrasing}}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Translate to own words.
-\item
-  Flip sentence. Move the beginning to the end.
-\item
-  Add a signal phrase. First the source.
-\item
-  Citation afterward. At last the source.
-\end{enumerate}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Current}
-\NormalTok{rate \textless{}{-}}\StringTok{ }\FloatTok{3.3}\OperatorTok{/}\FloatTok{6e6}
-\NormalTok{epoch \textless{}{-}}\StringTok{ }\FloatTok{2e6}
-\KeywordTok{exp}\NormalTok{(}\OperatorTok{{-}}\NormalTok{rate}\OperatorTok{*}\NormalTok{epoch)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.3328711
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Proposed New}
-\NormalTok{rate \textless{}{-}}\StringTok{ }\FloatTok{5.5}\OperatorTok{/}\FloatTok{6e6}
-\NormalTok{epoch \textless{}{-}}\StringTok{ }\FloatTok{3e6}
-\KeywordTok{exp}\NormalTok{(}\OperatorTok{{-}}\NormalTok{rate}\OperatorTok{*}\NormalTok{epoch)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.06392786
-\end{verbatim}
-
 \hypertarget{reinforcement}{%
 \chapter{Reinforcement}\label{reinforcement}}
 
-We describe our methods in this chapter.
+\hypertarget{learning}{%
+\section{Learning}\label{learning}}
+
+Machine Learning
+Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data.
+In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+The formalization of this setting leads to an approach known as Supervised Learning, where the questions-answers pairs are codified into mathematical objects, usually numeric vectors for questions and real numbers or categories for answers and the proposed solution comes in the form of a function that maps questions to answers. The name supervised comes from the fact that the algorithm is provided with the answers to the questions, so in a figurative way it is being supervised by a teacher.
+Deviation from this classical setting leads to the other broad categories of machine learning. Unsupervised Learning algorithms are provided with just data (questions and not answers) and aim to uncover some structure in such data. Semisupervised Learning is halfway between Unsupervised and Supervised methods as only some answers are given, thus the algorithm must first find some structure on the questions (Unsupervised) to extend the answers to similar questions and then perform Supervised Learning. Finally, Reinforcement Learning algorithms get data and answers, but answers have only a grade on how favorable they are. The data and grades are obtained through interaction with an environment and the task here is to find answers that maximize the obtained grades.
+
+\hypertarget{deep}{%
+\section{Deep}\label{deep}}
+
+Deep Learning
+NeuNets for the win.
+
+\hypertarget{reinforcement-1}{%
+\section{Reinforcement}\label{reinforcement-1}}
+
+Reinforcement Learning
+The contents of this section have mostly been taken from Sutton and Barto's Introduction to Reinforcement Learning book (Sutton and Barto, 2017).
+Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent affects the environment and hopefully drives it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of reward means a successful agent closer to its objective.
+The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework consists of an interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
+
+So at each time step \[t=0,1,2,3,...,T\] the agent using the information of state \[S_t \in S\] of the environment must choose an action \[A_t \in A(S_t)\], then in the next time step \[t+1\] the environment transits to a new state \[S_{t+1} \in S\] and returns a reward \[R \in R \subset \mathds{R}\]. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+\[ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...\]
+
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\[S \], \[A\] and \[R\]) is finite.
+In a finite MDP the random variables \[S_t\], \[R_t\] have a well defined discrete probability distribution that depends only on the previous action \[A_t-1\] and state \[S_t-1\]. This is known as the Markov property:
+\[ p(s’, r | s, a) = Pr{S_t=s’, R_t=r | S_t-1=s, A_t-1=a} \]
+To summarize a MDP is a tuple of \[S, A, P, y\].
+
+\hypertarget{results-and-disscusion}{%
+\chapter{Results and Disscusion}\label{results-and-disscusion}}
+
+The idea and contributions of the dissertation.
+
+Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
+Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
+In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
+
+We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
+cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
+changing the state of one or more cells in the CA during each time step. The set of actions the agent
+can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
+model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
+put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
+fire during the simulation. Our results show that DRL algorithms can control important aspects of
+CAs that model the behavior of real complex systems. On the other hand, this work shows that many
+CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
+than many current benchmarks based on video games.
+
+\hypertarget{forest-fire-implementation}{%
+\section{Forest Fire Implementation}\label{forest-fire-implementation}}
+
+\hypertarget{deep-q-networks-implementation}{%
+\section{Deep Q-Networks Implementation}\label{deep-q-networks-implementation}}
 
 \hypertarget{results}{%
-\chapter{Results}\label{results}}
+\section{Results}\label{results}}
 
-Some \emph{significant} applications are demonstrated in this chapter.
+\hypertarget{training-diagrams}{%
+\subsection{Training Diagrams}\label{training-diagrams}}
 
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
+\hypertarget{comparative-table}{%
+\subsection{Comparative Table}\label{comparative-table}}
 
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
+\hypertarget{disscusion}{%
+\section{Disscusion}\label{disscusion}}
+
+\hypertarget{unsupervised}{%
+\subsection{Unsupervised}\label{unsupervised}}
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
@@ -346,8 +443,14 @@ We have finished a nice book.
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-bak1990forest}{}%
+Bak, Per, Kan Chen, and Chao Tang. 1990. ``A Forest-Fire Model and Some Thoughts on Turbulence.'' \emph{Physics Letters A} 147 (5-6): 297--300.
+
 \leavevmode\hypertarget{ref-codd1968cellular}{}%
 Codd, EF. 1968. ``Cellular Automata, Academic Press.'' \emph{New York}.
+
+\leavevmode\hypertarget{ref-drossel1992self}{}%
+Drossel, Barbara, and Franz Schwabl. 1992. ``Self-Organized Critical Forest-Fire Model.'' \emph{Physical Review Letters} 69 (11): 1629.
 
 \leavevmode\hypertarget{ref-ermentrout1993cellular}{}%
 Ermentrout, G Bard, and Leah Edelstein-Keshet. 1993. ``Cellular Automata Approaches to Biological Modeling.'' \emph{Journal of Theoretical Biology} 160 (1): 97--133.
@@ -355,8 +458,14 @@ Ermentrout, G Bard, and Leah Edelstein-Keshet. 1993. ``Cellular Automata Approac
 \leavevmode\hypertarget{ref-gardner1970mathematical}{}%
 Gardner, Martin. 1970. ``Mathematical Games.'' \emph{Scientific American} 222 (6): 132--40.
 
+\leavevmode\hypertarget{ref-hedlund1969endomorphisms}{}%
+Hedlund, Gustav A. 1969. ``Endomorphisms and Automorphisms of the Shift Dynamical System.'' \emph{Mathematical Systems Theory} 3 (4): 320--75.
+
 \leavevmode\hypertarget{ref-ilachinski2001cellular}{}%
 Ilachinski, Andrew. 2001. \emph{Cellular Automata: A Discrete Universe}. World Scientific Publishing Company.
+
+\leavevmode\hypertarget{ref-kauffman1984emergent}{}%
+Kauffman, Stuart A. 1984. ``Emergent Properties in Random Complex Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 145--56.
 
 \leavevmode\hypertarget{ref-louis2018probabilistic}{}%
 Louis, Pierre-Yves, and Francesca R Nardi. 2018. \emph{Probabilistic Cellular Automata}. Springer.
@@ -364,8 +473,14 @@ Louis, Pierre-Yves, and Francesca R Nardi. 2018. \emph{Probabilistic Cellular Au
 \leavevmode\hypertarget{ref-margolus1984physics}{}%
 Margolus, Norman. 1984. ``Physics-Like Models of Computation.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 81--95.
 
+\leavevmode\hypertarget{ref-millington2006models}{}%
+Millington, James DA, George LW Perry, and Bruce D Malamud. 2006. ``Models, Data and Mechanisms: Quantifying Wildfire Regimes.'' \emph{Geological Society, London, Special Publications} 261 (1): 155--67.
+
 \leavevmode\hypertarget{ref-popovici2002cellular}{}%
 Popovici, Adriana, and Dan Popovici. 2002. ``Cellular Automata in Image Processing.'' In \emph{Fifteenth International Symposium on Mathematical Theory of Networks and Systems}, 1:1--6. Citeseer.
+
+\leavevmode\hypertarget{ref-smith1971simple}{}%
+Smith III, Alvy Ray. 1971. ``Simple Computation-Universal Cellular Spaces.'' \emph{Journal of the ACM (JACM)} 18 (3): 339--53.
 
 \leavevmode\hypertarget{ref-vichniac1984simulating}{}%
 Vichniac, Gérard Y. 1984. ``Simulating Physics with Cellular Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 96--116.
@@ -381,6 +496,15 @@ Weiner, N, and A Rosenblunth. 1946. ``The Mathematical Formulation of the Proble
 
 \leavevmode\hypertarget{ref-wolfram1983statistical}{}%
 Wolfram, Stephen. 1983. ``Statistical Mechanics of Cellular Automata.'' \emph{Reviews of Modern Physics} 55 (3): 601.
+
+\leavevmode\hypertarget{ref-zinck2008more}{}%
+Zinck, RD, and V Grimm. 2008. ``More Realistic Than Anticipated: A Classical Forest-Fire Model from Statistical Physics Captures Real Fire Shapes.'' \emph{The Open Ecology Journal} 1 (1).
+
+\leavevmode\hypertarget{ref-zinck2010wildfire}{}%
+Zinck, Richard D, Karin Johst, and Volker Grimm. 2010. ``Wildfire, Landscape Diversity and the Drossel--Schwabl Model.'' \emph{Ecological Modelling} 221 (1): 98--105.
+
+\leavevmode\hypertarget{ref-zuse1970calculating}{}%
+Zuse, Konrad. 1970. \emph{Calculating Space}. Massachusetts Institute of Technology, Project MAC Cambridge, MA.
 \end{cslreferences}
 
 \end{document}

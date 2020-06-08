@@ -12,6 +12,7 @@ github-repo: elbecerrasoto/thesis
 description: "Emanuel Becerra Soto Dissertation."
 header-includes:
    - \usepackage{dsfont}
+   - \usepackage{amsmath}
 ---
 
 # Cellular Automata Control with Deep Reinforcement Learning
