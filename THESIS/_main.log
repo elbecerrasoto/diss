@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.16)  7 JUN 2020 20:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.16)  9 JUN 2020 12:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -981,71 +981,76 @@ File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 ]
 Chapter 3.
-[9]
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 202.
+[9] [10] [11]
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 239.
 
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-) [10] [11] [12] [13]
-Overfull \hbox (193.30562pt too wide) in alignment at lines 339--344
+) [12] [13]
+Overfull \hbox (193.30562pt too wide) in alignment at lines 290--295
  [] [] [] 
  []
 
 
-Overfull \hbox (193.30562pt too wide) in alignment at lines 344--348
+Overfull \hbox (193.30562pt too wide) in alignment at lines 295--299
  [] [] [] 
  []
 
 
-Overfull \hbox (193.30562pt too wide) in alignment at lines 348--362
+Overfull \hbox (193.30562pt too wide) in alignment at lines 299--313
  [] [] [] 
  []
 
-[14]
+[14] [15] [16] [17] [18
+
+]
 Chapter 4.
-[15
+[19] [20]
 
-] [16]
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 395.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 432.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 395.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 432.
 
-[17] [18
+[21] [22
 
 ]
 Chapter 5.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[19] [20]
+[23] [24]
 Chapter 6.
 
-Overfull \hbox (0.74947pt too wide) in paragraph at lines 467--469
+Overfull \hbox (0.74947pt too wide) in paragraph at lines 513--515
 [][]\T1/lmr/m/n/10 (-20) Kauffman, Stuart A. 1984. ``Emergent Properties in Ran
 dom Complex Automata.''
  []
 
-[21
+[25
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 510.
-[22]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 510.
+Overfull \hbox (2.757pt too wide) in paragraph at lines 540--542
+[][]\T1/lmr/m/n/10 (-20) ---------. 1984. ``CAM: A High-Performance Cellular-Au
+tomaton Machine.'' \T1/lmr/m/it/10 (-20) Physica
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 568.
+[26] [27]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 568.
 (./_main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 510.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 510.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 510.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 568.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 568.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 568.
  ) 
 Here is how much of TeX's memory you used:
- 13261 strings out of 494805
- 189504 string characters out of 6177999
- 287604 words of memory out of 5000000
- 16149 multiletter control sequences out of 15000+600000
- 81002 words of font info for 123 fonts, out of 8000000 for 9000
+ 13279 strings out of 494805
+ 189874 string characters out of 6177999
+ 289740 words of memory out of 5000000
+ 16146 multiletter control sequences out of 15000+600000
+ 81475 words of font info for 127 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 34i,9n,38p,899b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,9n,38p,1140b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/u
 sr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/l
@@ -1060,10 +1065,10 @@ xmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr
 7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/font
 s/type1/public/lm/lmro10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb
 ></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb>
-Output written on _main.pdf (22 pages, 277139 bytes).
+Output written on _main.pdf (27 pages, 286840 bytes).
 PDF statistics:
- 423 PDF objects out of 1000 (max. 8388607)
- 379 compressed objects within 4 object streams
- 117 named destinations out of 1000 (max. 500000)
- 14537 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 448 PDF objects out of 1000 (max. 8388607)
+ 399 compressed objects within 4 object streams
+ 130 named destinations out of 1000 (max. 500000)
+ 14505 words of extra memory for PDF output out of 17280 (max. 10000000)
 

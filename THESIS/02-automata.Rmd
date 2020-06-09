@@ -2,48 +2,71 @@
 
 ## Introduction
 
-## Modeling of Complex Systems
-
-Since the solidification of the scientific method in the XVII century ...
+In this chapter blah, blah
 
 ## Cellular Automata
 
 Cellular Automata are mathematical systems that are mainly characterized by [@ilachinski2001cellular]:
 
 1. A discrete lattice of cells:
-A n-dimesional arragement of cells, usually 1-D, 2-D or 3-D.
+A n-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
 
-2. Homogenity:
+2. Homogeneity:
 Cells are equivalent in the sense that they share an update function and a set of possible states.
 
 3. Discrete states:
 Each cell is in one state from a finite set of possible states.
 
 4. Local Interactions:
-Cell interactions are local, this is given by the update function being dependant on neighbouring cells.
+Cell interactions are local, this is given by the update function being dependent on neighboring cells.
 
 5. Discrete Dynamics:
 The system evolves in discrete time steps. At each step the update function is applied simultaneously (synchronously) to all cells.
 
-Despite this apparent simplicity CA are capable of complex behaviour. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behaviour is rich enough to be used to model natural systems.
+Despite this apparent simplicity CA are capable of complex behavior. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales that the size of the cell neighborhoods. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behavior is rich enough to be used to model natural systems.
 
-Wolfram Classification here
+Wolfram Classification here.
+
+### Cellular Automata and the modeling of Complex Systems
+
+Since the consolidation of the scientific method in the XVII century two methodologies emerged for generating and evaluating scientific knowledge. Them being the "experimental" and the "theoretical" paradigms. The experimental paradigm is concerned with observing, measuring and quantifying natural phenomena in order to test an hypothesis. Experimentation also can be made in a playful manner to collect and organize data. The theoretical paradigm seeks logical and mathematical explanations of natural phenomena. Both paradigms are complementary in the sense that predictions can be made by the theoretical paradigm and be tested using the experimental one, then if the experimental findings support the predictions the theory is kept otherwise is rejected. In other words theory can be supported or falsified through experimentation.
+
+A third scientific paradigm recently appeared, namely the "computational" paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the "experimental" and "theoretical" ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Still when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well characterized, data obtained from the simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly understood a first computational approach could be performed. 
+
+The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how _space_, _state_, and _time_ variables are abstracted into the model [@hoekstra2010simulating].
+
+Type of model                                 State  Space  Time
+--------------------------------------------- ------ ------ ------
+Partial differential equations (PDEs)           C     C      C
+Integro-difference equations                    C     C      D
+Coupled ordinary differential equations (ODEs)  C     D      C
+Interacting particle systems                    D     D      C
+Coupled map lattices (CMLs)                     C     D      D
+Systems of difference equations                 C     D      D
+Lattice Boltzmann equations (LBEs)              C     D      D
+**Cellular Automata (CA)**                    **D**  **D**   **D**
+Lattice gas automata (LGAs)                     D     D      D
+
+
+An strategy suggested by 
 
 ### Cellular Automata and Computing
 
-An analogy between CA and conventional computers can be made. The initial configuration of a CA could be though as input data to be computed over by the CA rules, producing results several time steps downstream and displayed on whatever configuration reached by the lattice.
+An analogy between CA and conventional computers can be made. The initial configuration of a CA could be though as input data to be computed over by the CA rules, producing results several time steps ahead and displayed on whatever configuration reached by the lattice.
 
-This analogy is not coincidence at all and it is further exposed by the history of CA. In the early 1950's von Neumann was trying to build a machine that not only should be self-replicating but also capable of universal computability. Von Neumann's endeavors were succesful and produced the first two-dimensional automaton formally shown to be Turing-complete [@von1966theory]. Tweanty years later Jonh Conway's "Game of Life" was introduced and later was also found to be computationally universal [@elwin1982winning][@poundstone2013recursive]. More recently 1-D CA "Rule 110" has been proved to be universal and is one of the simplest known systems with such property [@cook2004universality].
+This analogy is not coincidence at all and it is further exposed by the history of CA. In the early 1950's von Neumann was trying to build a machine that not only should be self-replicating but also capable of universal computability. Von Neumann's endeavors were successful and produced the first two-dimensional automaton formally shown to be Turing-complete [@von1966theory]. Twenty years later John Conway's "Game of Life" was introduced and later was also found to be computationally universal [@elwin1982winning][@poundstone2013recursive]. More recently 1-D CA "Rule 110" has been proved to be universal and is one of the simplest known systems with such property [@cook2004universality].
 
-The usual stratregy to prove that a given CA is universal is to show its equivance with other systems known to be universal. Other strategy is to directly build on the lattice all the primitive elements of computing, namely _storage_ (memory), _transmission_ (internal clock and wires) and _processing_ (AND, OR and NOT gates) [@ilachinski2001cellular]. Once a given system supports these computational primitives building an univesal machine becomes a clerical work of assembling modules. The "Game of Life" is proven to be universal in this fashion.
+The usual strategy to prove that a given CA is universal is to show its equivalence with other systems known to be universal. Other strategy is to directly build on the lattice all the primitive elements of computing, namely _storage_ (memory), _transmission_ (internal clock and wires) and _processing_ (AND, OR and NOT gates) [@ilachinski2001cellular]. Once a given system supports these computational primitives building an universal machine becomes a clerical work of assembling modules. The "Game of Life" is proven to be universal in this fashion.
 
-On the other hand possesing the same power as a convential digital computer plays an important role on our mathematical ability to make predictions on the behaviour of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist [@toffoli1977cellular]. This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation [@ilachinski2001cellular]. 
+On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist [@toffoli1977cellular]. This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation [@ilachinski2001cellular]. 
+
+Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others [@toffoli1984cam]. A hardware implementation of a CAM was developed at MIT [@margolus1995cam] that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
 ### Mathematical Definition
 
 The following is adapted from the book Probabilistic Cellular Automata [@louis2018probabilistic].
 
-Cellullar Automata (CA) are dynanimal systems of interconnected finite-state automata (cells). The automata evolution is thorugh discrete time steps and it is dictated by a function dependant on a neighborhood of interacting automata.
+Cellular Automata (CA) are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.
 
 The main mathematical aspects of a CA are:
 
@@ -56,7 +79,7 @@ The set of vertices $V(G)$ represents the location of the automata (cells). The 
 Defines the states that each automata can take. In common CA settings $S$ is a finite set. It is also called _local space_ or _spin space_.
 
 * The configuration space $S^{V(G)}$:
-This is the set of all posible states of the CA. A specific configuration is denoted as:
+This is the set of all possible states of the CA. A specific configuration is denoted as:
 $$ \sigma = \{\sigma_k \in V(G)\} $$
 $\sigma_k$ is the configuration of the automaton at position $k$.
 
@@ -69,12 +92,12 @@ $$ F: S^{V(G)} \rightarrow S^{V(G)} $$
 $$ (F(\sigma))_k = f_k(\sigma_{V_k}) $$
 The global update $F$ is calculated by applying a local function $f_k$ per automata at $k$. In the classical setting $f_k$ is the same for all the automata.
 
-### Cellular Automata Extensions
+### Generalized Cellular Automata
 
 Generalizations to the classical attributes of CA can be conceived [@ilachinski2001cellular] enabling extensions like:
 
 * Asynchronous CA:
-Allows asyncronous updating of the CA.
+Allows asynchronous updating of the CA.
 
 * Coupled-map Lattices:
 Allows real valued cell states. These systems are simpler than partial differential equations but more complex that standard CA.
@@ -82,14 +105,47 @@ Allows real valued cell states. These systems are simpler than partial different
 * Probabilistic CA:
 The rules are allowed to be stochastic, assigning probabilities to cell state transitions.
 
-* Non-homogenenous CA:
-Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assigment of all boolean functions with small number of inputs [@kauffman1984emergent].
+* Non-homogeneous CA:
+Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assignment of all Boolean functions with small number of inputs [@kauffman1984emergent].
 
 * Mobile CA:
-In this model some cells can move thorugh the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.
+In this model some cells can move through the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.
 
 * Structurally Dynamic CA:
-Considers the possibility of evolving cell arragment. In standard CA the lattice is only a substrate for the ongoing computation, but what happens when this passivity is removed.
+Considers the possibility of evolving cell arrangement. In standard CA the lattice is only a substrate for the ongoing computation, but what happens when this passivity is removed.
+
+## History
+
+Precursor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of excitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed upon inception was when in 1948 John von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
+
+Von Neumann's basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. 
+
+In the 1960's theoretical studies of CA were made, especially as instances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem [@hedlund1969endomorphisms], which characterizes translation-invariant CA transformations. 
+
+In 1969 Konrad Zuse published the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundamentally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demonstrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second [@smith1971simple].
+
+A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkerboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerizing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a metaphor [@ermentrout1993cellular].
+
+During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
+
+Since then applications have been coming in a variety of domains. In the biological sciences models of excitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expressing physical laws [@vichniac1984simulating].
+
+Table: Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
+
+Year  Researcher             Discovery
+----- ---------------------- ---------------------------------------------------------------------------------------------
+1936  Turing                 Formalized the concept of computability, universal Turing machine.
+1948  von Neumann            Introduced self-reproducing automata.      
+1950  Ulam                   Insisted on the need of more realistic models for the behavior of complex extended systems.
+1966  Burks                  Extended von Neumann's work.
+1967  von Bertalanffy, et al Applied System Theory to human systems.
+1969  Zuse                   Introduced the concept of "computing spaces".
+1970  Conway                 Introduced the CA "Game of Life".
+1977  Toffoli                Applied CAs to modeling physical laws.
+1983  Wolfram                Authored a seminal review article about CAs.
+1984  Cowan, et al           The Santa Fe Institute is founded for interdisciplinary research of complex systems.
+1987  Toffoli, Wolfram       First CA conference held at MIT.
+1992  Varela, et al          First European conference on artificial life.
 
 ## Forest Fire Models
 
@@ -99,7 +155,7 @@ They trace their origins to statistical physics and are closely related with per
 
 Forest fire models help to tackle questions like: Will the tree population eventually dies out?, What is the general shape of tree clusters?, What is the shape of the boundary between the forest and the fire?
 
-At first glance forest fire models seem similar to epidemeliogical cellular automata models though they place emphasis on finite population and the persistence of a pathology over time in contrast to the infinite forest population and the emphasis on the spatial extension of the fire.
+At first glance forest fire models seem similar to epidemiological cellular automata models though they place emphasis on finite population and the persistence of a pathology over time in contrast to the infinite forest population and the emphasis on the spatial extension of the fire.
 
 They broadly have the following characteristics [@louis2018probabilistic]:
 
@@ -108,7 +164,7 @@ They broadly have the following characteristics [@louis2018probabilistic]:
   * Burning tree
   * No tree (empty)
 2. A rule for fire initiation:
-  * A starting configuration with fire cells, usually randomly choosen fire positions.
+  * A starting configuration with fire cells, usually randomly chosen fire positions.
   * Accident simulation, like with a small probability self-ignition of a tree cell.
   * Space-time distributed ignition instances (e.g. Poisson distributed).
 3. A rule for fire propagation. It involves a stochastic rule for fire spreading between neighborhoods that can be based on actual terrain conditions.
@@ -117,13 +173,13 @@ They broadly have the following characteristics [@louis2018probabilistic]:
 
 The forest fire model that will be used through this document is the Drossel and Schwabl model (DSM) [@drossel1992self].
 
-DSM was born from research on statistical physics about phase transitions and self-organized criticality [@bak1990forest][@drossel1992self]. For this reason the CA was not intended as a modeling tool for real wildfires and was only a methaphor.
+DSM was born from research on statistical physics about phase transitions and self-organized criticality [@bak1990forest][@drossel1992self]. For this reason the CA was not intended as a modeling tool for real wildfires and was only a metaphor.
 
-Nevertheless data from real wildfires was compared against DSM predictions with the, no so surprsing, observation that the model did not perfectly match real world datasets, as it was build with the only concern of generating fire sizes following a power law. DSM was overstimating the frecuency of large fires [@millington2006models]. Even though its origins and pitfalls DMS is still valuable, as it has a strong advantage against other wildfire models due to its simplicity and analytical tractability [@zinck2010wildfire]. Likewise it provides a set of starting assumptions that can be augmented to the required complexity along with the usually seen trade-off between increasing a model's predictive capabilities and its generalizing power.
+Nevertheless data from real wildfires was compared against DSM predictions with the, no so surprising, observation that the model did not perfectly match real world datasets, as it was build with the only concern of generating fire sizes following a power law. DSM was overestimating the frequency of large fires [@millington2006models]. Even though its origins and pitfalls DMS is still valuable, as it has a strong advantage against other wildfire models due to its simplicity and analytical tractability [@zinck2010wildfire]. Likewise it provides a set of starting assumptions that can be augmented to the required complexity along with the usually seen trade-off between increasing a model's predictive capabilities and its generalizing power.
 
-Consenquently success have been achivied using this simple model, for example fire shape patterns have been obtained that closely resemble actual wildfires [@zinck2008more][@zinck2010wildfire].
+Consequently success have been achieved using this simple model, for example fire shape patterns have been obtained that closely resemble actual wildfires [@zinck2008more][@zinck2010wildfire].
 
-The Drossel and Schwabl model consist of a lattice in $\mathds{Z}^2$ populated with three type of cells: $0$ (no tree), $1$ (burning tree), and $2$ (non-burning tree). All cells are syncronously updated according to the following rules:
+The Drossel and Schwabl model consist of a lattice in $\mathds{Z}^2$ populated with three type of cells: $0$ (no tree), $1$ (burning tree), and $2$ (non-burning tree). All cells are synchronously updated according to the following rules:
 For each state $\sigma_k(n)$ at site $k$ and time step $n$.
 
 * A burning tree is consumed at next time step:
@@ -132,42 +188,9 @@ $$\sigma_k(n) = 1 \mapsto  \sigma_k(n) = 0 \textrm{\quad With probability}\ 1$$
 * A new tree grows from an empty position $k$, dictated by parameter $p \in [0,1]:$
 $$\sigma_k(n) = 0 \mapsto  \sigma_k(n) = 2 \textrm{\quad With probability}\ p$$
 
-* The fire is propagated through the vecinity or a lightining event occurs, which ignites a tree and is tuned by $f \in [0,1]:$
+* The fire is propagated through the vicinity or a lightning event occurs, which ignites a tree and is tuned by $f \in [0,1]:$
 $$\sigma_k(n) = 2 \mapsto  \sigma_k(n) = 1$$
 $$\textrm{With probability} \begin{cases}
   1, & \textrm{if at least one neighboring tree is burning}\\
   f, & \textrm{if no neighboring tree is burning}
   \end{cases}$$
-
-## History
-
-Precusor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of exitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed upon inception was when in 1948 Jonh von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
-
-Von Neumann's basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. 
-
-In the 1960's theoretical studies of CA were made, especially as intances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem [@hedlund1969endomorphisms], which characterizes translation-invariant CA transformations. 
-
-In 1969 Konrad Zuse publisehd the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundametally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demostrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second [@smith1971simple].
-
-A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerazing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a methapor [@ermentrout1993cellular].
-
-During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
-
-Since then applications have been coming in a variety of domains. In the biological sciences models of exitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expresing physical laws [@vichniac1984simulating].
-
-Table: Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
-
-Year  Researcher             Discovery
------ ---------------------- ------------------------------------------------------------------------------------------------------------------------------------
-1936  Turing                 Formalized the concept of computability, universal turing machine.
-1948  von Neumann            Introduced self-reproducing automata.      
-1950  Ulam                   Insisted on the need of more realistic models for the behavior of complex extended systems.
-1966  Burks                  Extended von Neumann's work.   
-1967  von Bertalanffy, et al Applied System Theory to human systems.
-1969  Zuse                   Introduced the concept of "computing spaces".
-1970  Conway                 Introduced the CA "Game of Life".
-1977  Toffoli                Applied CAs to modeling physical laws.
-1983  Wolfram                Authored a seminal review article about CAs.
-1984  Cowan, et al           The Santa Fe Institute is founded for interdisciplinary research of complex systems.
-1987  Toffoli, Wolfram       First CA conference held at MIT.
-1992  Varela, et al          First European conference on artificial life.
