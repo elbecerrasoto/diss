@@ -6,7 +6,15 @@ In this chapter blah, blah
 
 ## Cellular Automata
 
-Cellular Automata are mathematical systems that are mainly characterized by [@ilachinski2001cellular]:
+Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and local interaction between its parts, but its killer feature is that they are simple.
+
+A quick _Google Scholar_ search for the term "Cellular Automata", retrieves roughly 13,000 research articles since the last year (2019). Despite not being as popular (by the same metric) as other topics, like "Cancer" (~128,000) or "Deep Learning" (~104,000), they are, arguably, still popular.
+
+The topic of CA dates back to the 1950's spanning a history of 70 years. Since then the mathematical and practical properties of CA have been studied and its applications have been explored in different branches of science including physical and social.
+
+Perhaps the reason behind this popularity is their simplicity. CA are composed of descentralized interactions of their individual parts (cells), these cells are usually  arranged in a very regular grid and are updated following the same rules for all cells. The rules only take into account the vicinity of a given cell. From this desing specifications one could naively anticipate that a very homogenous state is reached after some iterations of the CA. But this is not always the case, surprinsingly for some simple configurations and rules complex behaviour emerges.
+
+Cellular Automata are mathematical objects that are mainly characterized by [@ilachinski2001cellular]:
 
 1. A discrete lattice of cells:
 A n-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
@@ -25,7 +33,16 @@ The system evolves in discrete time steps. At each step the update function is a
 
 Despite this apparent simplicity CA are capable of complex behavior. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales that the size of the cell neighborhoods. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behavior is rich enough to be used to model natural systems.
 
-Wolfram Classification here.
+Wolfram from extensive simulations of 1-D CA grouped the general behivour of CA in four informally defined classes [@wolfram2002new]. The classification is done by simulation from a variety of lattice initializations to broadly characterize the CA.
+
+1. Class 1: A quick evolution towards a homogeneous global state is observed. All cells stop changing and all the randomness in the initial configuration disappears.
+
+2. Class 2: The CA evolution leads to isolated patterns that could be periodic or stable.
+
+3. Class 3: Pseudo-random or chaotic patterns emerge. Any stable structure is quickly destroyed by the surrounding noise.
+
+4. Class 4: This is the most interesting type of behaviour. Patterns that interact in a complex way emerge. These complex patterns are stable for long periods of time. Eventually the complex patterns can settle into a global state like Class 2 behaviour but this can take a vast amount of time. Wolfram has conjectured that many Class 4 
+CA are capable of universal computation [@wolfram2002new].  
 
 ### Cellular Automata and the modeling of Complex Systems
 
@@ -33,7 +50,10 @@ Since the consolidation of the scientific method in the XVII century two methodo
 
 A third scientific paradigm recently appeared, namely the "computational" paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the "experimental" and "theoretical" ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Still when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well characterized, data obtained from the simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly understood a first computational approach could be performed. 
 
-The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how _space_, _state_, and _time_ variables are abstracted into the model [@hoekstra2010simulating].
+The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how _state_, _space_ and _time_ variables are abstracted into the model [@hoekstra2010simulating].
+
+Table 2.1: How different models handle _state_, _space_ and _time_. _C_ stands for continuous and _D_ for discrete. The discrete nature of CA is highlighted.
+Table taken from the book "Simulating complex systems by cellular automata" [@hoekstra2010simulating].
 
 Type of model                                 State  Space  Time
 --------------------------------------------- ------ ------ ------
@@ -47,8 +67,15 @@ Lattice Boltzmann equations (LBEs)              C     D      D
 **Cellular Automata (CA)**                    **D**  **D**   **D**
 Lattice gas automata (LGAs)                     D     D      D
 
+In _Table 2.1_ some assumptions made for some typical models used in the sciences are shown. It could be noted that CA are eminently discrete  
+Complexs systems are ...
 
-An strategy suggested by 
+Modeling of natural or social phenomena using CA is done mainly in bottom up fashion 
+
+....
+Predictio are made by strightforward
+
+### Cellular Automata Applications
 
 ### Cellular Automata and Computing
 

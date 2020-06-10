@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3.2 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning</title>
+  <meta name="description" content="Emanuel Becerra Soto Dissertation." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3.2 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Emanuel Becerra Soto Dissertation." />
+  <meta name="github-repo" content="elbecerrasoto/thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3.2 Cellular Automata | Cellular Automata Control with Deep Reinforcement Learning" />
+  
+  <meta name="twitter:description" content="Emanuel Becerra Soto Dissertation." />
+  
+
+<meta name="author" content="Emanuel Becerra Soto" />
+
+
+<meta name="date" content="2020-06-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-1.html"/>
+<link rel="next" href="history.html"/>
+<script src="assets/header-attrs-2.1/header-attrs.js"></script>
+<script src="assets/jquery-2.2.3/jquery.min.js"></script>
+<link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Cellular Automata Control with Deep Reinforcement Learning</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i><b>1.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2" data-path="acknowledgments.html"><a href="acknowledgments.html"><i class="fa fa-check"></i><b>1.2</b> Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="motivations.html"><a href="motivations.html"><i class="fa fa-check"></i><b>2.1</b> Motivations</a></li>
+<li class="chapter" data-level="2.2" data-path="objectives.html"><a href="objectives.html"><i class="fa fa-check"></i><b>2.2</b> Objectives</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="objectives.html"><a href="objectives.html#main-objectives"><i class="fa fa-check"></i><b>2.2.1</b> Main Objectives</a></li>
+<li class="chapter" data-level="2.2.2" data-path="objectives.html"><a href="objectives.html#specific-objectives"><i class="fa fa-check"></i><b>2.2.2</b> Specific Objectives</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cellular-automata.html"><a href="cellular-automata.html"><i class="fa fa-check"></i><b>3</b> Cellular Automata</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-1.html"><a href="introduction-1.html"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html"><i class="fa fa-check"></i><b>3.2</b> Cellular Automata</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html#cellular-automata-and-the-modeling-of-complex-systems"><i class="fa fa-check"></i><b>3.2.1</b> Cellular Automata and the modeling of Complex Systems</a></li>
+<li class="chapter" data-level="3.2.2" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html#cellular-automata-applications"><i class="fa fa-check"></i><b>3.2.2</b> Cellular Automata Applications</a></li>
+<li class="chapter" data-level="3.2.3" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html#cellular-automata-and-computing"><i class="fa fa-check"></i><b>3.2.3</b> Cellular Automata and Computing</a></li>
+<li class="chapter" data-level="3.2.4" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html#mathematical-definition"><i class="fa fa-check"></i><b>3.2.4</b> Mathematical Definition</a></li>
+<li class="chapter" data-level="3.2.5" data-path="cellular-automata-1.html"><a href="cellular-automata-1.html#generalized-cellular-automata"><i class="fa fa-check"></i><b>3.2.5</b> Generalized Cellular Automata</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="history.html"><a href="history.html"><i class="fa fa-check"></i><b>3.3</b> History</a></li>
+<li class="chapter" data-level="3.4" data-path="forest-fire-models.html"><a href="forest-fire-models.html"><i class="fa fa-check"></i><b>3.4</b> Forest Fire Models</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="forest-fire-models.html"><a href="forest-fire-models.html#the-drossel-and-schwabl-forest-fire-model"><i class="fa fa-check"></i><b>3.4.1</b> The Drossel and Schwabl forest fire model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="reinforcement.html"><a href="reinforcement.html"><i class="fa fa-check"></i><b>4</b> Reinforcement</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="learning.html"><a href="learning.html"><i class="fa fa-check"></i><b>4.1</b> Learning</a></li>
+<li class="chapter" data-level="4.2" data-path="deep.html"><a href="deep.html"><i class="fa fa-check"></i><b>4.2</b> Deep</a></li>
+<li class="chapter" data-level="4.3" data-path="reinforcement-1.html"><a href="reinforcement-1.html"><i class="fa fa-check"></i><b>4.3</b> Reinforcement</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="results-and-disscusion.html"><a href="results-and-disscusion.html"><i class="fa fa-check"></i><b>5</b> Results and Disscusion</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="forest-fire-implementation.html"><a href="forest-fire-implementation.html"><i class="fa fa-check"></i><b>5.1</b> Forest Fire Implementation</a></li>
+<li class="chapter" data-level="5.2" data-path="deep-q-networks-implementation.html"><a href="deep-q-networks-implementation.html"><i class="fa fa-check"></i><b>5.2</b> Deep Q-Networks Implementation</a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5.3</b> Results</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="results.html"><a href="results.html#training-diagrams"><i class="fa fa-check"></i><b>5.3.1</b> Training Diagrams</a></li>
+<li class="chapter" data-level="5.3.2" data-path="results.html"><a href="results.html#comparative-table"><i class="fa fa-check"></i><b>5.3.2</b> Comparative Table</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="disscusion.html"><a href="disscusion.html"><i class="fa fa-check"></i><b>5.4</b> Disscusion</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="disscusion.html"><a href="disscusion.html#unsupervised"><i class="fa fa-check"></i><b>5.4.1</b> Unsupervised</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cellular Automata Control with Deep Reinforcement Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cellular-automata-1" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Cellular Automata</h2>
+<p>Cellular Automata are mathematical systems that are mainly characterized by <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><p>A discrete lattice of cells:
+A n-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.</p></li>
+<li><p>Homogeneity:
+Cells are equivalent in the sense that they share an update function and a set of possible states.</p></li>
+<li><p>Discrete states:
+Each cell is in one state from a finite set of possible states.</p></li>
+<li><p>Local Interactions:
+Cell interactions are local, this is given by the update function being dependent on neighboring cells.</p></li>
+<li><p>Discrete Dynamics:
+The system evolves in discrete time steps. At each step the update function is applied simultaneously (synchronously) to all cells.</p></li>
+</ol>
+<p>Despite this apparent simplicity CA are capable of complex behavior. Their dynamics only defined in terms of local rules exhibit non-trivial patterns at considerable larger scales that the size of the cell neighborhoods. The structures that emerge where not designed a priori and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. This complex behavior is rich enough to be used to model natural systems.</p>
+<p>Wolfram Classification here.</p>
+<div id="cellular-automata-and-the-modeling-of-complex-systems" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Cellular Automata and the modeling of Complex Systems</h3>
+<p>Since the consolidation of the scientific method in the XVII century two methodologies emerged for generating and evaluating scientific knowledge. Them being the “experimental” and the “theoretical” paradigms. The experimental paradigm is concerned with observing, measuring and quantifying natural phenomena in order to test an hypothesis. Experimentation also can be made in a playful manner to collect and organize data. The theoretical paradigm seeks logical and mathematical explanations of natural phenomena. Both paradigms are complementary in the sense that predictions can be made by the theoretical paradigm and be tested using the experimental one, then if the experimental findings support the predictions the theory is kept otherwise is rejected. In other words theory can be supported or falsified through experimentation.</p>
+<p>A third scientific paradigm recently appeared, namely the “computational” paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the “experimental” and “theoretical” ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Still when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well characterized, data obtained from the simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly understood a first computational approach could be performed.</p>
+<p>The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how <em>state</em>, <em>space</em> and <em>time</em> variables are abstracted into the model <span class="citation">(Hoekstra, Kroc, and Sloot <a href="#ref-hoekstra2010simulating" role="doc-biblioref">2010</a>)</span>.</p>
+<table>
+<caption>How different models handle <em>state</em>, <em>space</em> and <em>time</em>. <em>C</em> stands for continuous and <em>D</em> for discrete. The discrete nature of CA is highlighted.
+Table taken from the book “Simulating complex systems by cellular automata” <span class="citation">(Hoekstra, Kroc, and Sloot <a href="#ref-hoekstra2010simulating" role="doc-biblioref">2010</a>)</span>.</caption>
+<thead>
+<tr class="header">
+<th align="left">Type of model</th>
+<th align="left">State</th>
+<th align="left">Space</th>
+<th align="left">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Partial differential equations (PDEs)</td>
+<td align="left">C</td>
+<td align="left">C</td>
+<td align="left">C</td>
+</tr>
+<tr class="even">
+<td align="left">Integro-difference equations</td>
+<td align="left">C</td>
+<td align="left">C</td>
+<td align="left">D</td>
+</tr>
+<tr class="odd">
+<td align="left">Coupled ordinary differential equations (ODEs)</td>
+<td align="left">C</td>
+<td align="left">D</td>
+<td align="left">C</td>
+</tr>
+<tr class="even">
+<td align="left">Interacting particle systems</td>
+<td align="left">D</td>
+<td align="left">D</td>
+<td align="left">C</td>
+</tr>
+<tr class="odd">
+<td align="left">Coupled map lattices (CMLs)</td>
+<td align="left">C</td>
+<td align="left">D</td>
+<td align="left">D</td>
+</tr>
+<tr class="even">
+<td align="left">Systems of difference equations</td>
+<td align="left">C</td>
+<td align="left">D</td>
+<td align="left">D</td>
+</tr>
+<tr class="odd">
+<td align="left">Lattice Boltzmann equations (LBEs)</td>
+<td align="left">C</td>
+<td align="left">D</td>
+<td align="left">D</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Cellular Automata (CA)</strong></td>
+<td align="left"><strong>D</strong></td>
+<td align="left"><strong>D</strong></td>
+<td align="left"><strong>D</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Lattice gas automata (LGAs)</td>
+<td align="left">D</td>
+<td align="left">D</td>
+<td align="left">D</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="cellular-automata-applications" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Cellular Automata Applications</h3>
+</div>
+<div id="cellular-automata-and-computing" class="section level3" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Cellular Automata and Computing</h3>
+<p>An analogy between CA and conventional computers can be made. The initial configuration of a CA could be though as input data to be computed over by the CA rules, producing results several time steps ahead and displayed on whatever configuration reached by the lattice.</p>
+<p>This analogy is not coincidence at all and it is further exposed by the history of CA. In the early 1950’s von Neumann was trying to build a machine that not only should be self-replicating but also capable of universal computability. Von Neumann’s endeavors were successful and produced the first two-dimensional automaton formally shown to be Turing-complete <span class="citation">(Von Neumann, Burks, and others <a href="#ref-von1966theory" role="doc-biblioref">1966</a>)</span>. Twenty years later John Conway’s “Game of Life” was introduced and later was also found to be computationally universal <span class="citation">(Elwin, Conway, and Guy <a href="#ref-elwin1982winning" role="doc-biblioref">1982</a>)</span><span class="citation">(Poundstone <a href="#ref-poundstone2013recursive" role="doc-biblioref">2013</a>)</span>. More recently 1-D CA “Rule 110” has been proved to be universal and is one of the simplest known systems with such property <span class="citation">(Cook <a href="#ref-cook2004universality" role="doc-biblioref">2004</a>)</span>.</p>
+<p>The usual strategy to prove that a given CA is universal is to show its equivalence with other systems known to be universal. Other strategy is to directly build on the lattice all the primitive elements of computing, namely <em>storage</em> (memory), <em>transmission</em> (internal clock and wires) and <em>processing</em> (AND, OR and NOT gates) <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span>. Once a given system supports these computational primitives building an universal machine becomes a clerical work of assembling modules. The “Game of Life” is proven to be universal in this fashion.</p>
+<p>On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist <span class="citation">(Toffoli <a href="#ref-toffoli1977cellular" role="doc-biblioref">1977</a>)</span>. This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span>.</p>
+<p>Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others <span class="citation">(Toffoli <a href="#ref-toffoli1984cam" role="doc-biblioref">1984</a>)</span>. A hardware implementation of a CAM was developed at MIT <span class="citation">(Margolus <a href="#ref-margolus1995cam" role="doc-biblioref">1995</a>)</span> that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.</p>
+</div>
+<div id="mathematical-definition" class="section level3" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Mathematical Definition</h3>
+<p>The following is adapted from the book Probabilistic Cellular Automata <span class="citation">(Louis and Nardi <a href="#ref-louis2018probabilistic" role="doc-biblioref">2018</a>)</span>.</p>
+<p>Cellular Automata (CA) are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.</p>
+<p>The main mathematical aspects of a CA are:</p>
+<ul>
+<li><p>The network <span class="math inline">\(G\)</span>:
+A graph <span class="math inline">\(G\)</span>.
+<span class="math display">\[ G = (V(G), E(G)) \]</span>
+The set of vertices <span class="math inline">\(V(G)\)</span> represents the location of the automata (cells). The set of edges <span class="math inline">\(E(G)\)</span> describes the spatial relations between automata.</p></li>
+<li><p>The alphabet <span class="math inline">\(S\)</span>:
+Defines the states that each automata can take. In common CA settings <span class="math inline">\(S\)</span> is a finite set. It is also called <em>local space</em> or <em>spin space</em>.</p></li>
+<li><p>The configuration space <span class="math inline">\(S^{V(G)}\)</span>:
+This is the set of all possible states of the CA. A specific configuration is denoted as:
+<span class="math display">\[ \sigma = \{\sigma_k \in V(G)\} \]</span>
+<span class="math inline">\(\sigma_k\)</span> is the configuration of the automaton at position <span class="math inline">\(k\)</span>.</p></li>
+<li><p>The neighborhoods <span class="math inline">\(V_k\)</span>:
+<span class="math display">\[ V_k \subset  V(G) \]</span>
+The subset of nodes that can influence or interact with the automaton at <span class="math inline">\(k \in V(G)\)</span> (ordinarily it includes itself). A typical configuration for <span class="math inline">\(V_k\)</span> is: <span class="math inline">\(G = \mathds{Z}^2\)</span>, and <span class="math inline">\(V_k = \{k, k \pm e_1, k \pm e_2\}\)</span>, where <span class="math inline">\((e_1, e_2)\)</span> is the canonical basis of <span class="math inline">\(\mathds{Z}^2\)</span>, (north/south, east/west). This is known as the <em>von Neumman neighborhood</em>.</p></li>
+<li><p>The global update <span class="math inline">\(F\)</span>:
+<span class="math display">\[ F: S^{V(G)} \rightarrow S^{V(G)} \]</span>
+<span class="math display">\[ (F(\sigma))_k = f_k(\sigma_{V_k}) \]</span>
+The global update <span class="math inline">\(F\)</span> is calculated by applying a local function <span class="math inline">\(f_k\)</span> per automata at <span class="math inline">\(k\)</span>. In the classical setting <span class="math inline">\(f_k\)</span> is the same for all the automata.</p></li>
+</ul>
+</div>
+<div id="generalized-cellular-automata" class="section level3" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Generalized Cellular Automata</h3>
+<p>Generalizations to the classical attributes of CA can be conceived <span class="citation">(Ilachinski <a href="#ref-ilachinski2001cellular" role="doc-biblioref">2001</a>)</span> enabling extensions like:</p>
+<ul>
+<li><p>Asynchronous CA:
+Allows asynchronous updating of the CA.</p></li>
+<li><p>Coupled-map Lattices:
+Allows real valued cell states. These systems are simpler than partial differential equations but more complex that standard CA.</p></li>
+<li><p>Probabilistic CA:
+The rules are allowed to be stochastic, assigning probabilities to cell state transitions.</p></li>
+<li><p>Non-homogeneous CA:
+Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assignment of all Boolean functions with small number of inputs <span class="citation">(Kauffman <a href="#ref-kauffman1984emergent" role="doc-biblioref">1984</a>)</span>.</p></li>
+<li><p>Mobile CA:
+In this model some cells can move through the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.</p></li>
+<li><p>Structurally Dynamic CA:
+Considers the possibility of evolving cell arrangement. In standard CA the lattice is only a substrate for the ongoing computation, but what happens when this passivity is removed.</p></li>
+</ul>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-cook2004universality">
+<p>Cook, Matthew. 2004. “Universality in Elementary Cellular Automata.” <em>Complex Systems</em> 15 (1): 1–40.</p>
+</div>
+<div id="ref-elwin1982winning">
+<p>Elwin, R Berkelamp, John H Conway, and Richard K Guy. 1982. “Winning Ways for Your Mathematical Plays.” Academic Press.</p>
+</div>
+<div id="ref-hoekstra2010simulating">
+<p>Hoekstra, Alfons G, Jiri Kroc, and Peter MA Sloot. 2010. <em>Simulating Complex Systems by Cellular Automata</em>. Springer.</p>
+</div>
+<div id="ref-ilachinski2001cellular">
+<p>Ilachinski, Andrew. 2001. <em>Cellular Automata: A Discrete Universe</em>. World Scientific Publishing Company.</p>
+</div>
+<div id="ref-kauffman1984emergent">
+<p>Kauffman, Stuart A. 1984. “Emergent Properties in Random Complex Automata.” <em>Physica D: Nonlinear Phenomena</em> 10 (1-2): 145–56.</p>
+</div>
+<div id="ref-louis2018probabilistic">
+<p>Louis, Pierre-Yves, and Francesca R Nardi. 2018. <em>Probabilistic Cellular Automata</em>. Springer.</p>
+</div>
+<div id="ref-margolus1995cam">
+<p>Margolus, Norman. 1995. “CAM-8: A Computer Architecture Based on Cellular Automata.” <em>arXiv Preprint Comp-Gas/9509001</em>.</p>
+</div>
+<div id="ref-poundstone2013recursive">
+<p>Poundstone, William. 2013. <em>The Recursive Universe: Cosmic Complexity and the Limits of Scientific Knowledge</em>. Courier Corporation.</p>
+</div>
+<div id="ref-toffoli1977cellular">
+<p>Toffoli, Tommaso. 1977. “Cellular Automata Machines.”</p>
+</div>
+<div id="ref-toffoli1984cam">
+<p>Toffoli, Tommaso. 1984. “CAM: A High-Performance Cellular-Automaton Machine.” <em>Physica D: Nonlinear Phenomena</em> 10 (1-2): 195–204.</p>
+</div>
+<div id="ref-von1966theory">
+<p>Von Neumann, John, Arthur W Burks, and others. 1966. “Theory of Self-Reproducing Automata.” <em>IEEE Transactions on Neural Networks</em> 5 (1): 3–14.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="history.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/lunr.js"></script>
+<script src="assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "static"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
