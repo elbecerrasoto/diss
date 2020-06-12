@@ -69,6 +69,7 @@
 \setcounter{secnumdepth}{5}
 \usepackage{dsfont}
 \usepackage{amsmath}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -78,7 +79,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-11}
+\date{2020-06-12}
 
 \begin{document}
 \maketitle
@@ -469,16 +470,16 @@ For each state \(\sigma_k(n)\) at site \(k\) and time step \(n\).
   \end{cases}\]
 \end{itemize}
 
-\hypertarget{reinforcement}{%
-\chapter{Reinforcement}\label{reinforcement}}
+\hypertarget{reinforcement-learning}{%
+\chapter{Reinforcement Learning}\label{reinforcement-learning}}
 
-\hypertarget{learning}{%
-\section{Learning}\label{learning}}
+\hypertarget{machine-learning}{%
+\section{Machine Learning}\label{machine-learning}}
 
-Machine Learning
-Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data.
-In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data. In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+
 The formalization of this setting leads to an approach known as Supervised Learning, where the questions-answers pairs are codified into mathematical objects, usually numeric vectors for questions and real numbers or categories for answers and the proposed solution comes in the form of a function that maps questions to answers. The name supervised comes from the fact that the algorithm is provided with the answers to the questions, so in a figurative way it is being supervised by a teacher.
+
 Deviation from this classical setting leads to the other broad categories of machine learning. Unsupervised Learning algorithms are provided with just data (questions and not answers) and aim to uncover some structure in such data. Semisupervised Learning is halfway between Unsupervised and Supervised methods as only some answers are given, thus the algorithm must first find some structure on the questions (Unsupervised) to extend the answers to similar questions and then perform Supervised Learning. Finally, Reinforcement Learning algorithms get data and answers, but answers have only a grade on how favorable they are. The data and grades are obtained through interaction with an environment and the task here is to find answers that maximize the obtained grades.
 
 \hypertarget{deep}{%
@@ -487,24 +488,95 @@ Deviation from this classical setting leads to the other broad categories of mac
 Deep Learning
 NeuNets for the win.
 
-\hypertarget{reinforcement-1}{%
-\section{Reinforcement}\label{reinforcement-1}}
+\hypertarget{reinforcement-learning-1}{%
+\section{Reinforcement Learning}\label{reinforcement-learning-1}}
 
-Reinforcement Learning
-The contents of this section have mostly been taken from Sutton and Barto's Introduction to Reinforcement Learning book (Sutton and Barto, 2017).
+The contents of this section have mostly been adapted from Sutton and Barto's Introduction to Reinforcement Learning book (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).
+
 Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent affects the environment and hopefully drives it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of reward means a successful agent closer to its objective.
-The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework consists of an interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
 
-So at each time step \[t=0,1,2,3,...,T\] the agent using the information of state \[S_t \in S\] of the environment must choose an action \[A_t \in A(S_t)\], then in the next time step \[t+1\] the environment transits to a new state \[S_{t+1} \in S\] and returns a reward \[R \in R \subset \mathds{R}\]. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
+
+So at each time step \(t=0,1,2,3,...,T\) the agent using the information of state \(S_t \in S\) of the environment must choose an action \(A_t \in A(S_t)\) from the available ones, then in the next time step \(t+1\) the environment transits to a new state \(S_{t+1} \in S\) and returns a reward \(R_t \in R \subset \mathds{R}\). The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 \[ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...\]
 
-Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\[S \], \[A\] and \[R\]) is finite.
-In a finite MDP the random variables \[S_t\], \[R_t\] have a well defined discrete probability distribution that depends only on the previous action \[A_t-1\] and state \[S_t-1\]. This is known as the Markov property:
-\[ p(s’, r | s, a) = Pr{S_t=s’, R_t=r | S_t-1=s, A_t-1=a} \]
-To summarize a MDP is a tuple of \[S, A, P, y\].
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\(S\), \(A\) and \(R\)) is finite. In a finite MDP the random variables \(S_t\), \(R_t\) have a well defined discrete probability distribution that depends only on the previous action \(A_t-1\) and state \(S_t-1\). This is known as the Markov property:
+\[ p(s’, r | s, a) = Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) \]
+To summarize a MDP is a tuple of \(S, A, P, y\).
+
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
+
+\hypertarget{materials-and-methods}{%
+\section{Materials and Methods}\label{materials-and-methods}}
+
+Here is everything to replicate the experiments
+What exactly did I do?
+
+\hypertarget{environment}{%
+\subsection{Environment}\label{environment}}
+
+A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified postion at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+
+The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
+
+The particular environment that was used for this thesis is as follows:
+
+\hypertarget{preprocessing}{%
+\subsection{Preprocessing}\label{preprocessing}}
+
+\hypertarget{code-availability}{%
+\subsection{Code Availability}\label{code-availability}}
+
+The source code for this thesis is openly available at:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \url{https://github.com/elbecerrasoto/gym-forest-fire} for the RL environments.
+\item
+  \url{https://github.com/elbecerrasoto/CARL} for DQN implementations.
+\end{enumerate}
+
+\hypertarget{model-architecture}{%
+\subsection{Model Architecture}\label{model-architecture}}
+
+\hypertarget{training-details}{%
+\subsection{Training Details}\label{training-details}}
+
+\hypertarget{evaluation-procedure}{%
+\subsection{Evaluation Procedure}\label{evaluation-procedure}}
+
+Algorithm
+
+\hypertarget{algorithm-1}{%
+\section{Algorithm 1}\label{algorithm-1}}
+
+Just a sample algorithmn
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwResult{Write here the result}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Write here the input}
+\Output{Write here the output}
+\BlankLine
+\While{While condition}{
+    instructions\;
+    \eIf{condition}{
+        instructions1\;
+        instructions2\;
+    }{
+        instructions3\;
+    }
+}
+\caption{While loop with If/Else condition}
+\end{algorithm}
 
 \hypertarget{results-and-disscusion}{%
-\chapter{Results and Disscusion}\label{results-and-disscusion}}
+\section{Results and Disscusion}\label{results-and-disscusion}}
 
 The idea and contributions of the dissertation.
 
@@ -529,8 +601,8 @@ than many current benchmarks based on video games.
 \hypertarget{deep-q-networks-implementation}{%
 \section{Deep Q-Networks Implementation}\label{deep-q-networks-implementation}}
 
-\hypertarget{results}{%
-\section{Results}\label{results}}
+\hypertarget{results-1}{%
+\section{Results}\label{results-1}}
 
 \hypertarget{training-diagrams}{%
 \subsection{Training Diagrams}\label{training-diagrams}}
@@ -625,6 +697,9 @@ Poundstone, William. 2013. \emph{The Recursive Universe: Cosmic Complexity and t
 
 \leavevmode\hypertarget{ref-smith1971simple}{}%
 Smith III, Alvy Ray. 1971. ``Simple Computation-Universal Cellular Spaces.'' \emph{Journal of the ACM (JACM)} 18 (3): 339--53.
+
+\leavevmode\hypertarget{ref-sutton2018reinforcement}{}%
+Sutton, Richard S, and Andrew G Barto. 2018. \emph{Reinforcement Learning: An Introduction}. MIT press.
 
 \leavevmode\hypertarget{ref-toffoli1977cellular}{}%
 Toffoli, Tommaso. 1977. ``Cellular Automata Machines.''

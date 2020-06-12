@@ -8,11 +8,12 @@ documentclass: book
 bibliography: references.bib
 biblio-style: apalike
 link-citations: yes
-github-repo: elbecerrasoto/thesis
+github-repo: elbecerrasoto/diss
 description: "Emanuel Becerra Soto Dissertation."
 header-includes:
    - \usepackage{dsfont}
    - \usepackage{amsmath}
+   - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 ---
 
 # Cellular Automata Control with Deep Reinforcement Learning

@@ -1,40 +1,29 @@
-# Reinforcement
+# Reinforcement Learning
 
-## Learning
+## Machine Learning
 
-Machine Learning
-Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data.
-In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data. In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+
 The formalization of this setting leads to an approach known as Supervised Learning, where the questions-answers pairs are codified into mathematical objects, usually numeric vectors for questions and real numbers or categories for answers and the proposed solution comes in the form of a function that maps questions to answers. The name supervised comes from the fact that the algorithm is provided with the answers to the questions, so in a figurative way it is being supervised by a teacher.
+
 Deviation from this classical setting leads to the other broad categories of machine learning. Unsupervised Learning algorithms are provided with just data (questions and not answers) and aim to uncover some structure in such data. Semisupervised Learning is halfway between Unsupervised and Supervised methods as only some answers are given, thus the algorithm must first find some structure on the questions (Unsupervised) to extend the answers to similar questions and then perform Supervised Learning. Finally, Reinforcement Learning algorithms get data and answers, but answers have only a grade on how favorable they are. The data and grades are obtained through interaction with an environment and the task here is to find answers that maximize the obtained grades.
-
-
 
 ## Deep
 
 Deep Learning
 NeuNets for the win.
 
-## Reinforcement
+## Reinforcement Learning
 
-Reinforcement Learning
-The contents of this section have mostly been taken from Sutton and Barto’s Introduction to Reinforcement Learning book (Sutton and Barto, 2017).
-Reinforcement Learning (RL)  aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent affects the environment and hopefully drives it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of reward means a successful agent closer to its objective. 
-The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework consists of an interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
+The contents of this section have mostly been adapted from Sutton and Barto's Introduction to Reinforcement Learning book [@sutton2018reinforcement].
+
+Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent affects the environment and hopefully drives it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of reward means a successful agent closer to its objective.
+
+The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
  
- 
- 
- 
- 
- 
-So at each time step  $$t=0,1,2,3,...,T$$ the agent using the information of state $$S_t \in S$$ of the environment must choose an action $$A_t \in A(S_t)$$, then in the next time step $$t+1$$ the environment transits to a new state $$S_{t+1} \in S$$ and returns a reward $$R \in R \subset \mathds{R}$$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in A(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in S$ and returns a reward $R_t \in R \subset \mathds{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 $$ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...$$
  
-
- 
-Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($$S $$, $$A$$ and $$R$$) is finite.
-In a finite MDP the random variables $$S_t$$, $$R_t$$ have a well defined discrete probability distribution that depends only on the previous action $$A_t-1$$ and state $$S_t-1$$. This is known as the Markov property:
-$$ p(s’, r | s, a) = Pr{S_t=s’, R_t=r | S_t-1=s, A_t-1=a} $$
-To summarize a MDP is a tuple of $$S, A, P, y$$.
-
-
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($S$, $A$ and $R$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have a well defined discrete probability distribution that depends only on the previous action $A_t-1$ and state $S_t-1$. This is known as the Markov property:
+$$ p(s’, r | s, a) = Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
+To summarize a MDP is a tuple of $S, A, P, y$.
