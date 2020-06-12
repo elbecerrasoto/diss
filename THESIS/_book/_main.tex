@@ -147,6 +147,17 @@ The topic of CA dates back to the 1950's spanning a history of 70 years. Since t
 
 Perhaps the reason behind this popularity is their simplicity. CA are composed of decentralized interactions of their individual parts (cells), these cells are usually arranged in a very regular grid and are updated following the same rules for all cells. The rules only take into account the vicinity of a given cell. From this design specifications one could naively anticipate that a very homogeneous state is reached after some iterations of the CA. But this is not always the case, surprisingly for some simple configurations and rules, complex behavior emerges. This behavior is rich enough to be used to model natural systems. The structures that arises from local interactions where not designed \emph{a priori} and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. Their scale is also far from the initial size of the cell neighborhoods.
 
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/examples_CA} 
+
+}
+
+\caption{Cellular Automata Examples. Image taken from the book ``Designing Beauty: The Art of Cellular Automata'' (Adamatzky and Martínez \protect\hyperlink{ref-adamatzky2016designing}{2016}).}\label{fig:CA-examples}
+\end{figure}
+
 \hypertarget{main-characteristics}{%
 \section{Main Characteristics}\label{main-characteristics}}
 
@@ -204,6 +215,24 @@ The main mathematical aspects of a CA are:
   \[ (F(\sigma))_k = f_k(\sigma_{V_k}) \]
   The global update \(F\) is calculated by applying a local function \(f_k\) per automata at \(k\). In the classical setting \(f_k\) is the same for all the automata.
 \end{itemize}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/neighborhoods} 
+
+}
+
+\caption{No shenanigans allowed}\label{fig:CA-neighborhoods}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/lattice} 
+
+}
+
+\caption{sdfsdfsdf}\label{fig:CA-lattice}
+\end{figure}
 
 \hypertarget{classification}{%
 \section{Classification}\label{classification}}
@@ -301,6 +330,9 @@ Generalizations to the classical attributes of CA can be conceived (Ilachinski \
 \item
   Non-homogeneous CA:
   Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assignment of all Boolean functions with small number of inputs (Kauffman \protect\hyperlink{ref-kauffman1984emergent}{1984}).
+\item
+  Boolean Networks:
+  A type of non-homogeneous CA with variable inputs per node (Alonso-Sanz \protect\hyperlink{ref-alonso2011discrete}{2011}).
 \item
   Mobile CA:
   In this model some cells can move through the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.
@@ -519,6 +551,12 @@ We have finished a nice book.
 
 \hypertarget{refs}{}
 \begin{cslreferences}
+\leavevmode\hypertarget{ref-adamatzky2016designing}{}%
+Adamatzky, Andrew, and Genaro J Martínez. 2016. \emph{Designing Beauty: The Art of Cellular Automata}. Vol. 20. Springer.
+
+\leavevmode\hypertarget{ref-alonso2011discrete}{}%
+Alonso-Sanz, Ramon. 2011. \emph{Discrete Systems with Memory}. Vol. 75. World Scientific.
+
 \leavevmode\hypertarget{ref-bak2013nature}{}%
 Bak, Per. 2013. \emph{How Nature Works: The Science of Self-Organized Criticality}. Springer Science \& Business Media.
 

@@ -10,6 +10,12 @@ The topic of CA dates back to the 1950's spanning a history of 70 years. Since t
 
 Perhaps the reason behind this popularity is their simplicity. CA are composed of decentralized interactions of their individual parts (cells), these cells are usually  arranged in a very regular grid and are updated following the same rules for all cells. The rules only take into account the vicinity of a given cell. From this design specifications one could naively anticipate that a very homogeneous state is reached after some iterations of the CA. But this is not always the case, surprisingly for some simple configurations and rules, complex behavior emerges. This behavior is rich enough to be used to model natural systems. The structures that arises from local interactions where not designed _a priori_ and their nature is capricious as they could be oscillating, chaotic, ordered, random, transient, stable. Their scale is also far from the initial size of the cell neighborhoods.
 
+(ref:CA-examples) Cellular Automata Examples. Image taken from the book "Designing Beauty: The Art of Cellular Automata" [@adamatzky2016designing].
+
+```{r CA-examples, fig.cap='(ref:CA-examples)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/examples_CA.png')
+```
+
 ## Main Characteristics
 
 Cellular Automata are mathematical objects that are mainly characterized by [@ilachinski2001cellular]:
@@ -58,6 +64,14 @@ The subset of nodes that can influence or interact with the automaton at $k \in 
 $$ F: S^{V(G)} \rightarrow S^{V(G)} $$
 $$ (F(\sigma))_k = f_k(\sigma_{V_k}) $$
 The global update $F$ is calculated by applying a local function $f_k$ per automata at $k$. In the classical setting $f_k$ is the same for all the automata.
+
+```{r CA-neighborhoods, fig.cap='No shenanigans allowed', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/neighborhoods.png')
+```
+
+```{r CA-lattice, fig.cap='sdfsdfsdf', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/lattice.png')
+```
 
 ## Classification
 
@@ -137,6 +151,9 @@ The rules are allowed to be stochastic, assigning probabilities to cell state tr
 
 * Non-homogeneous CA:
 Updating functions are allowed to vary from cell to cell. A simple example is a CA with two rules distributed randomly throughout the lattice. On the other extreme case, simulations have been performed with random assignment of all Boolean functions with small number of inputs [@kauffman1984emergent].
+
+* Boolean Networks:
+A type of non-homogeneous CA with variable inputs per node [@alonso2011discrete].
 
 * Mobile CA:
 In this model some cells can move through the lattice. The mobile parts of the CA can be thought as robots or agents and their movement is dictated from an internal state that reflects the features of the local environment.
