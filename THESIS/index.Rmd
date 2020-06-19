@@ -14,9 +14,14 @@ header-includes:
    - \usepackage{dsfont}
    - \usepackage{amsmath}
    - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+   - \usepackage{longtable}
 ---
 
-# Cellular Automata Control with Deep Reinforcement Learning
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+# CARL
 
 ## Abstract
 

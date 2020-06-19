@@ -1,22 +1,20 @@
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(kableExtra))
+```
 # Results
 
 ## Materials and Methods
 
-Here is everything to replicate the experiments
-What exactly did I do?
-
 ### Environment
 
-A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) [@drossel1992self]. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified postion at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) [@drossel1992self]. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
 
 The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters $p=0.33$ and $f=0.066$ 
-
+The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters $p=0.33$ and $f=0.066$ that 
 
 ### Preprocessing
-
-
 
 ### Code Availability
 
@@ -36,9 +34,47 @@ The source code for this thesis is openly available at:
 
 1. Profiling phase
 
+A life signals were detected using a 1x9 model.
+
+Then small charecterization of hte hyperameters was made using 3x3.
+
+Then scalation to 5x5.
+
+For a first approach to the proposed environment. Fisrt 
+For the approaching of the problem a characterization of the ...
+
+```{r 3x3, message=FALSE}
+opts <- options(knitr.kable.NA = "")
+read_csv('data/runs_3x3_v2.csv') %>%
+  select(-name, -gamma, -better) %>%
+  arrange(desc(return), sd) %>%
+  mutate(mean = round(mean,2),
+         sd = round(sd,2)) %>%
+  knitr::kable(
+    col.names = c('Run', 'Return', 'Mean', 'SD', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size'),
+    booktabs=T,
+    caption='Hyperparamerters of 3x3 forest firest environments runs.',
+    format.args = list(big.mark = ",", scientific = F)
+    ) %>%
+  kable_styling(latex_options = c('striped', 'scale_down'))
+```
 
 
 
+
+
+
+
+
+
+Numeber 
+
+
+2. Scaling to 5x5
+
+
+
+## Disscusion
 
 
 
@@ -65,6 +101,13 @@ than many current benchmarks based on video games.
 
 
 
+## Apendix Long Table
+
+
+
+## Apendix X2: Architectures
+
+!?
 
 ## Apendix X: Algorithms
 

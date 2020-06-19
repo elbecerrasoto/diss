@@ -8,11 +8,6 @@ The formalization of this setting leads to an approach known as Supervised Learn
 
 Deviation from this classical setting leads to the other broad categories of machine learning. Unsupervised Learning algorithms are provided with just data (questions and not answers) and aim to uncover some structure in such data. Semisupervised Learning is halfway between Unsupervised and Supervised methods as only some answers are given, thus the algorithm must first find some structure on the questions (Unsupervised) to extend the answers to similar questions and then perform Supervised Learning. Finally, Reinforcement Learning algorithms get data and answers, but answers have only a grade on how favorable they are. The data and grades are obtained through interaction with an environment and the task here is to find answers that maximize the obtained grades.
 
-## Deep
-
-Deep Learning
-NeuNets for the win.
-
 ## Reinforcement Learning
 
 The contents of this section have mostly been adapted from Sutton and Barto's Introduction to Reinforcement Learning book [@sutton2018reinforcement].
@@ -24,6 +19,14 @@ The Reinforcement Learning Problem could be formalized with Markov Decision Proc
 So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in A(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in S$ and returns a reward $R_t \in R \subset \mathds{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 $$ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...$$
  
-Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($S$, $A$ and $R$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have a well defined discrete probability distribution that depends only on the previous action $A_t-1$ and state $S_t-1$. This is known as the Markov property:
-$$ p(s’, r | s, a) = Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
-To summarize a MDP is a tuple of $S, A, P, y$.
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($S$, $A$ and $R$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have well defined discrete probability distributions that depend only on the previous action $A_t-1$ and state $S_t-1$. This is known as the Markov property:
+$$ p(s’, r | s, a) \doteq Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
+
+This $p: S \times R \times S \times A \rightarrow [0,1]$ function is known as the _dynamics of the MDP_. The "$|$" (bar) symbol instead of a "$,$" (comma) in the function arguments is just a reminder that $p$ is calculating a conditional probability given $s$ and $a$.
+
+(ref:env-agent-interactions) Agent-Environment system formalized as a MDP. Figure adapted from [@sutton2018reinforcement].
+
+```{r env-agent-interactions, fig.cap='(ref:env-agent-interactions)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/RL_env_agent.png')
+```
+

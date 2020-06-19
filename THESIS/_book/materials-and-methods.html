@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5 Results | Cellular Automata Control with Deep Reinforcement Learning</title>
+  <title>5.1 Materials and Methods | Cellular Automata Control with Deep Reinforcement Learning</title>
   <meta name="description" content="Emanuel Becerra Soto Dissertation." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5 Results | Cellular Automata Control with Deep Reinforcement Learning" />
+  <meta property="og:title" content="5.1 Materials and Methods | Cellular Automata Control with Deep Reinforcement Learning" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="elbecerrasoto/diss" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5 Results | Cellular Automata Control with Deep Reinforcement Learning" />
+  <meta name="twitter:title" content="5.1 Materials and Methods | Cellular Automata Control with Deep Reinforcement Learning" />
   
   <meta name="twitter:description" content="Emanuel Becerra Soto Dissertation." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="reinforcement-learning-1.html"/>
-<link rel="next" href="materials-and-methods.html"/>
+<link rel="prev" href="results.html"/>
+<link rel="next" href="results-and-disscusion.html"/>
 <script src="assets/header-attrs-2.1/header-attrs.js"></script>
 <script src="assets/jquery-2.2.3/jquery.min.js"></script>
 <link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -202,16 +202,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="results" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Results</h1>
+<div id="materials-and-methods" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Materials and Methods</h2>
+<p>Here is everything to replicate the experiments
+What exactly did I do?</p>
+<div id="environment" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Environment</h3>
+<p>A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) <span class="citation">(Drossel and Schwabl <a href="#ref-drossel1992self" role="doc-biblioref">1992</a>)</span>. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified postion at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.</p>
+<p>The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.</p>
+<p>The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters <span class="math inline">\(p=0.33\)</span> and <span class="math inline">\(f=0.066\)</span></p>
+</div>
+<div id="preprocessing" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Preprocessing</h3>
+</div>
+<div id="code-availability" class="section level3" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Code Availability</h3>
+<p>The source code for this thesis is openly available at:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://github.com/elbecerrasoto/gym-forest-fire" class="uri">https://github.com/elbecerrasoto/gym-forest-fire</a> for the RL environments.</li>
+<li><a href="https://github.com/elbecerrasoto/CARL" class="uri">https://github.com/elbecerrasoto/CARL</a> for the DQN implementations.</li>
+</ol>
+</div>
+<div id="model-architecture" class="section level3" number="5.1.4">
+<h3><span class="header-section-number">5.1.4</span> Model Architecture</h3>
+</div>
+<div id="training-details" class="section level3" number="5.1.5">
+<h3><span class="header-section-number">5.1.5</span> Training Details</h3>
+</div>
+<div id="evaluation-procedure" class="section level3" number="5.1.6">
+<h3><span class="header-section-number">5.1.6</span> Evaluation Procedure</h3>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-drossel1992self">
+<p>Drossel, Barbara, and Franz Schwabl. 1992. “Self-Organized Critical Forest-Fire Model.” <em>Physical Review Letters</em> 69 (11): 1629.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="reinforcement-learning-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="materials-and-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="results.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="results-and-disscusion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="assets/gitbook-2.6.7/js/app.min.js"></script>

@@ -177,22 +177,26 @@ During the 80s the notoriety of CA was boosted to the current status as CA becam
 
 Since then applications have been coming in a variety of domains. In the biological sciences models of excitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed [@ermentrout1993cellular]. CA can be applied in image processing for noise removal and border detection [@popovici2002cellular]. For physical systems fluid and gas dynamics are well suited for CA modeling [@margolus1984physics]. Also they have been proposed as a discrete approach to expressing physical laws [@vichniac1984simulating].
 
-Table: Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe [@ilachinski2001cellular].
+```{r key-events}
+caption_str <- 'Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski 2001).'
+key_events <- tibble::tribble(
+  ~Year, ~Researcher,              ~Discovery,
+  1936,  'Turing',                 'Formalized the concept of computability.',
+  1948,  'von Neumann',            'Introduced self-reproducing automata.', 
+  1950,  'Ulam',                   'Realistic models for complex extended systems.',
+  1966,  'Burks',                  "Extended von Neumann's work.",
+  1967,  'von Bertalanffy, et al', 'Applied System Theory to human systems.',
+  1969,  'Zuse',                   'Introduced the concept of "computing spaces".',
+  1970,  'Conway',                 'Introduced the CA "Game of Life".',
+  1977,  'Toffoli',                'Applied CA to modeling physical laws.',
+  1983,  'Wolfram',                'Authored a seminal review article about CA.',
+  1984,  'Cowan, et al',           'The Santa Fe Institute is founded.',
+  1987,  'Toffoli, Wolfram',       'First CA conference held at MIT.',
+  1992,  'Varela, et al',          'First European conference on artificial life.'
+)
 
-Year  Researcher             Discovery
------ ---------------------- ---------------------------------------------------------------------------------------------
-1936  Turing                 Formalized the concept of computability, universal Turing machine.
-1948  von Neumann            Introduced self-reproducing automata.      
-1950  Ulam                   Insisted on the need of more realistic models for the behavior of complex extended systems.
-1966  Burks                  Extended von Neumann's work.
-1967  von Bertalanffy, et al Applied System Theory to human systems.
-1969  Zuse                   Introduced the concept of "computing spaces".
-1970  Conway                 Introduced the CA "Game of Life".
-1977  Toffoli                Applied CA to modeling physical laws.
-1983  Wolfram                Authored a seminal review article about CA.
-1984  Cowan, et al           The Santa Fe Institute is founded for interdisciplinary research of complex systems.
-1987  Toffoli, Wolfram       First CA conference held at MIT.
-1992  Varela, et al          First European conference on artificial life.
+knitr::kable(key_events, booktabs=T, caption = caption_str)
+```
 
 ## Forest Fire Models
 

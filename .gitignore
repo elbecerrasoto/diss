@@ -1,5 +1,7 @@
-# Pictures Directory
+# Thesis Directory
 /THESIS/pics/
+/THESIS/data/
+
 # History files
 .Rhistory
 .Rapp.history

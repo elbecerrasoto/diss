@@ -70,6 +70,21 @@
 \usepackage{dsfont}
 \usepackage{amsmath}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -79,7 +94,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-12}
+\date{2020-06-18}
 
 \begin{document}
 \maketitle
@@ -359,30 +374,31 @@ During the 80s the notoriety of CA was boosted to the current status as CA becam
 
 Since then applications have been coming in a variety of domains. In the biological sciences models of excitable media, developmental biology, ecology, shell pattern formation and immunology, to name a few, have been proposed (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}). CA can be applied in image processing for noise removal and border detection (Popovici and Popovici \protect\hyperlink{ref-popovici2002cellular}{2002}). For physical systems fluid and gas dynamics are well suited for CA modeling (Margolus \protect\hyperlink{ref-margolus1984physics}{1984}). Also they have been proposed as a discrete approach to expressing physical laws (Vichniac \protect\hyperlink{ref-vichniac1984simulating}{1984}).
 
-\begin{longtable}[]{@{}lll@{}}
-\caption{Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).}\tabularnewline
+\begin{table}
+
+\caption{\label{tab:key-events}Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski 2001).}
+\centering
+\begin{tabular}[t]{rll}
 \toprule
-Year & Researcher & Discovery\tabularnewline
+Year & Researcher & Discovery\\
 \midrule
-\endfirsthead
-\toprule
-Year & Researcher & Discovery\tabularnewline
-\midrule
-\endhead
-1936 & Turing & Formalized the concept of computability, universal Turing machine.\tabularnewline
-1948 & von Neumann & Introduced self-reproducing automata.\tabularnewline
-1950 & Ulam & Insisted on the need of more realistic models for the behavior of complex extended systems.\tabularnewline
-1966 & Burks & Extended von Neumann's work.\tabularnewline
-1967 & von Bertalanffy, et al & Applied System Theory to human systems.\tabularnewline
-1969 & Zuse & Introduced the concept of ``computing spaces''.\tabularnewline
-1970 & Conway & Introduced the CA ``Game of Life''.\tabularnewline
-1977 & Toffoli & Applied CA to modeling physical laws.\tabularnewline
-1983 & Wolfram & Authored a seminal review article about CA.\tabularnewline
-1984 & Cowan, et al & The Santa Fe Institute is founded for interdisciplinary research of complex systems.\tabularnewline
-1987 & Toffoli, Wolfram & First CA conference held at MIT.\tabularnewline
-1992 & Varela, et al & First European conference on artificial life.\tabularnewline
+1936 & Turing & Formalized the concept of computability.\\
+1948 & von Neumann & Introduced self-reproducing automata.\\
+1950 & Ulam & Realistic models for complex extended systems.\\
+1966 & Burks & Extended von Neumann's work.\\
+1967 & von Bertalanffy, et al & Applied System Theory to human systems.\\
+\addlinespace
+1969 & Zuse & Introduced the concept of "computing spaces".\\
+1970 & Conway & Introduced the CA "Game of Life".\\
+1977 & Toffoli & Applied CA to modeling physical laws.\\
+1983 & Wolfram & Authored a seminal review article about CA.\\
+1984 & Cowan, et al & The Santa Fe Institute is founded.\\
+\addlinespace
+1987 & Toffoli, Wolfram & First CA conference held at MIT.\\
+1992 & Varela, et al & First European conference on artificial life.\\
 \bottomrule
-\end{longtable}
+\end{tabular}
+\end{table}
 
 \hypertarget{forest-fire-models}{%
 \section{Forest Fire Models}\label{forest-fire-models}}
@@ -482,12 +498,6 @@ The formalization of this setting leads to an approach known as Supervised Learn
 
 Deviation from this classical setting leads to the other broad categories of machine learning. Unsupervised Learning algorithms are provided with just data (questions and not answers) and aim to uncover some structure in such data. Semisupervised Learning is halfway between Unsupervised and Supervised methods as only some answers are given, thus the algorithm must first find some structure on the questions (Unsupervised) to extend the answers to similar questions and then perform Supervised Learning. Finally, Reinforcement Learning algorithms get data and answers, but answers have only a grade on how favorable they are. The data and grades are obtained through interaction with an environment and the task here is to find answers that maximize the obtained grades.
 
-\hypertarget{deep}{%
-\section{Deep}\label{deep}}
-
-Deep Learning
-NeuNets for the win.
-
 \hypertarget{reinforcement-learning-1}{%
 \section{Reinforcement Learning}\label{reinforcement-learning-1}}
 
@@ -500,9 +510,32 @@ The Reinforcement Learning Problem could be formalized with Markov Decision Proc
 So at each time step \(t=0,1,2,3,...,T\) the agent using the information of state \(S_t \in S\) of the environment must choose an action \(A_t \in A(S_t)\) from the available ones, then in the next time step \(t+1\) the environment transits to a new state \(S_{t+1} \in S\) and returns a reward \(R_t \in R \subset \mathds{R}\). The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 \[ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...\]
 
-Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\(S\), \(A\) and \(R\)) is finite. In a finite MDP the random variables \(S_t\), \(R_t\) have a well defined discrete probability distribution that depends only on the previous action \(A_t-1\) and state \(S_t-1\). This is known as the Markov property:
-\[ p(s’, r | s, a) = Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) \]
-To summarize a MDP is a tuple of \(S, A, P, y\).
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\(S\), \(A\) and \(R\)) is finite. In a finite MDP the random variables \(S_t\), \(R_t\) have well defined discrete probability distributions that depend only on the previous action \(A_t-1\) and state \(S_t-1\). This is known as the Markov property:
+\[ p(s’, r | s, a) \doteq Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) \]
+
+This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as the \emph{dynamics of the MDP}. The ``\(|\)'' (bar) symbol instead of a ``\(,\)'' (comma) in the function arguments is just a reminder that \(p\) is calculating a conditional probability given \(s\) and \(a\).
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/RL_env_agent} 
+
+}
+
+\caption{Agent-Environment system formalized as a MDP. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
+\end{figure}
+
+\begin{verbatim}
+## 
+## Attaching package: 'kableExtra'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     group_rows
+\end{verbatim}
 
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
@@ -510,17 +543,14 @@ To summarize a MDP is a tuple of \(S, A, P, y\).
 \hypertarget{materials-and-methods}{%
 \section{Materials and Methods}\label{materials-and-methods}}
 
-Here is everything to replicate the experiments
-What exactly did I do?
-
 \hypertarget{environment}{%
 \subsection{Environment}\label{environment}}
 
-A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified postion at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
 
 The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is as follows:
+The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters \(p=0.33\) and \(f=0.066\)
 
 \hypertarget{preprocessing}{%
 \subsection{Preprocessing}\label{preprocessing}}
@@ -536,7 +566,7 @@ The source code for this thesis is openly available at:
 \item
   \url{https://github.com/elbecerrasoto/gym-forest-fire} for the RL environments.
 \item
-  \url{https://github.com/elbecerrasoto/CARL} for DQN implementations.
+  \url{https://github.com/elbecerrasoto/CARL} for the DQN implementations.
 \end{enumerate}
 
 \hypertarget{model-architecture}{%
@@ -548,10 +578,97 @@ The source code for this thesis is openly available at:
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
 
-Algorithm
+\hypertarget{results-and-disscusion}{%
+\section{Results and Disscusion}\label{results-and-disscusion}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Profiling phase
+\end{enumerate}
+
+A life signals were detected using a 1x9 model.
+
+Then small charecterization of hte hyperameters was made using 3x3.
+
+Then scalation to 5x5.
+
+For a first approach to the proposed environment. Fisrt
+For the approaching of the problem a characterization of the \ldots{}
+
+\begin{table}
+
+\caption{\label{tab:3x3}Hyperparamerters of 3x3 forest firest environments runs.}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{lrrrlrlrr}
+\toprule
+Run & Return & Mean & SD & Exploration & Unrolling & Architecture & LR & Batch Size\\
+\midrule
+\rowcolor{gray!6}  c & 640,658 & 6.41 & 2.25 & heuristic & 2 & A3 & 0.0001 & 16\\
+a & 638,094 & 6.38 & 2.30 & linear & 2 & A1 & 0.0003 & 32\\
+\rowcolor{gray!6}  d & 615,091 & 6.15 & 2.47 & heuristic & 3 & A3 & 0.0003 & 32\\
+i & 591,021 & 5.91 & 2.53 & linear & 2 & A3 & 0.0003 & 32\\
+\rowcolor{gray!6}  g & 507,313 & 5.07 & 3.28 & linear & 10 & A3 & 0.0003 & 32\\
+\addlinespace
+H & 503,521 & 5.04 & 2.99 &  &  &  &  & \\
+\rowcolor{gray!6}  b & 327,597 & 3.28 & 3.63 & linear & 1 & A2 & 0.0001 & 256\\
+R & 319,833 & 3.20 & 3.44 &  &  &  &  & \\
+\rowcolor{gray!6}  h & 294,965 & 2.95 & 3.56 & linear & 1 & A3 & 0.0001 & 16\\
+f & 293,722 & 2.94 & 3.53 & heuristic & 1 & A3 & 0.0003 & 32\\
+\addlinespace
+\rowcolor{gray!6}  e & 293,600 & 2.94 & 3.54 & heuristic & 1 & A2 & 0.0001 & 16\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+Numeber
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Scaling to 5x5
+\end{enumerate}
+
+\hypertarget{disscusion}{%
+\section{Disscusion}\label{disscusion}}
+
+The idea and contributions of the dissertation.
+
+Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
+Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
+In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
+
+We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
+cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
+changing the state of one or more cells in the CA during each time step. The set of actions the agent
+can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
+model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
+put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
+fire during the simulation. Our results show that DRL algorithms can control important aspects of
+CAs that model the behavior of real complex systems. On the other hand, this work shows that many
+CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
+than many current benchmarks based on video games.
+
+\hypertarget{results-and-disscusion-1}{%
+\section{Results and Disscusion}\label{results-and-disscusion-1}}
+
+\hypertarget{apendix-long-table}{%
+\section{Apendix Long Table}\label{apendix-long-table}}
+
+\hypertarget{apendix-x2-architectures}{%
+\section{Apendix X2: Architectures}\label{apendix-x2-architectures}}
+
+!?
+
+\hypertarget{apendix-x-algorithms}{%
+\section{Apendix X: Algorithms}\label{apendix-x-algorithms}}
 
 \hypertarget{algorithm-1}{%
-\section{Algorithm 1}\label{algorithm-1}}
+\subsection{Algorithm 1}\label{algorithm-1}}
 
 Just a sample algorithmn
 
@@ -574,47 +691,6 @@ Just a sample algorithmn
 }
 \caption{While loop with If/Else condition}
 \end{algorithm}
-
-\hypertarget{results-and-disscusion}{%
-\section{Results and Disscusion}\label{results-and-disscusion}}
-
-The idea and contributions of the dissertation.
-
-Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
-Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
-In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
-
-We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
-cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
-changing the state of one or more cells in the CA during each time step. The set of actions the agent
-can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
-model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
-put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
-fire during the simulation. Our results show that DRL algorithms can control important aspects of
-CAs that model the behavior of real complex systems. On the other hand, this work shows that many
-CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
-than many current benchmarks based on video games.
-
-\hypertarget{forest-fire-implementation}{%
-\section{Forest Fire Implementation}\label{forest-fire-implementation}}
-
-\hypertarget{deep-q-networks-implementation}{%
-\section{Deep Q-Networks Implementation}\label{deep-q-networks-implementation}}
-
-\hypertarget{results-1}{%
-\section{Results}\label{results-1}}
-
-\hypertarget{training-diagrams}{%
-\subsection{Training Diagrams}\label{training-diagrams}}
-
-\hypertarget{comparative-table}{%
-\subsection{Comparative Table}\label{comparative-table}}
-
-\hypertarget{disscusion}{%
-\section{Disscusion}\label{disscusion}}
-
-\hypertarget{unsupervised}{%
-\subsection{Unsupervised}\label{unsupervised}}
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
