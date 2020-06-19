@@ -2,19 +2,17 @@
 suppressMessages(library(tidyverse))
 suppressMessages(library(kableExtra))
 ```
-# Results
+# Experiments
 
 ## Materials and Methods
 
 ### Environment
 
-A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) [@drossel1992self]. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+A general tool for creating RL tasks was design (_Forest Fire Environment Maker (FFEM)_). The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) [@drossel1992self]. We developed the tool from an initial idea of an "helicopter" flying over the symbolic wild fire, represented by the DMS, trying to extinguish the fire by means of allowing the "helicopter" to change fire cells to empty cells. During the implementation the environment was naturally generalized. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that position to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
 
-The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
+The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emitted action. This was done by mere counting all cell states indicating unwanted behavior and then multiplying by some weight (usually negative). This was generalized into getting the frequency of any cell type and then multiplying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frequencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters $p=0.33$ and $f=0.066$ that 
-
-### Preprocessing
+The particular environment that was used for this thesis is one that has the semantics of a "helicopter" trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters $p=0.33$ (tree growth probability) and $f=0.066$ (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them "rocks". The starting lattice configuration was made via random sampling by cell with probability of choosing "tree" of $0.75$ and "fire" of $0.25$. The second component, the agent ("helicopter") has a starting potion in the middle of the lattice (_2nd row and column_), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from $9$ actions (_"Left-Up", "Up", "Right-Up", "Right", "Stay", "Left", "Left-Down", "Down", "Right-Down"_), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a "fire" cell to "empty". After some movements of the "helicopter" the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: _move, update, move, move, update, move, move, update, move, move, ..._. In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was $+1$ per "tree" cell and $-1$ per "fire" cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
 ### Code Availability
 
@@ -23,14 +21,22 @@ The source code for this thesis is openly available at:
 1. https://github.com/elbecerrasoto/gym-forest-fire for the RL environments.
 2. https://github.com/elbecerrasoto/CARL for the DQN implementations.
 
-### Model Architecture
+### Deep Q Networks
 
-### Training Details
+We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics [@ilachinski2001cellular] and the combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are $3^9$ grid states multiplied by $3^2$ "helicopter" postions and $2$ internal states for the agent-environment syncronization, giving a grand total of $2 \times 3^2 \times 3^9 =$ `r 2 * 3^2 * 3^9`, a still managable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable $\approx 10^{130}$ states.
+
+Deep Q Networks (DQN) [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with s two  
+The propesed solution to the environment was 
+
+#### Preprocessing
+
+#### Model Architecture
+
+#### Training Details
 
 ### Evaluation Procedure
 
-
-## Results and Disscusion
+## Results
 
 1. Profiling phase
 
@@ -59,25 +65,7 @@ read_csv('data/runs_3x3_v2.csv') %>%
   kable_styling(latex_options = c('striped', 'scale_down'))
 ```
 
-
-
-
-
-
-
-
-
-Numeber 
-
-
-2. Scaling to 5x5
-
-
-
 ## Disscusion
-
-
-
 
 The idea and contributions of the dissertation.
 
@@ -95,44 +83,4 @@ fire during the simulation. Our results show that DRL algorithms can control imp
 CAs that model the behavior of real complex systems. On the other hand, this work shows that many
 CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
 than many current benchmarks based on video games.
-
-
-## Results and Disscusion
-
-
-
-## Apendix Long Table
-
-
-
-## Apendix X2: Architectures
-
-!?
-
-## Apendix X: Algorithms
-
-### Algorithm 1
-Just a sample algorithmn
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-\KwResult{Write here the result}
-\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-\Input{Write here the input}
-\Output{Write here the output}
-\BlankLine
-\While{While condition}{
-    instructions\;
-    \eIf{condition}{
-        instructions1\;
-        instructions2\;
-    }{
-        instructions3\;
-    }
-}
-\caption{While loop with If/Else condition}
-\end{algorithm} 
-
-
-
 

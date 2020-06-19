@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.16)  18 JUN 2020 19:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.16)  19 JUN 2020 02:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1110,68 +1110,65 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 ]
 Chapter 1.
-[5]
-Overfull \hbox (107.60692pt too wide) has occurred while \output is active
-\T1/lmr/m/n/10 6 \T1/lmr/m/sl/10 CHAPTER 1.  CELLULAR AUTOMATA CONTROL WITH DEE
-P REINFORCEMENT LEARNING
- []
-
-[6
+[5] [6
 
 ]
 Chapter 2.
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 132.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 152.
 
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [7] [8
+)
+Underfull \vbox (badness 2027) has occurred while \output is active []
 
-]
+[7] [8]
 Chapter 3.
-<pics/examples_CA.png, id=113, 912.40875pt x 936.49875pt>
+<pics/examples_CA.png, id=111, 912.40875pt x 936.49875pt>
 File: pics/examples_CA.png Graphic file (type png)
 <use pics/examples_CA.png>
-Package pdftex.def Info: pics/examples_CA.png  used on input line 170.
+Package pdftex.def Info: pics/examples_CA.png  used on input line 190.
 (pdftex.def)             Requested size: 275.99405pt x 283.28102pt.
 
 Underfull \vbox (badness 2111) has occurred while \output is active []
 
-[9] [10pdfTeX warning (ext4): destination with the same identifier (name{figure
-.3.1}) has been already used, duplicate ignored
+[9
+
+] [10pdfTeX warning (ext4): destination with the same identifier (name{figure.3
+.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.185   A
+l.205   A
           discrete lattice of cells: <./pics/examples_CA.png>]
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 227.
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 247.
 
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
 ) [11]
-<pics/neighborhoods.png, id=150, 908.39375pt x 879.285pt>
+<pics/neighborhoods.png, id=148, 908.39375pt x 879.285pt>
 File: pics/neighborhoods.png Graphic file (type png)
 <use pics/neighborhoods.png>
-Package pdftex.def Info: pics/neighborhoods.png  used on input line 237.
+Package pdftex.def Info: pics/neighborhoods.png  used on input line 257.
 (pdftex.def)             Requested size: 275.99933pt x 267.15515pt.
-<pics/lattice.png, id=151, 901.3675pt x 645.41125pt>
+<pics/lattice.png, id=149, 901.3675pt x 645.41125pt>
 File: pics/lattice.png Graphic file (type png)
 <use pics/lattice.png>
-Package pdftex.def Info: pics/lattice.png  used on input line 246.
+Package pdftex.def Info: pics/lattice.png  used on input line 266.
 (pdftex.def)             Requested size: 275.99635pt x 197.62323pt.
 [12pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.257 
+l.277 
        <./pics/neighborhoods.png>] [13pdfTeX warning (ext4): destination with t
 he same identifier (name{figure.3.3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.274 
+l.294 
        <./pics/lattice.png>] [14] [15] [16] [17] [18]
-Overfull \hbox (11.36113pt too wide) in paragraph at lines 381--401
+Overfull \hbox (11.36113pt too wide) in paragraph at lines 401--421
  [][] 
  []
 
@@ -1180,7 +1177,7 @@ Overfull \hbox (11.36113pt too wide) in paragraph at lines 381--401
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.408 T
+l.428 T
        hey trace their origins to statistical physics and are closely relate...
 ] [20] [21] [22
 
@@ -1188,88 +1185,78 @@ l.408 T
 Chapter 4.
 [23]
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 514.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 534.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 514.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 534.
 
-<pics/RL_env_agent.png, id=314, 1135.24126pt x 712.6625pt>
+<pics/RL_env_agent.png, id=312, 1135.24126pt x 712.6625pt>
 File: pics/RL_env_agent.png Graphic file (type png)
 <use pics/RL_env_agent.png>
-Package pdftex.def Info: pics/RL_env_agent.png  used on input line 522.
+Package pdftex.def Info: pics/RL_env_agent.png  used on input line 542.
 (pdftex.def)             Requested size: 275.99722pt x 173.26085pt.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 529.
-
-(/usr/share/texmf/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 532
-.
-(/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [24] [25pdfTeX warning (ext4): destination with the same identifier (name{fig
-ure.4.1}) has been already used, duplicate ignored
+[24] [25pdfTeX warning (ext4): destination with the same identifier (name{figur
+e.4.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.541 \chapter{Results}\label{results}}
-                                        <./pics/RL_env_agent.png>] [26
+l.550 \chapter{Experiments}\label{experiments}}
+                                                <./pics/RL_env_agent.png>] [26
 
 ]
 Chapter 5.
-[27] [28pdfTeX warning (ext4): destination with the same identifier (name{table
-.5.1}) has been already used, duplicate ignored
+[27] [28] [29pdfTeX warning (ext4): destination with the same identifier (name{
+table.5.1}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.641 C
-       ellular Automata are discrete dynamical systems, that are well suited...
-]
+l.657 
+      ] [30]
+Chapter 6.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[29] [30pdfTeX warning (ext4): destination with the same identifier (name{algoc
-f.1}) has been already used, duplicate ignored
+[31
+
+] [32pdfTeX warning (ext4): destination with the same identifier (name{algocf.1
+}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.696 \chapter{Conclusion}\label{conclusion}}
-                                             ]
-Chapter 6.
-[31
-
-]
-Overfull \hbox (0.74947pt too wide) in paragraph at lines 750--752
+l.734 \leavevmode
+                 \hypertarget{ref-hedlund1969endomorphisms}{}%]
+Overfull \hbox (0.74947pt too wide) in paragraph at lines 749--751
 [][]\T1/lmr/m/n/10 (-20) Kauffman, Stuart A. 1984. ``Emergent Properties in Ran
 dom Complex Automata.''
  []
 
 
-Overfull \hbox (2.757pt too wide) in paragraph at lines 783--785
+Overfull \hbox (2.757pt too wide) in paragraph at lines 782--784
 [][]\T1/lmr/m/n/10 (-20) ---------. 1984. ``CAM: A High-Performance Cellular-Au
 tomaton Machine.'' \T1/lmr/m/it/10 (-20) Physica
  []
 
-[32]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 814.
 [33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 814.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 813.
+[34]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 813.
 (./_main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 814.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 814.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 814.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 813.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 813.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 813.
  ) 
 Here is how much of TeX's memory you used:
- 15801 strings out of 494805
- 227222 string characters out of 6177999
- 349478 words of memory out of 5000000
- 18500 multiletter control sequences out of 15000+600000
- 86607 words of font info for 144 fonts, out of 8000000 for 9000
+ 15729 strings out of 494805
+ 225960 string characters out of 6177999
+ 346449 words of memory out of 5000000
+ 18429 multiletter control sequences out of 15000+600000
+ 86409 words of font info for 146 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 36i,15n,38p,1168b,499s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,15n,38p,1776b,499s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
-ips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/shar
-e/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/l
-m-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texlive
+ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/s
+hare/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/l
+m/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texlive
 /texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/share/texmf/fonts
 /type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb>
 </usr/share/texmf/fonts/type1/public/lm/lmbx7.pfb></usr/share/texmf/fonts/type1
@@ -1280,11 +1267,11 @@ xmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr
 17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts
 /type1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmro10.pfb>
 </usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type
-1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on _main.pdf (33 pages, 1313701 bytes).
+1/public/lm/lmsy7.pfb>
+Output written on _main.pdf (34 pages, 1294944 bytes).
 PDF statistics:
- 600 PDF objects out of 1000 (max. 8388607)
- 531 compressed objects within 6 object streams
+ 593 PDF objects out of 1000 (max. 8388607)
+ 524 compressed objects within 6 object streams
  183 named destinations out of 1000 (max. 500000)
- 14581 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 14573 words of extra memory for PDF output out of 17280 (max. 10000000)
 

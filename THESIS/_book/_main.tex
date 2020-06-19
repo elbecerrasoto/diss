@@ -94,7 +94,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-18}
+\date{2020-06-19}
 
 \begin{document}
 \maketitle
@@ -103,11 +103,16 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{cellular-automata-control-with-deep-reinforcement-learning}{%
-\chapter{Cellular Automata Control with Deep Reinforcement Learning}\label{cellular-automata-control-with-deep-reinforcement-learning}}
+\hypertarget{carl}{%
+\chapter{CARL}\label{carl}}
 
 \hypertarget{abstract}{%
 \section{Abstract}\label{abstract}}
+
+This paper explores a variety of topics related to the question of testing the equality of
+covariance matrices in multivariate linear models, particularly in the MANOVA setting.
+The main focus is on graphical methods that can be used to understand features of data related
+to this question
 
 \hypertarget{acknowledgments}{%
 \section{Acknowledgments}\label{acknowledgments}}
@@ -119,6 +124,21 @@
 \section{Motivations}\label{motivations}}
 
 Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+
+Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
+Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
+In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
+
+We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
+cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
+changing the state of one or more cells in the CA during each time step. The set of actions the agent
+can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
+model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
+put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
+fire during the simulation. Our results show that DRL algorithms can control important aspects of
+CAs that model the behavior of real complex systems. On the other hand, this work shows that many
+CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
+than many current benchmarks based on video games.
 
 \hypertarget{objectives}{%
 \section{Objectives}\label{objectives}}
@@ -526,19 +546,8 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 \caption{Agent-Environment system formalized as a MDP. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
 \end{figure}
 
-\begin{verbatim}
-## 
-## Attaching package: 'kableExtra'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:dplyr':
-## 
-##     group_rows
-\end{verbatim}
-
-\hypertarget{results}{%
-\chapter{Results}\label{results}}
+\hypertarget{experiments}{%
+\chapter{Experiments}\label{experiments}}
 
 \hypertarget{materials-and-methods}{%
 \section{Materials and Methods}\label{materials-and-methods}}
@@ -546,14 +555,11 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 \hypertarget{environment}{%
 \subsection{Environment}\label{environment}}
 
-A general tool for creating RL tasks was design. The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that postion to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+A general tool for creating RL tasks was design (\emph{Forest Fire Environment Maker (FFEM)}). The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). We developed the tool from an initial idea of an ``helicopter'' flying over the symbolic wild fire, represented by the DMS, trying to extinguish the fire by means of allowing the ``helicopter'' to change fire cells to empty cells. During the implementation the environment was naturally generalized. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that position to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
 
-The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emited action. This was done by mere counting all cell states indicating unwanted behavior and multiplying by some weight (usually negative). This was generalized into getting the frecuency of any cell type and then multipliying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frecuencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
+The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emitted action. This was done by mere counting all cell states indicating unwanted behavior and then multiplying by some weight (usually negative). This was generalized into getting the frequency of any cell type and then multiplying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frequencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is as follows: A DSM on a lattice of 3x3 with the parameters \(p=0.33\) and \(f=0.066\)
-
-\hypertarget{preprocessing}{%
-\subsection{Preprocessing}\label{preprocessing}}
+The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting potion in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}}. In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
 \hypertarget{code-availability}{%
 \subsection{Code Availability}\label{code-availability}}
@@ -569,11 +575,17 @@ The source code for this thesis is openly available at:
   \url{https://github.com/elbecerrasoto/CARL} for the DQN implementations.
 \end{enumerate}
 
+\hypertarget{deep-q-networks}{%
+\subsection{Deep Q Networks}\label{deep-q-networks}}
+
+\hypertarget{preprocessing}{%
+\subsubsection{Preprocessing}\label{preprocessing}}
+
 \hypertarget{model-architecture}{%
-\subsection{Model Architecture}\label{model-architecture}}
+\subsubsection{Model Architecture}\label{model-architecture}}
 
 \hypertarget{training-details}{%
-\subsection{Training Details}\label{training-details}}
+\subsubsection{Training Details}\label{training-details}}
 
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
@@ -623,16 +635,6 @@ f & 293,722 & 2.94 & 3.53 & heuristic & 1 & A3 & 0.0003 & 32\\
 \end{tabular}}
 \end{table}
 
-Numeber
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Scaling to 5x5
-\end{enumerate}
-
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
@@ -653,8 +655,10 @@ CAs that model the behavior of real complex systems. On the other hand, this wor
 CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
 than many current benchmarks based on video games.
 
-\hypertarget{results-and-disscusion-1}{%
-\section{Results and Disscusion}\label{results-and-disscusion-1}}
+\hypertarget{conclusion}{%
+\chapter{Conclusion}\label{conclusion}}
+
+We have finished a nice book.
 
 \hypertarget{apendix-long-table}{%
 \section{Apendix Long Table}\label{apendix-long-table}}
@@ -691,11 +695,6 @@ Just a sample algorithmn
 }
 \caption{While loop with If/Else condition}
 \end{algorithm}
-
-\hypertarget{conclusion}{%
-\chapter{Conclusion}\label{conclusion}}
-
-We have finished a nice book.
 
 \hypertarget{refs}{}
 \begin{cslreferences}
