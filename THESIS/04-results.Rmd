@@ -14,6 +14,11 @@ The ability of allowing an agent to change the CA configurations express the att
 
 The particular environment that was used for this thesis is one that has the semantics of a "helicopter" trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters $p=0.33$ (tree growth probability) and $f=0.066$ (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them "rocks". The starting lattice configuration was made via random sampling by cell with probability of choosing "tree" of $0.75$ and "fire" of $0.25$. The second component, the agent ("helicopter") has a starting potion in the middle of the lattice (_2nd row and column_), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from $9$ actions (_"Left-Up", "Up", "Right-Up", "Right", "Stay", "Left", "Left-Down", "Down", "Right-Down"_), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a "fire" cell to "empty". After some movements of the "helicopter" the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: _move, update, move, move, update, move, move, update, move, move, ..._. In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was $+1$ per "tree" cell and $-1$ per "fire" cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
+(ref:thesis-3-3-env) Illustration of two transitions in the proposed environment. On time $t$ the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the "fire" cell to "empty". Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the "fire" cell at the middle (Not shown) is promptly eliminated and replaced by an "empty" cell. The parameter $m$ is an internal state of the environment, when it reaches $0$ the CA is updated at the next step, before the action takes place. The current reward $r$ is $+1$ per "tree" and $-1$ per "fire".
+```{r thesis-3-3-env, fig.cap='(ref:thesis-3-3-env)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/agent-env_3x3.png')
+```
+
 ### Code Availability
 
 The source code for this thesis is openly available at:
@@ -23,10 +28,9 @@ The source code for this thesis is openly available at:
 
 ### Deep Q Networks
 
-We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics [@ilachinski2001cellular] and the combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are $3^9$ grid states multiplied by $3^2$ "helicopter" postions and $2$ internal states for the agent-environment syncronization, giving a grand total of $2 \times 3^2 \times 3^9 =$ `r 2 * 3^2 * 3^9`, a still managable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable $\approx 10^{130}$ states.
+We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics [@ilachinski2001cellular] and the combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are $3^9$ grid states multiplied by $3^2$ "helicopter" positions and $2$ internal states for the agent-environment synchronization, giving a grand total of $2 \times 3^2 \times 3^9 =$ `r 2 * 3^2 * 3^9`, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable $\approx 10^{124}$ states.
 
-Deep Q Networks (DQN) [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with s two  
-The propesed solution to the environment was 
+Deep Q Networks (DQN) [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with a discrete set of actions.
 
 #### Preprocessing
 
@@ -38,17 +42,6 @@ The propesed solution to the environment was
 
 ## Results
 
-1. Profiling phase
-
-A life signals were detected using a 1x9 model.
-
-Then small charecterization of hte hyperameters was made using 3x3.
-
-Then scalation to 5x5.
-
-For a first approach to the proposed environment. Fisrt 
-For the approaching of the problem a characterization of the ...
-
 ```{r 3x3, message=FALSE}
 opts <- options(knitr.kable.NA = "")
 read_csv('data/runs_3x3_v2.csv') %>%
@@ -59,28 +52,10 @@ read_csv('data/runs_3x3_v2.csv') %>%
   knitr::kable(
     col.names = c('Run', 'Return', 'Mean', 'SD', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size'),
     booktabs=T,
-    caption='Hyperparamerters of 3x3 forest firest environments runs.',
+    caption='Hyperparameters of 3x3 forest forest environments runs. The mean and standard deviation of reward per step were obtained from a 100,000 steps per model simulation.',
     format.args = list(big.mark = ",", scientific = F)
     ) %>%
   kable_styling(latex_options = c('striped', 'scale_down'))
 ```
 
 ## Disscusion
-
-The idea and contributions of the dissertation.
-
-Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
-Nonetheless Cellular Automata field is rich with theory and any contribution to ...
-In this work we have used the forest fire automata as an environment and he have defined a ...
-
-We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
-cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
-changing the state of one or more cells in the CA during each time step. The set of actions the agent
-can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
-model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
-put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
-fire during the simulation. Our results show that DRL algorithms can control important aspects of
-CAs that model the behavior of real complex systems. On the other hand, this work shows that many
-CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
-than many current benchmarks based on video games.
-

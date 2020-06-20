@@ -25,9 +25,4 @@ knitr::opts_chunk$set(echo = F)
 
 ## Abstract
 
-This paper explores a variety of topics related to the question of testing the equality of
-covariance matrices in multivariate linear models, particularly in the MANOVA setting. 
-The main focus is on graphical methods that can be used to understand features of data related
-to this question
-
 ## Acknowledgments

@@ -109,11 +109,6 @@
 \hypertarget{abstract}{%
 \section{Abstract}\label{abstract}}
 
-This paper explores a variety of topics related to the question of testing the equality of
-covariance matrices in multivariate linear models, particularly in the MANOVA setting.
-The main focus is on graphical methods that can be used to understand features of data related
-to this question
-
 \hypertarget{acknowledgments}{%
 \section{Acknowledgments}\label{acknowledgments}}
 
@@ -125,20 +120,8 @@ to this question
 
 Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
 
-Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
-Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
-In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
-
-We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
-cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
-changing the state of one or more cells in the CA during each time step. The set of actions the agent
-can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
-model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
-put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
-fire during the simulation. Our results show that DRL algorithms can control important aspects of
-CAs that model the behavior of real complex systems. On the other hand, this work shows that many
-CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
-than many current benchmarks based on video games.
+\hypertarget{problem-statement}{%
+\section{Problem Statement}\label{problem-statement}}
 
 \hypertarget{objectives}{%
 \section{Objectives}\label{objectives}}
@@ -149,9 +132,9 @@ than many current benchmarks based on video games.
 \begin{itemize}
 \tightlist
 \item
-  To propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
+  Propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
 \item
-  Characterize the proposed environment by solving it by state of the art methods.
+  Characterize the environment by solving it by state of the art methods.
 \end{itemize}
 
 \hypertarget{specific-objectives}{%
@@ -160,13 +143,13 @@ than many current benchmarks based on video games.
 \begin{itemize}
 \tightlist
 \item
-  Select the a Cellular Automaton model for the environment and program it, in this case the forest fire cellular automaton.
+  Select a Cellular Automaton model for the environment, in this case the forest fire cellular automaton.
 \item
-  Propose a RL task to be realized on top of the CA.
+  Design a RL task incorporating the CA dynamics.
 \item
-  Program the RL environment, following the Open AI gym API.
+  Implementation of the RL environment, following the Open AI gym API.
 \item
-  Apply Dual? Q-networks with its variants.
+  Apply DQN to solve the proposed task.
 \end{itemize}
 
 \hypertarget{cellular-automata}{%
@@ -187,11 +170,11 @@ Perhaps the reason behind this popularity is their simplicity. CA are composed o
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{pics/examples_CA} 
+{\centering \includegraphics[width=0.8\linewidth]{pics/Game_of_life_glider_gun} 
 
 }
 
-\caption{Cellular Automata Examples. Image taken from the book ``Designing Beauty: The Art of Cellular Automata'' (Adamatzky and Martínez \protect\hyperlink{ref-adamatzky2016designing}{2016}).}\label{fig:CA-examples}
+\caption{A glider gun, a famous pattern, from Conway's Cellular Automaton ``Game of Life''. Image taken from: \emph{\url{https://en.wikipedia.org/wiki/File:Game_of_life_glider_gun.svg}}.}\label{fig:CA-example}
 \end{figure}
 
 \hypertarget{main-characteristics}{%
@@ -252,14 +235,8 @@ The main mathematical aspects of a CA are:
   The global update \(F\) is calculated by applying a local function \(f_k\) per automata at \(k\). In the classical setting \(f_k\) is the same for all the automata.
 \end{itemize}
 
-\begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{pics/neighborhoods} 
 
-}
-
-\caption{No shenanigans allowed}\label{fig:CA-neighborhoods}
-\end{figure}
 
 \begin{figure}
 
@@ -267,7 +244,19 @@ The main mathematical aspects of a CA are:
 
 }
 
-\caption{sdfsdfsdf}\label{fig:CA-lattice}
+\caption{The underlying graph structure of a Cellular Automaton.
+A highlighted cell and its neighbors. Image adapted from (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\label{fig:CA-lattice}
+\end{figure}
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/neighborhoods} 
+
+}
+
+\caption{Different types of neighborhoods. Image adapted from (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\label{fig:CA-neighborhoods}
 \end{figure}
 
 \hypertarget{classification}{%
@@ -396,7 +385,7 @@ Since then applications have been coming in a variety of domains. In the biologi
 
 \begin{table}
 
-\caption{\label{tab:key-events}Key events in the history of Cellular Automata. Table taken from the book Cellular Automata A Discrete Universe (Ilachinski 2001).}
+\caption{\label{tab:key-events}Key events in the history of Cellular Automata. Table adapted from the book Cellular Automata A Discrete Universe (Ilachinski 2001).}
 \centering
 \begin{tabular}[t]{rll}
 \toprule
@@ -539,7 +528,7 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{pics/RL_env_agent} 
+{\centering \includegraphics[width=0.8\linewidth]{pics/agent-env} 
 
 }
 
@@ -561,6 +550,17 @@ The ability of allowing an agent to change the CA configurations express the att
 
 The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting potion in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}}. In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/agent-env_3x3} 
+
+}
+
+\caption{Illustration of two transitions in the proposed environment. On time \(t\) the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the ``fire'' cell to ``empty''. Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the ``fire'' cell at the middle (Not shown) is promptly eliminated and replaced by an ``empty'' cell. The parameter \(m\) is an internal state of the environment, when it reaches \(0\) the CA is updated at the next step, before the action takes place. The current reward \(r\) is \(+1\) per ``tree'' and \(-1\) per ``fire''.}\label{fig:thesis-3-3-env}
+\end{figure}
+
 \hypertarget{code-availability}{%
 \subsection{Code Availability}\label{code-availability}}
 
@@ -578,6 +578,10 @@ The source code for this thesis is openly available at:
 \hypertarget{deep-q-networks}{%
 \subsection{Deep Q Networks}\label{deep-q-networks}}
 
+We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and the combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are \(3^9\) grid states multiplied by \(3^2\) ``helicopter'' positions and \(2\) internal states for the agent-environment synchronization, giving a grand total of \(2 \times 3^2 \times 3^9 =\) \ensuremath{3.54294\times 10^{5}}, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable \(\approx 10^{124}\) states.
+
+Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions.
+
 \hypertarget{preprocessing}{%
 \subsubsection{Preprocessing}\label{preprocessing}}
 
@@ -590,28 +594,12 @@ The source code for this thesis is openly available at:
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
 
-\hypertarget{results-and-disscusion}{%
-\section{Results and Disscusion}\label{results-and-disscusion}}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Profiling phase
-\end{enumerate}
-
-A life signals were detected using a 1x9 model.
-
-Then small charecterization of hte hyperameters was made using 3x3.
-
-Then scalation to 5x5.
-
-For a first approach to the proposed environment. Fisrt
-For the approaching of the problem a characterization of the \ldots{}
+\hypertarget{results}{%
+\section{Results}\label{results}}
 
 \begin{table}
 
-\caption{\label{tab:3x3}Hyperparamerters of 3x3 forest firest environments runs.}
+\caption{\label{tab:3x3}Hyperparameters of 3x3 forest forest environments runs. The mean and standard deviation of reward per step were obtained from a 100,000 steps per model simulation.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{lrrrlrlrr}
@@ -638,69 +626,11 @@ f & 293,722 & 2.94 & 3.53 & heuristic & 1 & A3 & 0.0003 & 32\\
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
-The idea and contributions of the dissertation.
-
-Cellular Automata are discrete dynamical systems, that are well suited for the modelling of real world phenomens, particularly those who present characteristics of complex systems, such as emergent behaviour, chaotic behauvior, local behaviour, simple interactions but many actors.
-Nonetheless Cellular Automata field is rich with theory and any contribution to \ldots{}
-In this work we have used the forest fire automata as an environment and he have defined a \ldots{}
-
-We use state of the art deep reinforcement learning (DRL) algorithms to control the dynamics of
-cellular automata (CA) models. We assume there is an agent that can interact with the CA model by
-changing the state of one or more cells in the CA during each time step. The set of actions the agent
-can take vary with each specific CA model. For instance, in a CA that models the spread of fire, we
-model the agent as a helicopter flying over the CA that on each step can move to an adjacent cell and
-put out the fire of the cell in its current location. The goal of the agent is to minimize the spread of
-fire during the simulation. Our results show that DRL algorithms can control important aspects of
-CAs that model the behavior of real complex systems. On the other hand, this work shows that many
-CA models can be used as benchmarks for DRL algorithms that are closer to practical applications
-than many current benchmarks based on video games.
-
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
-We have finished a nice book.
-
-\hypertarget{apendix-long-table}{%
-\section{Apendix Long Table}\label{apendix-long-table}}
-
-\hypertarget{apendix-x2-architectures}{%
-\section{Apendix X2: Architectures}\label{apendix-x2-architectures}}
-
-!?
-
-\hypertarget{apendix-x-algorithms}{%
-\section{Apendix X: Algorithms}\label{apendix-x-algorithms}}
-
-\hypertarget{algorithm-1}{%
-\subsection{Algorithm 1}\label{algorithm-1}}
-
-Just a sample algorithmn
-
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-\KwResult{Write here the result}
-\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-\Input{Write here the input}
-\Output{Write here the output}
-\BlankLine
-\While{While condition}{
-    instructions\;
-    \eIf{condition}{
-        instructions1\;
-        instructions2\;
-    }{
-        instructions3\;
-    }
-}
-\caption{While loop with If/Else condition}
-\end{algorithm}
-
 \hypertarget{refs}{}
 \begin{cslreferences}
-\leavevmode\hypertarget{ref-adamatzky2016designing}{}%
-Adamatzky, Andrew, and Genaro J Martínez. 2016. \emph{Designing Beauty: The Art of Cellular Automata}. Vol. 20. Springer.
-
 \leavevmode\hypertarget{ref-alonso2011discrete}{}%
 Alonso-Sanz, Ramon. 2011. \emph{Discrete Systems with Memory}. Vol. 75. World Scientific.
 
@@ -763,6 +693,12 @@ Margolus, Norman. 1984. ``Physics-Like Models of Computation.'' \emph{Physica D:
 
 \leavevmode\hypertarget{ref-millington2006models}{}%
 Millington, James DA, George LW Perry, and Bruce D Malamud. 2006. ``Models, Data and Mechanisms: Quantifying Wildfire Regimes.'' \emph{Geological Society, London, Special Publications} 261 (1): 155--67.
+
+\leavevmode\hypertarget{ref-mnih2013playing}{}%
+Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and Martin Riedmiller. 2013. ``Playing Atari with Deep Reinforcement Learning.'' \emph{arXiv Preprint arXiv:1312.5602}.
+
+\leavevmode\hypertarget{ref-mnih2015human}{}%
+Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Bellemare, Alex Graves, et al. 2015. ``Human-Level Control Through Deep Reinforcement Learning.'' \emph{Nature} 518 (7540): 529--33.
 
 \leavevmode\hypertarget{ref-popovici2002cellular}{}%
 Popovici, Adriana, and Dan Popovici. 2002. ``Cellular Automata in Image Processing.'' In \emph{Fifteenth International Symposium on Mathematical Theory of Networks and Systems}, 1:1--6. Citeseer.

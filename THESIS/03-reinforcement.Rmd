@@ -25,8 +25,7 @@ $$ p(s’, r | s, a) \doteq Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
 This $p: S \times R \times S \times A \rightarrow [0,1]$ function is known as the _dynamics of the MDP_. The "$|$" (bar) symbol instead of a "$,$" (comma) in the function arguments is just a reminder that $p$ is calculating a conditional probability given $s$ and $a$.
 
 (ref:env-agent-interactions) Agent-Environment system formalized as a MDP. Figure adapted from [@sutton2018reinforcement].
-
 ```{r env-agent-interactions, fig.cap='(ref:env-agent-interactions)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
-knitr::include_graphics('pics/RL_env_agent.png')
+knitr::include_graphics('pics/agent-env.png')
 ```
 
