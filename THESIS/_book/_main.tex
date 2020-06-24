@@ -3,7 +3,7 @@
 \PassOptionsToPackage{hyphens}{url}
 %
 \documentclass[
-]{book}
+  openany]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -94,7 +94,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-19}
+\date{2020-06-22}
 
 \begin{document}
 \maketitle
@@ -103,6 +103,8 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\listoftables
+\listoffigures
 \hypertarget{carl}{%
 \chapter{CARL}\label{carl}}
 
@@ -123,6 +125,12 @@ Since antiquity the idea of building a thinking machine has always been in the m
 \hypertarget{problem-statement}{%
 \section{Problem Statement}\label{problem-statement}}
 
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of \emph{Actions} (\(A\)), \emph{States} (\(S\)) and \emph{Rewards} (\(R\)), also specify an ``Agent'' that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): S \times R \times S \times A \rightarrow [0,1]\).
+
+Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wild fire.
+
+Describe the RL task and state the optimization problem.
+
 \hypertarget{objectives}{%
 \section{Objectives}\label{objectives}}
 
@@ -132,7 +140,7 @@ Since antiquity the idea of building a thinking machine has always been in the m
 \begin{itemize}
 \tightlist
 \item
-  Propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
+  Propose a novel environment for Reinforcement Learning tasks, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
 \item
   Characterize the environment by solving it by state of the art methods.
 \end{itemize}
@@ -143,7 +151,7 @@ Since antiquity the idea of building a thinking machine has always been in the m
 \begin{itemize}
 \tightlist
 \item
-  Select a Cellular Automaton model for the environment, in this case the forest fire cellular automaton.
+  Select a Cellular Automaton model for the environment, in this case the Forest Fire Cellular Automaton.
 \item
   Design a RL task incorporating the CA dynamics.
 \item
@@ -158,9 +166,9 @@ Since antiquity the idea of building a thinking machine has always been in the m
 \hypertarget{introduction-1}{%
 \section{Introduction}\label{introduction-1}}
 
-Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and local interaction between its parts, but its killer feature is that they are simple.
+Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
 
-A quick \emph{Google Scholar} search for the term ``Cellular Automata'', retrieves roughly 13,000 research articles since the last year (2019). Despite not being as popular (by the same metric) as other topics, like ``Cancer'' (\textasciitilde128,000) or ``Deep Learning'' (\textasciitilde104,000), they are, arguably, still popular.
+A quick \emph{Google Scholar} search for the term ``Cellular Automata'', retrieves roughly 13,000 research articles (during 2019-2020 period). Despite not being as popular (by the same metric) as other topics, like ``Cancer'' (\textasciitilde128,000) or ``Deep Learning'' (\textasciitilde104,000), they are, arguably, still popular.
 
 The topic of CA dates back to the 1950's spanning a history of 70 years. Since then the mathematical and practical properties of CA have been studied and its applications have been explored in different branches of science including physical and social.
 
@@ -186,7 +194,7 @@ Cellular Automata are mathematical objects that are mainly characterized by (Ila
 \def\labelenumi{\arabic{enumi}.}
 \item
   A discrete lattice of cells:
-  A n-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
+  A \(n\)-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
 \item
   Homogeneity:
   Cells are equivalent in the sense that they share an update function and a set of possible states.
@@ -286,13 +294,13 @@ Other classification schemes can be found in the literature like: based in the s
 
 Since the consolidation of the scientific method in the XVII century two methodologies emerged for generating and evaluating scientific knowledge. Them being the ``experimental'' and the ``theoretical'' paradigms. The experimental paradigm is concerned with observing, measuring and quantifying natural phenomena in order to test an hypothesis. Experimentation also can be made in a playful manner to collect and organize data. The theoretical paradigm seeks logical and mathematical explanations of natural phenomena. Both paradigms are complementary in the sense that predictions can be made by the theoretical paradigm and be tested using the experimental one, then if the experimental findings support the predictions the theory is kept otherwise is rejected. In other words theory can be supported or falsified through experimentation.
 
-A third scientific paradigm recently appeared, namely the ``computational'' paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the ``experimental'' and ``theoretical'' ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Still when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well characterized, data obtained from a simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly understood a first computational approach could be performed.
+A third scientific paradigm recently appeared, namely the ``computational'' paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the ``experimental'' and ``theoretical'' ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Additionally when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well described, data obtained from a simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly characterized a first computational approach could be performed to gain further understanding that may enable an experimental or a theoretical approach.
 
-The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how \emph{state}, \emph{space} and \emph{time} variables are abstracted into the model (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).
+The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an ``abstract model'' or simply a ``model''. Mathematical and computational models can be grouped according on how \emph{state}, \emph{space} and \emph{time} variables are abstracted into the model (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).
 
 \begin{longtable}[]{@{}llll@{}}
 \caption{\label{tab:models} How different models handle \emph{state}, \emph{space} and \emph{time}. \emph{C} stands for continuous and \emph{D} for discrete. The discrete nature of CA is highlighted.
-Table taken from the book ``Simulating complex systems by cellular automata'' (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\tabularnewline
+Table adapted from the book ``Simulating complex systems by cellular automata'' (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\tabularnewline
 \toprule
 Type of model & State & Space & Time\tabularnewline
 \midrule
@@ -313,9 +321,9 @@ Lattice gas automata (LGAs) & D & D & D\tabularnewline
 \bottomrule
 \end{longtable}
 
-Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in simple terms systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it (Hölldobler, Wilson, and others \protect\hyperlink{ref-holldobler1994journey}{1994}). Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following from 20 to 40 responses to a particular stimuli.
+Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in other words systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it (Hölldobler, Wilson, and others \protect\hyperlink{ref-holldobler1994journey}{1994}). Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following 20 to 40 responses to a particular stimuli.
 
-As seen by the ant-colony example, a correctly chosen set of interacting rules for a group of identical generic entities can create self-organization and/or emergent behavior (Bak \protect\hyperlink{ref-bak2013nature}{2013}). However a general algorithm to find a correct set of local rules to produce a target global behavior is not know (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}). Regardless going in the opposite way is as easy as running a simulation using a proposed set of rules and checking if the yield the target behavior.
+As seen by the ant-colony example, a correctly chosen set of interacting rules for a group of identical generic entities can create self-organization and/or emergent behavior (Bak \protect\hyperlink{ref-bak2013nature}{2013}). However a general algorithm to find a correct set of local rules to produce a target global behavior is not know (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}). Regardless going in the opposite way is as easy as running a simulation using a proposed set of rules and checking if they yield the target behavior.
 In summary the question, What set of rules yields this behavior? Is extremely difficult, yet asking, Does this set of particular rules yields this behavior? Is rather easy.
 
 In CA the same dichotomy arises. Going from local rules to global behavior (local to global mapping) is as easy as to just perform the computations defined by the CA but going in the other direction (global mapping to local) is extremely difficult. This issue is known as the ``inverse problem''. Regardless of its difficulty numerous attempts have been tried, with limited success. A common approach is the usage of optimization techniques like evolutionary algorithms or simulated annealing to find rules driving the system to desired attractor basins (Ganguly et al. \protect\hyperlink{ref-ganguly2003survey}{2003}).
@@ -334,6 +342,8 @@ This analogy is not coincidence at all and it is further exposed by the history 
 The usual strategy to prove that a given CA is universal is to show its equivalence with other systems known to be universal. Other strategy is to directly build on the lattice all the primitive elements of computing, namely \emph{storage} (memory), \emph{transmission} (internal clock and wires) and \emph{processing} (AND, OR and NOT gates) (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}). Once a given system supports these computational primitives building an universal machine becomes a clerical work of assembling modules. The ``Game of Life'' is proven to be universal in this fashion.
 
 On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist (Toffoli \protect\hyperlink{ref-toffoli1977cellular}{1977}). This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).
+
+Add explanation using the \emph{Halting Problem}.
 
 Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others (Toffoli \protect\hyperlink{ref-toffoli1984cam}{1984}). A hardware implementation of a CAM was developed at MIT (Margolus \protect\hyperlink{ref-margolus1995cam}{1995}) that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
@@ -482,13 +492,13 @@ For each state \(\sigma_k(n)\) at site \(k\) and time step \(n\).
 \begin{itemize}
 \item
   A burning tree is consumed at next time step:
-  \[\sigma_k(n) = 1 \mapsto  \sigma_k(n) = 0 \textrm{\quad With probability}\ 1\]
+  \[\sigma_k(n) = 1 \mapsto  \sigma_k(n+1) = 0 \textrm{\quad With probability}\ 1\]
 \item
   A new tree grows from an empty position \(k\), dictated by parameter \(p \in [0,1]:\)
-  \[\sigma_k(n) = 0 \mapsto  \sigma_k(n) = 2 \textrm{\quad With probability}\ p\]
+  \[\sigma_k(n) = 0 \mapsto  \sigma_k(n+1) = 2 \textrm{\quad With probability}\ p\]
 \item
   The fire is propagated through the vicinity or a lightning event occurs, which ignites a tree and is tuned by \(f \in [0,1]:\)
-  \[\sigma_k(n) = 2 \mapsto  \sigma_k(n) = 1\]
+  \[\sigma_k(n) = 2 \mapsto  \sigma_k(n+1) = 1\]
   \[\textrm{With probability} \begin{cases}
   1, & \textrm{if at least one neighboring tree is burning}\\
   f, & \textrm{if no neighboring tree is burning}
@@ -532,7 +542,7 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 
 }
 
-\caption{Agent-Environment system formalized as a MDP. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
+\caption{Diagram of the \emph{Agent-Environment system} formalized as a MDP. At time step \(t\) the ``Agent'' with knowledge of observation \(S_t\) and reward \(R_t\) performs action \(A_t\) to which the ``Environment'' responds with a new observation \(S_{t+1}\) and reward \(R_{t+1}\), the cycle is iterated. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
 \end{figure}
 
 \hypertarget{experiments}{%
@@ -548,7 +558,11 @@ A general tool for creating RL tasks was design (\emph{Forest Fire Environment M
 
 The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emitted action. This was done by mere counting all cell states indicating unwanted behavior and then multiplying by some weight (usually negative). This was generalized into getting the frequency of any cell type and then multiplying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frequencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting potion in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}}. In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
+The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting potion in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}} (see \ref{fig:thesis-3-3-env}). In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
+
+We selected the parameters of the DMS by seeking a separation between the scales of \(f\) and \(p\) (\(f \ll p\)), since a steady state is reached when \(\lim \frac {f}{p} \to 0\) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}) and we wanted to see if the agent would significatively alter the dynamics of the CA. In our case \(\frac {f}{p}=\) 0.2. Alongside, empirical tunning was conducted from running the environment with a random policy to select the exact values of \(f\) and \(p\) that would make the grid relatively active at each step. It is important to note that the steady state only appears on large grids, as smaller ones are subject to finite size effects (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}), thus we paid more attention to the empirical second criterion. Nevertheless balancing the two parameters would be important in future grid scaling experiments.
+
+Moreover the FFEM tool adds two new cells types. A ``rock'' type that does not interact with anything and is used as a barrier to the fire dynamics, it is always constant. A ``lake'' type that behaves exactly like a ``rock'' but it marks special positions in the grid that can alter the ``helicopter'' internal state. For example an idea (yet to be implemented) is to make the ``power'' of the ``helicopter'' limited so it would need to use it ``wisely'' and then would go to a ``lake'' to recharge it, akin to refilling its tank to keep fighting the wild fire. Also the FFEM tool generalizes the ``powers'' of the ``helicopter'' allowing for the exchange of any cell type for another, this lets for the creation of environments with a diversity of semantics like: An environment where the agent has to put barriers or one where it has to strategically deforest to prevent the spread of fire or even one where it has to completly reorganize the CA lattice. Even more functionality was included like a deterministic mode, generalized reward functions and several termination conditions, to check all the FFEM features consult: \emph{\url{https://github.com/elbecerrasoto/gym-forest-fire}}.
 
 
 
@@ -558,7 +572,7 @@ The particular environment that was used for this thesis is one that has the sem
 
 }
 
-\caption{Illustration of two transitions in the proposed environment. On time \(t\) the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the ``fire'' cell to ``empty''. Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the ``fire'' cell at the middle (Not shown) is promptly eliminated and replaced by an ``empty'' cell. The parameter \(m\) is an internal state of the environment, when it reaches \(0\) the CA is updated at the next step, before the action takes place. The current reward \(r\) is \(+1\) per ``tree'' and \(-1\) per ``fire''.}\label{fig:thesis-3-3-env}
+\caption{Illustration of two transitions in the proposed environment. On time \(t\) the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the ``fire'' cell to ``empty''. Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the ``fire'' cell at the middle (not shown) is promptly eliminated and replaced by an ``empty'' cell. The parameter \(m\) is an internal state of the environment, when it reaches \(0\) the CA is updated at the next step, before the action takes place. The current reward \(r\) is \(+1\) per ``tree'' and \(-1\) per ``fire''.}\label{fig:thesis-3-3-env}
 \end{figure}
 
 \hypertarget{code-availability}{%
@@ -570,29 +584,70 @@ The source code for this thesis is openly available at:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \url{https://github.com/elbecerrasoto/gym-forest-fire} for the RL environments.
+  \emph{\url{https://github.com/elbecerrasoto/gym-forest-fire}} for the RL environments.
 \item
-  \url{https://github.com/elbecerrasoto/CARL} for the DQN implementations.
+  \emph{\url{https://github.com/elbecerrasoto/CARL}} for the DQN implementations.
 \end{enumerate}
 
 \hypertarget{deep-q-networks}{%
 \subsection{Deep Q Networks}\label{deep-q-networks}}
 
-We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and the combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are \(3^9\) grid states multiplied by \(3^2\) ``helicopter'' positions and \(2\) internal states for the agent-environment synchronization, giving a grand total of \(2 \times 3^2 \times 3^9 =\) \ensuremath{3.54294\times 10^{5}}, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable \(\approx 10^{124}\) states.
+We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and their combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are \(3^9\) grid states multiplied by \(3^2\) ``helicopter'' positions and \(2\) internal states for the agent-environment synchronization, giving a grand total of \(2 \times 3^2 \times 3^9 =\) \ensuremath{3.54294\times 10^{5}}, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable \(\approx 10^{124}\) states.
 
-Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions.
+Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an Artificial Neural Network (ANN). We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
+
+A high level explanation of our DQN implementation is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a batch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
+
+For the full code details refer to: \emph{\url{https://github.com/elbecerrasoto/CARL}}
 
 \hypertarget{preprocessing}{%
-\subsubsection{Preprocessing}\label{preprocessing}}
+\subsection{Preprocessing}\label{preprocessing}}
 
-\hypertarget{model-architecture}{%
-\subsubsection{Model Architecture}\label{model-architecture}}
+The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be infered by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a \emph{numpy array} would fix it.
+
+The input to the ANN models was a one-hot encoding of the CA grid concatenated with ``helicopter'' position and the \(m\) remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
+
+\hypertarget{ann-architectures}{%
+\subsection{ANN Architectures}\label{ann-architectures}}
+
+Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parametrized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
+
+A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the justification that perhaps the model would learned features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
+
+Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
+
+\begin{itemize}
+\tightlist
+\item
+  Architecture 1 (A1):
+  \[(30 \times 1) \to (128 \times 1) \to (256 \times 1) \to (128 \times 1) \to (32 \times 1) \to (9 \times 1)\]
+\item
+  Architecture 2 (A2):
+  \[(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+\item
+  Architecture 3 (A3):
+  \[(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+\end{itemize}
 
 \hypertarget{training-details}{%
-\subsubsection{Training Details}\label{training-details}}
+\subsection{Training Details}\label{training-details}}
+
+Adam
+
+A properly trained Q-network would solve the reinforcement learning problem. Unfortunately, training the Q-network is not an easy task. In deep learning problems, a dataset of correctly labelled data is provided, and the goal of the neural network is to train from this data to generalize to other data in the same distribution. Neural networks are trained by minimizing the loss that calculates the mean-squared distance between the network's output and the given label . For Q-networks, there is no such dataset, and it is incredibly difficult to compute the true action values. Thus, we deploy the techniques of reinforcement learning and use the bootstrapped target as the ``label.'' Note that this does bring a lot of noise, considerably disturbing the learning curve.
+
+life signals
+\emph{\url{http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf}}
+
+linear decay.
+Saving each x epochs.
 
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
+
+By eye gif
+Hyperparameter informal search
+test against Random and Heuristic Agent
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -623,6 +678,12 @@ f & 293,722 & 2.94 & 3.53 & heuristic & 1 & A3 & 0.0003 & 32\\
 \end{tabular}}
 \end{table}
 
+Make figure of training details.
+a) Mean vs Sd with codes.
+b) Return with cutting line.
+c) Reward Train.
+d) Loss.
+
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
@@ -639,6 +700,9 @@ Bak, Per. 2013. \emph{How Nature Works: The Science of Self-Organized Criticalit
 
 \leavevmode\hypertarget{ref-bak1990forest}{}%
 Bak, Per, Kan Chen, and Chao Tang. 1990. ``A Forest-Fire Model and Some Thoughts on Turbulence.'' \emph{Physics Letters A} 147 (5-6): 297--300.
+
+\leavevmode\hypertarget{ref-1606.01540}{}%
+Brockman, Greg, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. ``OpenAI Gym.''
 
 \leavevmode\hypertarget{ref-codd1968cellular}{}%
 Codd, EF. 1968. ``Cellular Automata, Academic Press.'' \emph{New York}.
@@ -660,6 +724,9 @@ Ganguly, Niloy, Biplab K Sikdar, Andreas Deutsch, Geoffrey Canright, and P Pal C
 
 \leavevmode\hypertarget{ref-gardner1970mathematical}{}%
 Gardner, Martin. 1970. ``Mathematical Games.'' \emph{Scientific American} 222 (6): 132--40.
+
+\leavevmode\hypertarget{ref-he2015delving}{}%
+He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2015. ``Delving Deep into Rectifiers: Surpassing Human-Level Performance on Imagenet Classification.'' In \emph{Proceedings of the Ieee International Conference on Computer Vision}, 1026--34.
 
 \leavevmode\hypertarget{ref-hedlund1969endomorphisms}{}%
 Hedlund, Gustav A. 1969. ``Endomorphisms and Automorphisms of the Shift Dynamical System.'' \emph{Mathematical Systems Theory} 3 (4): 320--75.
@@ -700,6 +767,9 @@ Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglo
 \leavevmode\hypertarget{ref-mnih2015human}{}%
 Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Bellemare, Alex Graves, et al. 2015. ``Human-Level Control Through Deep Reinforcement Learning.'' \emph{Nature} 518 (7540): 529--33.
 
+\leavevmode\hypertarget{ref-NEURIPS2019_9015}{}%
+Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, et al. 2019. ``PyTorch: An Imperative Style, High-Performance Deep Learning Library.'' In \emph{Advances in Neural Information Processing Systems 32}, edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. d\textquotesingle Alché-Buc, E. Fox, and R. Garnett, 8024--35. Curran Associates, Inc. \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}.
+
 \leavevmode\hypertarget{ref-popovici2002cellular}{}%
 Popovici, Adriana, and Dan Popovici. 2002. ``Cellular Automata in Image Processing.'' In \emph{Fifteenth International Symposium on Mathematical Theory of Networks and Systems}, 1:1--6. Citeseer.
 
@@ -708,6 +778,9 @@ Poundstone, William. 2013. \emph{The Recursive Universe: Cosmic Complexity and t
 
 \leavevmode\hypertarget{ref-smith1971simple}{}%
 Smith III, Alvy Ray. 1971. ``Simple Computation-Universal Cellular Spaces.'' \emph{Journal of the ACM (JACM)} 18 (3): 339--53.
+
+\leavevmode\hypertarget{ref-sutton1988learning}{}%
+Sutton, Richard S. 1988. ``Learning to Predict by the Methods of Temporal Differences.'' \emph{Machine Learning} 3 (1): 9--44.
 
 \leavevmode\hypertarget{ref-sutton2018reinforcement}{}%
 Sutton, Richard S, and Andrew G Barto. 2018. \emph{Reinforcement Learning: An Introduction}. MIT press.
@@ -726,6 +799,9 @@ Von Neumann, John, Arthur W Burks, and others. 1966. ``Theory of Self-Reproducin
 
 \leavevmode\hypertarget{ref-von1951general}{}%
 Von Neumann, John, and others. 1951. ``The General and Logical Theory of Automata.'' \emph{1951}, 1--41.
+
+\leavevmode\hypertarget{ref-walt2011numpy}{}%
+Walt, Stéfan van der, S Chris Colbert, and Gael Varoquaux. 2011. ``The Numpy Array: A Structure for Efficient Numerical Computation.'' \emph{Computing in Science \& Engineering} 13 (2): 22--30.
 
 \leavevmode\hypertarget{ref-weiner1946mathematical}{}%
 Weiner, N, and A Rosenblunth. 1946. ``The Mathematical Formulation of the Problem of Conduction of Impulses in a Network of Connected Excitable Elements Specifically in Cardiac Muscle.''

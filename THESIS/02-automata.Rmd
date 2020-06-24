@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and local interaction between its parts, but its killer feature is that they are simple.
+Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
 
-A quick _Google Scholar_ search for the term "Cellular Automata", retrieves roughly 13,000 research articles since the last year (2019). Despite not being as popular (by the same metric) as other topics, like "Cancer" (~128,000) or "Deep Learning" (~104,000), they are, arguably, still popular.
+A quick _Google Scholar_ search for the term "Cellular Automata", retrieves roughly 13,000 research articles (during 2019-2020 period). Despite not being as popular (by the same metric) as other topics, like "Cancer" (~128,000) or "Deep Learning" (~104,000), they are, arguably, still popular.
 
 The topic of CA dates back to the 1950's spanning a history of 70 years. Since then the mathematical and practical properties of CA have been studied and its applications have been explored in different branches of science including physical and social.
 
@@ -21,7 +21,7 @@ knitr::include_graphics('pics/Game_of_life_glider_gun.svg')
 Cellular Automata are mathematical objects that are mainly characterized by [@ilachinski2001cellular]:
 
 1. A discrete lattice of cells:
-A n-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
+A $n$-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
 
 2. Homogeneity:
 Cells are equivalent in the sense that they share an update function and a set of possible states.
@@ -97,12 +97,12 @@ Other classification schemes can be found in the literature like: based in the s
 
 Since the consolidation of the scientific method in the XVII century two methodologies emerged for generating and evaluating scientific knowledge. Them being the "experimental" and the "theoretical" paradigms. The experimental paradigm is concerned with observing, measuring and quantifying natural phenomena in order to test an hypothesis. Experimentation also can be made in a playful manner to collect and organize data. The theoretical paradigm seeks logical and mathematical explanations of natural phenomena. Both paradigms are complementary in the sense that predictions can be made by the theoretical paradigm and be tested using the experimental one, then if the experimental findings support the predictions the theory is kept otherwise is rejected. In other words theory can be supported or falsified through experimentation.
 
-A third scientific paradigm recently appeared, namely the "computational" paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the "experimental" and "theoretical" ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Still when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well characterized, data obtained from a simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly understood a first computational approach could be performed. 
+A third scientific paradigm recently appeared, namely the "computational" paradigm. In this approach the study of nature is done through computer simulations. The computational paradigm works in partnership with the "experimental" and "theoretical" ones, so where observed phenomena are not easily tractable by analytical descriptions or direct experimentation is not allowed, computational simulation still permits further inquiry. Additionally when possible the outputs from the computations can be validated against experimental data and predictions from the theory, thus establishing helpful feedback between paradigms. The invention of the digital computer enabled the numerical solution of analytical models by means of discretization of quantities. Finally the computational paradigm can sometimes be used as a shortcut to the theoretical or experimental paradigms, for example if the problem at hand is well described, data obtained from a simulation could be employed as a proxy for real world data or by the contrary if the studied phenomena is poorly characterized a first computational approach could be performed to gain further understanding that may enable an experimental or a theoretical approach.
 
-The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an abstract model or simply a model. Mathematical and computational models can be grouped according on how _state_, _space_ and _time_ variables are abstracted into the model [@hoekstra2010simulating].
+The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an "abstract model" or simply a "model". Mathematical and computational models can be grouped according on how _state_, _space_ and _time_ variables are abstracted into the model [@hoekstra2010simulating].
 
 Table: (\#tab:models) How different models handle _state_, _space_ and _time_. _C_ stands for continuous and _D_ for discrete. The discrete nature of CA is highlighted.
-Table taken from the book "Simulating complex systems by cellular automata" [@hoekstra2010simulating].
+Table adapted from the book "Simulating complex systems by cellular automata" [@hoekstra2010simulating].
 
 Type of model                                 State  Space  Time
 --------------------------------------------- ------ ------ ------
@@ -116,9 +116,9 @@ Lattice Boltzmann equations (LBEs)              C     D      D
 **Cellular Automata (CA)**                    **D**  **D**   **D**
 Lattice gas automata (LGAs)                     D     D      D
 
-Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in simple terms systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it [@holldobler1994journey]. Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following from 20 to 40 responses to a particular stimuli.
+Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in other words systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it [@holldobler1994journey]. Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following 20 to 40 responses to a particular stimuli.
 
-As seen by the ant-colony example, a correctly chosen set of interacting rules for a group of identical generic entities can create self-organization and/or emergent behavior [@bak2013nature]. However a general algorithm to find a correct set of local rules to produce a target global behavior is not know [@hoekstra2010simulating]. Regardless going in the opposite way is as easy as running a simulation using a proposed set of rules and checking if the yield the target behavior.
+As seen by the ant-colony example, a correctly chosen set of interacting rules for a group of identical generic entities can create self-organization and/or emergent behavior [@bak2013nature]. However a general algorithm to find a correct set of local rules to produce a target global behavior is not know [@hoekstra2010simulating]. Regardless going in the opposite way is as easy as running a simulation using a proposed set of rules and checking if they yield the target behavior.
 In summary the question, What set of rules yields this behavior? Is extremely difficult, yet asking, Does this set of particular rules yields this behavior? Is rather easy.
 
 In CA the same dichotomy arises. Going from local rules to global behavior (local to global mapping) is as easy as to just perform the computations defined by the CA but going  in the other direction (global mapping to local) is extremely difficult. This issue is known as the "inverse problem". Regardless of its difficulty numerous attempts have been tried, with limited success. A common approach is the usage of optimization techniques like evolutionary algorithms or simulated annealing to find rules driving the system to desired attractor basins [@ganguly2003survey].
@@ -136,6 +136,8 @@ This analogy is not coincidence at all and it is further exposed by the history 
 The usual strategy to prove that a given CA is universal is to show its equivalence with other systems known to be universal. Other strategy is to directly build on the lattice all the primitive elements of computing, namely _storage_ (memory), _transmission_ (internal clock and wires) and _processing_ (AND, OR and NOT gates) [@ilachinski2001cellular]. Once a given system supports these computational primitives building an universal machine becomes a clerical work of assembling modules. The "Game of Life" is proven to be universal in this fashion.
 
 On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist [@toffoli1977cellular]. This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation [@ilachinski2001cellular]. 
+
+To Do: Add explanation using the _Halting Problem_.
 
 Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others [@toffoli1984cam]. A hardware implementation of a CAM was developed at MIT [@margolus1995cam] that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
@@ -237,13 +239,13 @@ The Drossel and Schwabl model consist of a lattice in $\mathds{Z}^2$ populated w
 For each state $\sigma_k(n)$ at site $k$ and time step $n$.
 
 * A burning tree is consumed at next time step:
-$$\sigma_k(n) = 1 \mapsto  \sigma_k(n) = 0 \textrm{\quad With probability}\ 1$$
+$$\sigma_k(n) = 1 \mapsto  \sigma_k(n+1) = 0 \textrm{\quad With probability}\ 1$$
 
 * A new tree grows from an empty position $k$, dictated by parameter $p \in [0,1]:$
-$$\sigma_k(n) = 0 \mapsto  \sigma_k(n) = 2 \textrm{\quad With probability}\ p$$
+$$\sigma_k(n) = 0 \mapsto  \sigma_k(n+1) = 2 \textrm{\quad With probability}\ p$$
 
 * The fire is propagated through the vicinity or a lightning event occurs, which ignites a tree and is tuned by $f \in [0,1]:$
-$$\sigma_k(n) = 2 \mapsto  \sigma_k(n) = 1$$
+$$\sigma_k(n) = 2 \mapsto  \sigma_k(n+1) = 1$$
 $$\textrm{With probability} \begin{cases}
   1, & \textrm{if at least one neighboring tree is burning}\\
   f, & \textrm{if no neighboring tree is burning}

@@ -6,16 +6,22 @@ Since antiquity the idea of building a thinking machine has always been in the m
 
 ## Problem Statement
 
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of _Actions_ ($A$), _States_ ($S$) and _Rewards_ ($R$), also specify an "Agent" that interacts with the CA and explicitly or implicitly define the transitions of the MDP $p(s',r|s,a): S \times R \times S \times A \rightarrow [0,1]$.
+
+Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an "Agent" or "Helicopter" flying over the forest trying to extinguish the wild fire.
+
+To Do: Describe the RL task and state the optimization problem. 
+
 ## Objectives
 
 ### Main Objectives
 
-+ Propose a novel environment for Reinforcement Learning algorithms, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
++ Propose a novel environment for Reinforcement Learning tasks, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
 + Characterize the environment by solving it by state of the art methods.
 
 ### Specific Objectives
 
-+ Select a Cellular Automaton model for the environment, in this case the forest fire cellular automaton.
++ Select a Cellular Automaton model for the environment, in this case the Forest Fire Cellular Automaton.
 + Design a RL task incorporating the CA dynamics.
 + Implementation of the RL environment, following the Open AI gym API.
-+ Apply DQN to solve the proposed task.  
++ Apply DQN to solve the proposed task.
