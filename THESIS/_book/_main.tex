@@ -94,7 +94,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-22}
+\date{2020-06-24}
 
 \begin{document}
 \maketitle
@@ -129,7 +129,7 @@ In this thesis, we consider the advantages of using Cellular Automata as underly
 
 Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wild fire.
 
-Describe the RL task and state the optimization problem.
+To Do: Describe the RL task and state the optimization problem.
 
 \hypertarget{objectives}{%
 \section{Objectives}\label{objectives}}
@@ -343,7 +343,7 @@ The usual strategy to prove that a given CA is universal is to show its equivale
 
 On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist (Toffoli \protect\hyperlink{ref-toffoli1977cellular}{1977}). This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).
 
-Add explanation using the \emph{Halting Problem}.
+To Do: Add explanation using the \emph{Halting Problem}.
 
 Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others (Toffoli \protect\hyperlink{ref-toffoli1984cam}{1984}). A hardware implementation of a CAM was developed at MIT (Margolus \protect\hyperlink{ref-margolus1995cam}{1995}) that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
@@ -612,7 +612,7 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parametrized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
 
-A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the justification that perhaps the model would learned features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
+A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learned features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
 
 Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
 
@@ -629,60 +629,104 @@ Three different \(Q_{network}\) architectures were used. The models were build u
   \[(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)\]
 \end{itemize}
 
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/A1} 
+
+}
+
+\caption{Diagram of Architecture 1 (A1).}\label{fig:A1}
+\end{figure}
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/A2} 
+
+}
+
+\caption{Diagram of Architecture 2 (A2).}\label{fig:A2}
+\end{figure}
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/A3} 
+
+}
+
+\caption{Diagram of Architecture 3 (A3).}\label{fig:A3}
+\end{figure}
+
 \hypertarget{training-details}{%
 \subsection{Training Details}\label{training-details}}
 
-Adam
-
-A properly trained Q-network would solve the reinforcement learning problem. Unfortunately, training the Q-network is not an easy task. In deep learning problems, a dataset of correctly labelled data is provided, and the goal of the neural network is to train from this data to generalize to other data in the same distribution. Neural networks are trained by minimizing the loss that calculates the mean-squared distance between the network's output and the given label . For Q-networks, there is no such dataset, and it is incredibly difficult to compute the true action values. Thus, we deploy the techniques of reinforcement learning and use the bootstrapped target as the ``label.'' Note that this does bring a lot of noise, considerably disturbing the learning curve.
-
-life signals
-\emph{\url{http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf}}
-
-linear decay.
-Saving each x epochs.
+A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Aditionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated.
 
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
-
-By eye gif
-Hyperparameter informal search
-test against Random and Heuristic Agent
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
 \begin{table}
 
-\caption{\label{tab:3x3}Hyperparameters of 3x3 forest forest environments runs. The mean and standard deviation of reward per step were obtained from a 100,000 steps per model simulation.}
+\caption{\label{tab:3x3}Hyperparameters of 3x3 forest forest environments runs. The return was computed from playing 100,000 steps following the learned policy.}
 \centering
 \resizebox{\linewidth}{!}{
-\begin{tabular}[t]{lrrrlrlrr}
+\begin{tabular}[t]{lrlrlrrr}
 \toprule
-Run & Return & Mean & SD & Exploration & Unrolling & Architecture & LR & Batch Size\\
+Run & Return & Exploration & Unrolling & Architecture & LR & Batch Size & Gamma\\
 \midrule
-\rowcolor{gray!6}  c & 640,658 & 6.41 & 2.25 & heuristic & 2 & A3 & 0.0001 & 16\\
-a & 638,094 & 6.38 & 2.30 & linear & 2 & A1 & 0.0003 & 32\\
-\rowcolor{gray!6}  d & 615,091 & 6.15 & 2.47 & heuristic & 3 & A3 & 0.0003 & 32\\
-i & 591,021 & 5.91 & 2.53 & linear & 2 & A3 & 0.0003 & 32\\
-\rowcolor{gray!6}  g & 507,313 & 5.07 & 3.28 & linear & 10 & A3 & 0.0003 & 32\\
+\rowcolor{gray!6}  c & 640,658 & heuristic & 2 & A3 & 0.0001 & 16 & 0.99\\
+a & 638,094 & linear & 2 & A1 & 0.0003 & 32 & 0.99\\
+\rowcolor{gray!6}  d & 615,091 & heuristic & 3 & A3 & 0.0003 & 32 & 0.99\\
+i & 591,021 & linear & 2 & A3 & 0.0003 & 32 & 0.99\\
+\rowcolor{gray!6}  g & 507,313 & linear & 10 & A3 & 0.0003 & 32 & 0.99\\
 \addlinespace
-H & 503,521 & 5.04 & 2.99 &  &  &  &  & \\
-\rowcolor{gray!6}  b & 327,597 & 3.28 & 3.63 & linear & 1 & A2 & 0.0001 & 256\\
-R & 319,833 & 3.20 & 3.44 &  &  &  &  & \\
-\rowcolor{gray!6}  h & 294,965 & 2.95 & 3.56 & linear & 1 & A3 & 0.0001 & 16\\
-f & 293,722 & 2.94 & 3.53 & heuristic & 1 & A3 & 0.0003 & 32\\
+H & 503,521 &  &  &  &  &  & \\
+\rowcolor{gray!6}  b & 327,597 & linear & 1 & A2 & 0.0001 & 256 & 0.90\\
+R & 319,833 &  &  &  &  &  & \\
+\rowcolor{gray!6}  h & 294,965 & linear & 1 & A3 & 0.0001 & 16 & 0.99\\
+f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \addlinespace
-\rowcolor{gray!6}  e & 293,600 & 2.94 & 3.54 & heuristic & 1 & A2 & 0.0001 & 16\\
+\rowcolor{gray!6}  e & 293,600 & heuristic & 1 & A2 & 0.0001 & 16 & 0.90\\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-Make figure of training details.
-a) Mean vs Sd with codes.
-b) Return with cutting line.
-c) Reward Train.
-d) Loss.
+
+
+\begin{figure}
+
+\includegraphics[width=26.24in]{pics/sd_vs_mean_v1} \hfill{}
+
+\caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps.}\label{fig:sd-vs-mean}
+\end{figure}
+
+
+
+\begin{figure}
+
+\includegraphics[width=26.24in]{pics/mean_window_v1} \hfill{}
+
+\caption{Mean Rewards per step during training (1,000 step sliding window).}\label{fig:training-mean-window}
+\end{figure}
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=26.24in]{pics/loss_v1} 
+
+}
+
+\caption{Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of \(\gamma\) and \emph{unrolling} were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.}\label{fig:loss}
+\end{figure}
 
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
@@ -790,6 +834,9 @@ Toffoli, Tommaso. 1977. ``Cellular Automata Machines.''
 
 \leavevmode\hypertarget{ref-toffoli1984cam}{}%
 ---------. 1984. ``CAM: A High-Performance Cellular-Automaton Machine.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 195--204.
+
+\leavevmode\hypertarget{ref-tsitsiklis1997analysis}{}%
+Tsitsiklis, John N, and Benjamin Van Roy. 1997. ``Analysis of Temporal-Diffference Learning with Function Approximation.'' In \emph{Advances in Neural Information Processing Systems}, 1075--81.
 
 \leavevmode\hypertarget{ref-vichniac1984simulating}{}%
 Vichniac, Gérard Y. 1984. ``Simulating Physics with Cellular Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 96--116.

@@ -61,6 +61,21 @@ $$(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \
 + Architecture 3 (A3):
 $$(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)$$
 
+(ref:A1) Diagram of Architecture 1 (A1).
+```{r A1, fig.cap='(ref:A1)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/A1.png')
+```
+
+(ref:A2) Diagram of Architecture 2 (A2).
+```{r A2, fig.cap='(ref:A2)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/A2.png')
+```
+
+(ref:A3) Diagram of Architecture 3 (A3).
+```{r A3, fig.cap='(ref:A3)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/A3.png')
+```
+
 ### Training Details
 
 A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Aditionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. 
@@ -72,23 +87,30 @@ A $Q_{network}$ capable of predicting the values of the actions would solve the 
 ```{r 3x3, message=FALSE}
 opts <- options(knitr.kable.NA = "")
 read_csv('data/runs_3x3_v2.csv') %>%
-  select(-name, -gamma, -better) %>%
-  arrange(desc(return), sd) %>%
-  mutate(mean = round(mean,2),
-         sd = round(sd,2)) %>%
+  select(-name, -mean, -sd, -better) %>%
+  arrange(desc(return)) %>%
   knitr::kable(
-    col.names = c('Run', 'Return', 'Mean', 'SD', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size'),
+    col.names = c('Run', 'Return', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size', 'Gamma'),
     booktabs=T,
-    caption='Hyperparameters of 3x3 forest forest environments runs. The mean and standard deviation of reward per step were obtained from a 100,000 steps per model simulation.',
+    caption='Hyperparameters of 3x3 forest forest environments runs. The return was computed from playing 100,000 steps following the learned policy.',
     format.args = list(big.mark = ",", scientific = F)
     ) %>%
   kable_styling(latex_options = c('striped', 'scale_down'))
 ```
 
-Make figure of training details.
-a) Mean vs Sd with codes.
-b) Return with cutting line.
-c) Reward Train.
-d) Loss.
+(ref:sd-vs-mean) The mean and standard deviation for each model was computed from playing the environment 100,000 steps.
+```{r sd-vs-mean, fig.cap='(ref:sd-vs-mean)', fig.align='left', echo=FALSE}
+knitr::include_graphics('pics/sd_vs_mean_v1.png')
+```
+
+(ref:training-mean-window) Mean Rewards per step during training (1,000 step sliding window).
+```{r training-mean-window, fig.cap='(ref:training-mean-window)', fig.align='left', echo=FALSE}
+knitr::include_graphics('pics/mean_window_v1.png')
+```
+
+(ref:loss) Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of $\gamma$ and _unrolling_ were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.
+```{r loss, fig.cap='(ref:loss)', fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/loss_v1.png')
+```
 
 ## Disscusion
