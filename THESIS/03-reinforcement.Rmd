@@ -29,3 +29,7 @@ This $p: S \times R \times S \times A \rightarrow [0,1]$ function is known as th
 knitr::include_graphics('pics/agent-env.png')
 ```
 
+### RL state of the art (Notes)
+
+
+

@@ -94,7 +94,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-24}
+\date{2020-06-26}
 
 \begin{document}
 \maketitle
@@ -545,6 +545,9 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 \caption{Diagram of the \emph{Agent-Environment system} formalized as a MDP. At time step \(t\) the ``Agent'' with knowledge of observation \(S_t\) and reward \(R_t\) performs action \(A_t\) to which the ``Environment'' responds with a new observation \(S_{t+1}\) and reward \(R_{t+1}\), the cycle is iterated. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
 \end{figure}
 
+\hypertarget{rl-state-of-the-art-notes}{%
+\subsection{RL state of the art (Notes)}\label{rl-state-of-the-art-notes}}
+
 \hypertarget{experiments}{%
 \chapter{Experiments}\label{experiments}}
 
@@ -558,7 +561,7 @@ A general tool for creating RL tasks was design (\emph{Forest Fire Environment M
 
 The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emitted action. This was done by mere counting all cell states indicating unwanted behavior and then multiplying by some weight (usually negative). This was generalized into getting the frequency of any cell type and then multiplying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frequencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
 
-The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting potion in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}} (see \ref{fig:thesis-3-3-env}). In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
+The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting position in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}} (see \ref{fig:thesis-3-3-env}). In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
 We selected the parameters of the DMS by seeking a separation between the scales of \(f\) and \(p\) (\(f \ll p\)), since a steady state is reached when \(\lim \frac {f}{p} \to 0\) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}) and we wanted to see if the agent would significatively alter the dynamics of the CA. In our case \(\frac {f}{p}=\) 0.2. Alongside, empirical tunning was conducted from running the environment with a random policy to select the exact values of \(f\) and \(p\) that would make the grid relatively active at each step. It is important to note that the steady state only appears on large grids, as smaller ones are subject to finite size effects (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}), thus we paid more attention to the empirical second criterion. Nevertheless balancing the two parameters would be important in future grid scaling experiments.
 
@@ -572,7 +575,7 @@ Moreover the FFEM tool adds two new cells types. A ``rock'' type that does not i
 
 }
 
-\caption{Illustration of two transitions in the proposed environment. On time \(t\) the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the ``fire'' cell to ``empty''. Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the ``fire'' cell at the middle (not shown) is promptly eliminated and replaced by an ``empty'' cell. The parameter \(m\) is an internal state of the environment, when it reaches \(0\) the CA is updated at the next step, before the action takes place. The current reward \(r\) is \(+1\) per ``tree'' and \(-1\) per ``fire''.}\label{fig:thesis-3-3-env}
+\caption{Illustration of two transitions in the proposed environment. On time \(t\) the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the ``fire'' cell to ``empty''. Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the ``fire'' cell at the middle (not shown) is promptly eliminated and replaced by an ``empty'' cell. The parameter \(m\) is an internal state of the environment, that is decreased by \(1\) at each step, when it reaches \(0\) the CA is updated at the next step, before the action takes place, and then \(m\) is restored to it max value (\(m=1\)). The current reward \(r\) is \(+1\) per ``tree'' and \(-1\) per ``fire''.}\label{fig:thesis-3-3-env}
 \end{figure}
 
 \hypertarget{code-availability}{%
@@ -605,7 +608,7 @@ For the full code details refer to: \emph{\url{https://github.com/elbecerrasoto/
 
 The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be infered by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a \emph{numpy array} would fix it.
 
-The input to the ANN models was a one-hot encoding of the CA grid concatenated with ``helicopter'' position and the \(m\) remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
+The input to the ANN models was a one-hot encoding of the CA grid concatenated with the ``helicopter'' position and the \(m\) remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
 
 \hypertarget{ann-architectures}{%
 \subsection{ANN Architectures}\label{ann-architectures}}
@@ -733,6 +736,104 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
+
+\hypertarget{apendix-1-algorithms}{%
+\section{Apendix 1 Algorithms}\label{apendix-1-algorithms}}
+
+\newcommand\mycommfont[1]{\small\ttfamily\textcolor{olive}{#1}}
+\SetCommentSty{mycommfont}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{Steps to play $T$, Synchronization parameter $m$.}
+\Output{Return $G$ (accumulated reward).}
+\BlankLine
+\SetKwFunction{computeForestFire}{computeForestFire}
+\SetKwFunction{policy}{policy}
+\SetKwFunction{updatePosition}{updatePosition}
+\SetKwFunction{applyEffect}{applyEffect}
+\SetKwFunction{getReward}{getReward}
+
+Initialize: Automaton Grid $C_{i \times j}$
+
+Initialize: Helicopter $H$: $H = (row, col): row \in \{1,...,i\}, col \in \{1,...,j\}$
+
+$G \longleftarrow 0$
+
+$k \longleftarrow m$
+
+\For{1, ..., $T$}{
+    \eIf{$k$ has value $0$}{
+      $C_{i \times j} \longleftarrow \computeForestFire(C_{i \times j})$
+      
+      $k \longleftarrow m$
+    }{
+      $k \longleftarrow k - 1 $
+    }
+    $a \longleftarrow \policy(C_{i \times j},H,m)$
+    
+    $H \longleftarrow \updatePosition(H,a)$
+    
+    $C_{i \times j} \longleftarrow \applyEffect(C_{i \times j},H)$
+    
+    $r \longleftarrow \getReward(C_{i \times j})$
+    
+    $G \longleftarrow G + r$;
+}
+\caption{Agent-Environment interactions.}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}[H]
+
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{Steps to play $T$, \emph{Environment} and \emph{Agent} objects.}
+\Output{Return $G$ (accumulated reward).}
+\BlankLine
+\SetKwFunction{Environment}{Environment}
+\SetKwFunction{Agent}{Agent}
+
+\tcc{Commonly used names: $s$ and $s'$ for current and new states, $a$ for action and $r$ for reward.}
+\tcc{Environment object is reset to starting state, it returns the first observation}
+
+$s \longleftarrow \Environment.reset()$
+
+$G \longleftarrow 0$
+
+$FALSE \longleftarrow terminationSignal$
+
+\For{1, ..., $T$}{
+    \eIf{$terminationSignal$}{
+    
+            \tcc{The episode is over, reset Environment again.}
+            
+            $s' \longleftarrow \Environment.reset()$
+            
+            $r \longleftarrow 0$
+    }{
+            $a \longleftarrow \Agent.policy(s)$
+    
+            $stepData \longleftarrow \Environment.step(a)$
+    
+            $s' \longleftarrow stepData[0]$
+    
+            $r \longleftarrow stepData[1]$
+            
+            $terminationSignal \longleftarrow stepData[2]$
+    }
+       
+    $G \longleftarrow G + r$
+
+    $s \longleftarrow s'$
+}
+\caption{Agent-Environment interactions following Open AI Gym API.}
+\end{algorithm}
 
 \hypertarget{refs}{}
 \begin{cslreferences}
