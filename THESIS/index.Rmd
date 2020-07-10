@@ -18,6 +18,7 @@ header-includes:
    - \usepackage{amsmath}
    - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
    - \usepackage{longtable}
+   - \DeclareMathOperator*{\argmax}{arg\,max}
 ---
 
 ```{r setup, include=FALSE}

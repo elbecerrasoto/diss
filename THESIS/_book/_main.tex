@@ -71,6 +71,7 @@
 \usepackage{amsmath}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage{longtable}
+\DeclareMathOperator*{\argmax}{arg\,max}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -94,7 +95,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-06-29}
+\date{2020-07-09}
 
 \begin{document}
 \maketitle
@@ -545,6 +546,28 @@ This \(p: S \times R \times S \times A \rightarrow [0,1]\) function is known as 
 \caption{Diagram of the \emph{Agent-Environment system} formalized as a MDP. At time step \(t\) the ``Agent'' with knowledge of observation \(S_t\) and reward \(R_t\) performs action \(A_t\) to which the ``Environment'' responds with a new observation \(S_{t+1}\) and reward \(R_{t+1}\), the cycle is iterated. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
 \end{figure}
 
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/circulos_v2} 
+
+}
+
+\caption{Broad classification of Reinforcement Learning algorithms. Adapted from David Silver's Lecture \emph{\url{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}}.}\label{fig:rl-algorithm-type}
+\end{figure}
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{pics/circuloyflechas_v2} 
+
+}
+
+\caption{Broad relations between different types of strategies to solving the Reinforcement Learning Problem. Adapted from David Silver's Lecture \emph{\url{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}}.}\label{fig:rl-relations}
+\end{figure}
+
 \hypertarget{rl-state-of-the-art-notes}{%
 \subsection{RL state of the art (Notes)}\label{rl-state-of-the-art-notes}}
 
@@ -615,7 +638,7 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parametrized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
 
-A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learned features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
+A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
 
 Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
 
@@ -706,7 +729,9 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 
 \begin{figure}
 
-\includegraphics[width=26.24in]{pics/sd_vs_mean_v1} \hfill{}
+{\centering \includegraphics[width=0.99\linewidth,height=0.99\textheight]{pics/sd_vs_mean_v3} 
+
+}
 
 \caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps.}\label{fig:sd-vs-mean}
 \end{figure}
@@ -715,16 +740,18 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 
 \begin{figure}
 
-\includegraphics[width=26.24in]{pics/mean_window_v1} \hfill{}
+{\centering \includegraphics[width=0.99\linewidth,height=0.99\textheight]{pics/mean_window_v3_ascending} 
 
-\caption{Mean Rewards per step during training (1,000 step sliding window).}\label{fig:training-mean-window}
+}
+
+\caption{Mean Rewards per step during training (1,000 steps sliding window).}\label{fig:training-mean-window}
 \end{figure}
 
 
 
 \begin{figure}
 
-{\centering \includegraphics[width=26.24in]{pics/loss_v1} 
+{\centering \includegraphics[width=26.24in]{pics/loss_v3_ascending} 
 
 }
 
@@ -834,6 +861,65 @@ $FALSE \longleftarrow terminationSignal$
 }
 \caption{Agent-Environment interactions following Open AI Gym API.}
 \end{algorithm}
+
+\newpage
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{Total iterations $T$ to train $Q$ network.}
+\Output{Trained $Q$ network with weights $\theta$.}
+\BlankLine
+\SetKwFunction{Environment}{Environment}
+
+Initialize replay memory $D$ to capacity $N$
+
+Initialize policy network $Q$ with random weights $\theta$
+
+Initialize target network $\hat{Q}$ with weights $\theta^-$ such that 
+$\theta^- = \theta$
+
+Get initial observation: $s \longleftarrow \Environment.reset()$
+
+\For{t=1, ..., T}{
+
+    With probability $\epsilon$: select random action $a$
+
+    Otherwise select: $a \longleftarrow \underset {a'} {\mathop{\mathrm{arg\,max}}}\ Q(s,a';\theta)$
+    
+    Execute $\Environment.step(a)$ to obtain reward $r$, and next observation $s'$
+    
+    Store transition $(s,a,r,s')$ in $D$
+    
+    Sample a minibatch of transitions $(s_i,a_i,r_i,s'_i)$ from $D$
+    
+$
+  y_i \longleftarrow \begin{cases}
+                        r_i \text{\quad If the episode was over at iteration }i\\
+                        r_i + \gamma \underset {a'} {\max}\ \hat{Q}\ (s'_i,a';\theta^-) \text{\quad Otherwise}
+                    \end{cases}
+$
+    
+    Perform optimization step on $\Big( y_i - Q(s_i,a_i;\theta) \Big)^2$ with respect to $\theta$ 
+    
+    Every $C$ steps synchronize networks weights: $\theta^- = \theta$
+    
+    \eIf{Episode was done at iteration t}{  
+        $s \longleftarrow \Environment.reset()$
+                
+    }{
+        
+        $s \longleftarrow s' $
+    }   
+}
+\caption{Deep Q-networks (DQN) using Open AI Gym API.}
+\end{algorithm}
+
+\hypertarget{references}{%
+\chapter*{References}\label{references}}
+\addcontentsline{toc}{chapter}{References}
 
 \hypertarget{refs}{}
 \begin{cslreferences}

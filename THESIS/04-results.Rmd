@@ -50,7 +50,7 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 Model-free, value-function approximation RL tries to tackle the intractability of directly estimating $Q(s,a)$ for a high number of state-action pairs with a parametrized version $Q(s,a;\theta)$. In the case of Deep Reinforcement Learning $Q$ is approximated by a ANN with parameters $\theta$.
 
-A naive, nonetheless intuitive, approch is to directly translate $Q(s,a): S \times A \to \mathds{R}$ to a network architecture that predicts a $Q$-value for each state-action pair. However this approach incurs on $|A|$ forward computions of the ANN since in order to get the next action following the _greedy policy_, we need to check for all values of the available actions $\forall a \in A(S_t): Q(s,a;\theta)$. One of the key insights of the DQN algorithm [@mnih2013playing][@mnih2015human] was to change to an architecture of the form $Q_{network}: S \to \mathds{R}^{|A|}$, predicting all $Q$-values in a single forward pass and also with the extra justification that perhaps the model would learned features about state $s$ that can be reused to predict all $Q$-values for a given $s$. This architecture is know as the $Q_{network}$.
+A naive, nonetheless intuitive, approch is to directly translate $Q(s,a): S \times A \to \mathds{R}$ to a network architecture that predicts a $Q$-value for each state-action pair. However this approach incurs on $|A|$ forward computions of the ANN since in order to get the next action following the _greedy policy_, we need to check for all values of the available actions $\forall a \in A(S_t): Q(s,a;\theta)$. One of the key insights of the DQN algorithm [@mnih2013playing][@mnih2015human] was to change to an architecture of the form $Q_{network}: S \to \mathds{R}^{|A|}$, predicting all $Q$-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state $s$ that can be reused to predict all $Q$-values for a given $s$. This architecture is know as the $Q_{network}$.
 
 Three different $Q_{network}$ architectures were used. The models were build using the _Pytorch_ library [@NEURIPS2019_9015]. They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the _Pytorch_ defaults (_Kaiming uniform_ [@he2015delving]). The tensors transformations of the layers are described below:
 
@@ -62,23 +62,23 @@ $$(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \
 $$(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)$$
 
 (ref:A1) Diagram of Architecture 1 (A1).
-```{r A1, fig.cap='(ref:A1)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{r A1, fig.cap='(ref:A1)', out.width='80%', fig.asp=.75, fig.align='center'}
 knitr::include_graphics('pics/A1.png')
 ```
 
 (ref:A2) Diagram of Architecture 2 (A2).
-```{r A2, fig.cap='(ref:A2)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{r A2, fig.cap='(ref:A2)', out.width='80%', fig.asp=.75, fig.align='center'}
 knitr::include_graphics('pics/A2.png')
 ```
 
 (ref:A3) Diagram of Architecture 3 (A3).
-```{r A3, fig.cap='(ref:A3)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{r A3, fig.cap='(ref:A3)', out.width='80%', fig.asp=.75, fig.align='center'}
 knitr::include_graphics('pics/A3.png')
 ```
 
 ### Training Details
 
-A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Aditionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. 
+A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Aditionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. 
 
 ### Evaluation Procedure
 
@@ -99,18 +99,18 @@ read_csv('data/runs_3x3_v2.csv') %>%
 ```
 
 (ref:sd-vs-mean) The mean and standard deviation for each model was computed from playing the environment 100,000 steps.
-```{r sd-vs-mean, fig.cap='(ref:sd-vs-mean)', fig.align='left', echo=FALSE}
-knitr::include_graphics('pics/sd_vs_mean_v1.png')
+```{r sd-vs-mean, fig.cap='(ref:sd-vs-mean)', fig.align='center', out.width='99%', out.height='99%'}
+knitr::include_graphics('pics/sd_vs_mean_v3.png')
 ```
 
-(ref:training-mean-window) Mean Rewards per step during training (1,000 step sliding window).
-```{r training-mean-window, fig.cap='(ref:training-mean-window)', fig.align='left', echo=FALSE}
-knitr::include_graphics('pics/mean_window_v1.png')
+(ref:training-mean-window) Mean Rewards per step during training (1,000 steps sliding window).
+```{r training-mean-window, fig.cap='(ref:training-mean-window)', fig.align='center', out.width='99%', out.height='99%'}
+knitr::include_graphics('pics/mean_window_v3_ascending.png')
 ```
 
 (ref:loss) Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of $\gamma$ and _unrolling_ were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.
-```{r loss, fig.cap='(ref:loss)', fig.align='center', echo=FALSE}
-knitr::include_graphics('pics/loss_v1.png')
+```{r loss, fig.cap='(ref:loss)', fig.align='center'}
+knitr::include_graphics('pics/loss_v3_ascending.png')
 ```
 
 ## Disscusion

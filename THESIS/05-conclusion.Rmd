@@ -96,3 +96,60 @@ $FALSE \longleftarrow terminationSignal$
 }
 \caption{Agent-Environment interactions following Open AI Gym API.}
 \end{algorithm}
+
+\newpage
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{Total iterations $T$ to train $Q$ network.}
+\Output{Trained $Q$ network with weights $\theta$.}
+\BlankLine
+\SetKwFunction{Environment}{Environment}
+
+Initialize replay memory $D$ to capacity $N$
+
+Initialize policy network $Q$ with random weights $\theta$
+
+Initialize target network $\hat{Q}$ with weights $\theta^-$ such that 
+$\theta^- = \theta$
+
+Get initial observation: $s \longleftarrow \Environment.reset()$
+
+\For{t=1, ..., T}{
+
+	With probability $\epsilon$: select random action $a$
+
+	Otherwise select: $a \longleftarrow \underset {a'} {\argmax}\ Q(s,a';\theta)$
+	
+	Execute $\Environment.step(a)$ to obtain reward $r$, and next observation $s'$
+	
+	Store transition $(s,a,r,s')$ in $D$
+	
+	Sample a minibatch of transitions $(s_i,a_i,r_i,s'_i)$ from $D$
+	
+$
+  y_i \longleftarrow \begin{cases}
+               			r_i \text{\quad If the episode was over at iteration }i\\
+               			r_i + \gamma \underset {a'} {\max}\ \hat{Q}\ (s'_i,a';\theta^-) \text{\quad Otherwise}
+            		\end{cases}
+$
+	
+	Perform optimization step on $\Big( y_i - Q(s_i,a_i;\theta) \Big)^2$ with respect to $\theta$ 
+	
+	Every $C$ steps synchronize networks weights: $\theta^- = \theta$
+	
+	\eIf{Episode was done at iteration t}{	
+		$s \longleftarrow \Environment.reset()$
+				
+	}{
+		
+		$s \longleftarrow s' $
+	}	
+}
+\caption{Deep Q-networks (DQN) using Open AI Gym API.}
+\end{algorithm}
+
+

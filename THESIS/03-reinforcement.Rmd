@@ -29,6 +29,16 @@ This $p: S \times R \times S \times A \rightarrow [0,1]$ function is known as th
 knitr::include_graphics('pics/agent-env.png')
 ```
 
+(ref:rl-algorithm-type) Broad classification of Reinforcement Learning algorithms. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
+```{r rl-algorithm-type, fig.cap='(ref:rl-algorithm-type)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/circulos_v2.png')
+```
+
+(ref:rl-relations) Broad relations between different types of strategies to solving the Reinforcement Learning Problem. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
+```{r rl-relations, fig.cap='(ref:rl-relations)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/circuloyflechas_v2.png')
+```
+
 ### RL state of the art (Notes)
 
 
