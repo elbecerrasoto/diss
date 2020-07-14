@@ -95,7 +95,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-07-09}
+\date{2020-07-11}
 
 \begin{document}
 \maketitle
@@ -622,14 +622,14 @@ We tried to solve the proposed environment using model-free, value-function appr
 
 Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an Artificial Neural Network (ANN). We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
 
-A high level explanation of our DQN implementation is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a batch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
+A high level explanation of our DQN \href{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} implementation is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
 
 For the full code details refer to: \emph{\url{https://github.com/elbecerrasoto/CARL}}
 
 \hypertarget{preprocessing}{%
 \subsection{Preprocessing}\label{preprocessing}}
 
-The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be infered by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a \emph{numpy array} would fix it.
+The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be infered by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a single \emph{numpy array} would fix it.
 
 The input to the ANN models was a one-hot encoding of the CA grid concatenated with the ``helicopter'' position and the \(m\) remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
 
@@ -691,7 +691,16 @@ Three different \(Q_{network}\) architectures were used. The models were build u
 \hypertarget{training-details}{%
 \subsection{Training Details}\label{training-details}}
 
-A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Aditionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated.
+A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Aditionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the inestability that arises DQN uses a replay memory and a target network.
+
+Nine experiments were run using the described environment, between experiments some hyperparametes were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and \(\gamma\) disscount parameter.
+
+Each experiment was run on \emph{\href{https://colab.research.google.com}{Google Colaboratory}} cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploting epochs. Two exploration schemes were used, for some models a linear annealing of \(\epsilon\) from \(1.0\) to \(0.10\) and for others a simple heruristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
+
+The optimization algorithm was Adam (Kingma and Ba \protect\hyperlink{ref-kingma2014adam}{2014}) with default \emph{\href{https://pytorch.org/docs/stable/optim.html}{Pytorch}} values, with the exeption of \emph{learning rate} that was set manually per experiment. Due to the architecture of the \(Q_{network}\) only the weights related to a particular action were updated
+
+Talk about what?
+In the 2015 paper they talk about:
 
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
@@ -767,6 +776,9 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \hypertarget{apendix-1-algorithms}{%
 \section{Apendix 1 Algorithms}\label{apendix-1-algorithms}}
 
+\hypertarget{agent-environment-interactions}{%
+\subsection{Agent-Environment interactions}\label{agent-environment-interactions}}
+
 \newcommand\mycommfont[1]{\small\ttfamily\textcolor{olive}{#1}}
 \SetCommentSty{mycommfont}
 \begin{algorithm}[H]
@@ -814,8 +826,10 @@ $k \longleftarrow m$
 
 \newpage
 
-\begin{algorithm}[H]
+\hypertarget{agent-environment-interactions-following-open-ai-gym-api}{%
+\subsection{Agent-Environment interactions following Open AI Gym API}\label{agent-environment-interactions-following-open-ai-gym-api}}
 
+\begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
 \SetKwInOut{Input}{Input}
@@ -864,6 +878,9 @@ $FALSE \longleftarrow terminationSignal$
 
 \newpage
 
+\hypertarget{deep-q-networks-dqn-using-open-ai-gym-api}{%
+\subsection{Deep Q-networks (DQN) using Open AI Gym API}\label{deep-q-networks-dqn-using-open-ai-gym-api}}
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -889,7 +906,7 @@ Get initial observation: $s \longleftarrow \Environment.reset()$
 
     Otherwise select: $a \longleftarrow \underset {a'} {\mathop{\mathrm{arg\,max}}}\ Q(s,a';\theta)$
     
-    Execute $\Environment.step(a)$ to obtain reward $r$, and next observation $s'$
+    Execute $\Environment.step(a)$ to obtain reward $r$ and next observation $s'$
     
     Store transition $(s,a,r,s')$ in $D$
     
@@ -906,7 +923,7 @@ $
     
     Every $C$ steps synchronize networks weights: $\theta^- = \theta$
     
-    \eIf{Episode was done at iteration t}{  
+    \eIf{Episode was over at iteration t}{  
         $s \longleftarrow \Environment.reset()$
                 
     }{
@@ -976,6 +993,9 @@ Kari, Jarkko. 1994. ``Reversibility and Surjectivity Problems of Cellular Automa
 
 \leavevmode\hypertarget{ref-kauffman1984emergent}{}%
 Kauffman, Stuart A. 1984. ``Emergent Properties in Random Complex Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 145--56.
+
+\leavevmode\hypertarget{ref-kingma2014adam}{}%
+Kingma, Diederik P, and Jimmy Ba. 2014. ``Adam: A Method for Stochastic Optimization.'' \emph{arXiv Preprint arXiv:1412.6980}.
 
 \leavevmode\hypertarget{ref-kuurka1997languages}{}%
 Kůrka, Petr. 1997. ``Languages, Equicontinuity and Attractors in Cellular Automata.'' \emph{Ergodic Theory and Dynamical Systems} 17 (2): 417--33.

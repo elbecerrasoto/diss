@@ -2,6 +2,8 @@
 
 ## Apendix 1 Algorithms
 
+### Agent-Environment interactions
+
 \newcommand\mycommfont[1]{\small\ttfamily\textcolor{olive}{#1}}
 \SetCommentSty{mycommfont}
 \begin{algorithm}[H]
@@ -49,8 +51,10 @@ $k \longleftarrow m$
 
 \newpage
 
-\begin{algorithm}[H]
 
+### Agent-Environment interactions following Open AI Gym API
+
+\begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
 \SetKwInOut{Input}{Input}
@@ -99,6 +103,8 @@ $FALSE \longleftarrow terminationSignal$
 
 \newpage
 
+### Deep Q-networks (DQN) using Open AI Gym API
+
 \begin{algorithm}[H]
 \DontPrintSemicolon
 \SetAlgoLined
@@ -124,7 +130,7 @@ Get initial observation: $s \longleftarrow \Environment.reset()$
 
 	Otherwise select: $a \longleftarrow \underset {a'} {\argmax}\ Q(s,a';\theta)$
 	
-	Execute $\Environment.step(a)$ to obtain reward $r$, and next observation $s'$
+	Execute $\Environment.step(a)$ to obtain reward $r$ and next observation $s'$
 	
 	Store transition $(s,a,r,s')$ in $D$
 	
@@ -141,7 +147,7 @@ $
 	
 	Every $C$ steps synchronize networks weights: $\theta^- = \theta$
 	
-	\eIf{Episode was done at iteration t}{	
+	\eIf{Episode was over at iteration t}{	
 		$s \longleftarrow \Environment.reset()$
 				
 	}{
