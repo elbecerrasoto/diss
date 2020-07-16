@@ -141,7 +141,7 @@ To Do: Add explanation using the _Halting Problem_.
 
 Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others [@toffoli1984cam]. A hardware implementation of a CAM was developed at MIT [@margolus1995cam] that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
-### Generalized Cellular Automata
+## Generalized Cellular Automata
 
 Generalizations to the classical attributes of CA can be conceived [@ilachinski2001cellular] enabling extensions like:
 

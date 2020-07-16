@@ -6,6 +6,7 @@ site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 classoption: openany
+toc-depth: 3
 lof: True
 lot: True
 bibliography: references.bib
@@ -21,8 +22,8 @@ header-includes:
    - \DeclareMathOperator*{\argmax}{arg\,max}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F)
+```{r chunk-global, include=FALSE}
+knitr::opts_chunk$set(echo=F, message=F, warning=F, dev="cairo_pdf")
 ```
 
 # Abstract {-}

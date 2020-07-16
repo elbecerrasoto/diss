@@ -2,6 +2,79 @@
 suppressMessages(library(tidyverse))
 suppressMessages(library(kableExtra))
 ```
+
+```{r figures-set-up}
+# Libraries ----------------------------------------------------------------------
+
+library(tidyverse) # Wrangling
+library(ggrepel) # Point Labels
+library(cowplot) # Theme and Joining Plots
+library(stringr) # Vectorized Reg-Ex
+
+# Data Files ----------------------------------------------------------------------
+
+# Statistics of Evaluation 100k
+RUNS_FILE <- 'data/normal_and_eps_prof.csv'
+
+# Mean Reward window, size=1000
+WINDOWS_DATA <- 'data/windows_means_3x3.csv'
+
+# Loss data each 10 steps
+LOSS_DATA <- 'data/loss_3x3.csv'
+
+# Defaults ----------------------------------------------------------------------
+
+# Down sample factor of the mean reward and loss per step
+DOWN_SAMPLING <- 111
+
+# Cap error at:
+CAP_ERRORS <- 1200
+
+# Theme ----------------------------------------------------------------------
+
+# Select a system font
+FONT <- 'TeX Gyre Bonum'
+
+# Theme for plots
+theme_set(theme_minimal_grid(12, font_family=FONT))
+
+# Colors for SD vs Mean plot
+GREEN <- "#75C660"
+BROWN <- "#B1A898"
+
+# Colors for Training Dynamics plots
+CUSTOM_PALETTE <- c("#2E4A00", "#B1A898", "#AA8600", "#6A4100", "#75C660", "#666666", "#7F2700", "#FFC300", "#F07E5B")
+```
+
+```{r sd-mean-set-up}
+stats_100k <- read_csv(RUNS_FILE)
+
+cutoff <- stats_100k %>%
+  filter(run =='Heuristic') %>%
+  select(mean) %>%
+  as.numeric()
+
+# Better or equal than Heuristic
+stats_100k <- stats_100k %>%
+  mutate(better = (mean >= cutoff))
+
+# Which runs to label
+epsilon_r <- str_detect(stats_100k$run, '[a-z]_e[0-9]?')
+stats_100k <- stats_100k %>%
+  mutate(epsilon_r = epsilon_r)
+```
+
+```{r reading-windows}
+df_window_mean <- read_csv(WINDOWS_DATA)
+
+runs_descending <- c('c', 'a', 'd', 'i', 'g', 'b', 'h', 'f', 'e')
+runs_ascending <- rev(runs_descending)
+```
+
+```{r reading-loss}
+df_loss <- read_csv(LOSS_DATA)
+```
+
 # Experiments
 
 ## Materials and Methods
@@ -115,7 +188,6 @@ The trained agents were evaluated by playing 100,000 steps in the environment fo
 The obtained return, per experiment, from interacting with the environment 100,000 steps is shown in table \@ref(tab:hyper). Five experiments were able to perform better than the base heuristic ($c,a,d,i,g$ runs). The maxium obtained return was 640,643 a `r round(640643/503521, 2)` fold increase in performance over the base heuristic (return of 503,521).
 
 ```{r hyper, message=FALSE}
-
 caption <- 'Comparision of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.'
 opts <- options(knitr.kable.NA = "")
 
@@ -131,24 +203,86 @@ read_csv('data/runs_3x3_v2.csv') %>%
   kable_styling(latex_options = c('striped', 'scale_down'))
 ```
 
-(ref:sd-vs-mean) The mean and standard deviation for each model was computed from playing the environment 100,000 steps.
-```{r sd-vs-mean, fig.cap='(ref:sd-vs-mean)', fig.align='center', out.width='99%', out.height='99%'}
-knitr::include_graphics('pics/sd_vs_mean_v3.png')
+
+
+(ref:sd-mean) The mean and standard deviation for each model was computed from playing the environment 100,000 steps.
+```{r sd-mean, fig.cap='(ref:sd-mean)', fig.align='center'}
+# SD vs Mean reward
+stats_100k %>%
+  filter(! epsilon_r) %>% 
+  ggplot(aes(y=mean, x=sd))+
+  geom_point(aes(color=better), size=2.5)+
+  geom_text_repel(aes(label=run), size=6, family = FONT)+
+  labs(title = 'Is the Agent policy better than a Heuristic?',
+       subtitle = 'DQN Runs [a-i]',
+       x = 'Standard Deviation',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = '')+
+  scale_color_manual(labels = c('Worse', 'Better'), values = c(BROWN, GREEN))
+```
+
+(ref:sd-mean-epsilon) The mean and standard deviation for each model was computed from playing the environment 100,000 steps.
+```{r sd-mean-epsilon, fig.cap='(ref:sd-mean-epsilon)', fig.align='center'}
+# SD vs Mean reward
+stats_100k %>%
+  ggplot(aes(y=mean, x=sd))+
+  geom_point(aes(color=better), size=1.5)+
+  geom_text_repel(aes(label=run), size=3, segment.alpha=1/5, family = FONT)+
+  labs(title = 'Robustness of agents policies',
+       subtitle = 'Runs with a small epsilon of 0.02, 0.05 and 0.10',
+       x = 'Standard Deviation',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = '')+
+  scale_color_manual(labels = c('Worse', 'Better'), values = c(BROWN, GREEN))
 ```
 
 ### Training Dynamics
 
-(ref:training-mean-window) Mean Rewards per step during training (1,000 steps sliding window).
-```{r training-mean-window, fig.cap='(ref:training-mean-window)', fig.align='center', out.width='99%', out.height='99%'}
-knitr::include_graphics('pics/mean_window_v3_ascending.png')
+(ref:reward-dynamics) Mean Rewards per step during training (1,000 steps sliding window).
+```{r reward-dynamics, fig.cap='(ref:reward-dynamics)', fig.align='center'}
+df_window_mean[c(T, rep(F,DOWN_SAMPLING)),] %>%
+  gather(key = 'run', value='window_1000k', -epoch) %>%
+  mutate(run = ordered(run, levels = runs_ascending)) %>%
+  ggplot(aes(x=epoch,y=window_1000k))+
+  geom_line(aes(color=run), size=1.3, alpha=0.80)+
+  #scale_color_brewer(type='qual', palette='Set3')+
+  scale_color_manual(values = CUSTOM_PALETTE)+
+  labs(title = 'DQN training dynamics for different runs',
+       subtitle = 'Mean reward by windows of 1000 epochs',
+       x = 'Epoch',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = 'Experiment\n(from worst to best)')
 ```
+
 
 (ref:loss) Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of $\gamma$ and _unrolling_ were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.
 ```{r loss, fig.cap='(ref:loss)', fig.align='center'}
-knitr::include_graphics('pics/loss_v3_ascending.png')
+df_loss[c(T, rep(F,DOWN_SAMPLING)),] %>%
+  gather(key = 'run', value='loss', -epoch) %>%
+  mutate(run = ordered(run, levels = runs_ascending)) %>%
+  filter(loss < CAP_ERRORS) %>%
+  ggplot(aes(x=epoch, y=loss))+
+  geom_line(aes(color=run))+
+  # scale_color_brewer(type='qual', palette='Set3')+
+  scale_color_manual(values = CUSTOM_PALETTE)+
+  facet_grid(vars(run), scales='free')+
+  labs(title = 'Best runs maintain relatively stable error',
+       subtitle = 'Q-Network loss for different runs',
+       x = 'Epoch',
+       y = 'Mean Squared Error',
+       caption = 'author: Becerra-Soto E.',
+       color = 'Experiment\n(from worst to best)')+
+  theme(strip.text.x = element_text(angle = 90),
+        axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=6))
 ```
 
 ## Disscusion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
 
 ### Effect of Hyperameters
 
