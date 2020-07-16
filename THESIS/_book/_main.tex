@@ -95,7 +95,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-07-11}
+\date{2020-07-15}
 
 \begin{document}
 \maketitle
@@ -106,14 +106,25 @@
 }
 \listoftables
 \listoffigures
-\hypertarget{carl}{%
-\chapter{CARL}\label{carl}}
-
 \hypertarget{abstract}{%
-\section{Abstract}\label{abstract}}
+\chapter*{Abstract}\label{abstract}}
+\addcontentsline{toc}{chapter}{Abstract}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+\newpage
 
 \hypertarget{acknowledgments}{%
-\section{Acknowledgments}\label{acknowledgments}}
+\chapter*{Acknowledgments}\label{acknowledgments}}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+\newpage
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
@@ -122,6 +133,11 @@
 \section{Motivations}\label{motivations}}
 
 Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+
+Talk about why automata are a good benchmark.
++ Easy to program
++ Model complex systems
++ Are models of universal computation
 
 \hypertarget{problem-statement}{%
 \section{Problem Statement}\label{problem-statement}}
@@ -622,7 +638,7 @@ We tried to solve the proposed environment using model-free, value-function appr
 
 Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an Artificial Neural Network (ANN). We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
 
-A high level explanation of our DQN \href{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} implementation is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
+A high level explanation of our DQN implementation \protect\hyperlink{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
 
 For the full code details refer to: \emph{\url{https://github.com/elbecerrasoto/CARL}}
 
@@ -691,26 +707,47 @@ Three different \(Q_{network}\) architectures were used. The models were build u
 \hypertarget{training-details}{%
 \subsection{Training Details}\label{training-details}}
 
-A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Aditionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the inestability that arises DQN uses a replay memory and a target network.
+A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Additionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the instability that arises DQN uses a replay memory and a target network.
 
-Nine experiments were run using the described environment, between experiments some hyperparametes were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and \(\gamma\) disscount parameter.
+Nine experiments were run using the described environment, between experiments some hyperparameters were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and \(\gamma\) discount parameter. The overall values for the hyperparameters were taken from (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) and then informally scaled to observe its effects on performance. We did not perform a systematic grid search due to high computational cost. The hyperparameters that were varied are shown in Table \ref{tab:hyper}, while the constant hyperparameters can be seen in Table \ref{tab:const}.
 
-Each experiment was run on \emph{\href{https://colab.research.google.com}{Google Colaboratory}} cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploting epochs. Two exploration schemes were used, for some models a linear annealing of \(\epsilon\) from \(1.0\) to \(0.10\) and for others a simple heruristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
+Each experiment was run on \emph{\href{https://colab.research.google.com}{Google Colaboratory}} cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploiting epochs. Two exploration schemes were used, for some models a linear annealing of \(\epsilon\) from \(1.0\) to \(0.10\) and for others a simple heuristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
 
-The optimization algorithm was Adam (Kingma and Ba \protect\hyperlink{ref-kingma2014adam}{2014}) with default \emph{\href{https://pytorch.org/docs/stable/optim.html}{Pytorch}} values, with the exeption of \emph{learning rate} that was set manually per experiment. Due to the architecture of the \(Q_{network}\) only the weights related to a particular action were updated
+The employed optimization algorithm was Adam (Kingma and Ba \protect\hyperlink{ref-kingma2014adam}{2014}) with default \emph{\href{https://pytorch.org/docs/stable/optim.html}{Pytorch}} values, with the exception of \emph{learning rate} that was set manually per experiment (see Table \ref{tab:hyper}). Each transition tuple in the \emph{experience replay} only estimates a single \(Q(s,a)\) value, however the output of the \(Q_{network}\) is a vector of \(Q\) values for all actions, so during optimization steps, for each example in the minibatch, only the weights involved in the calculation of a single \(Q(s,a)\) must be taken into account for the weights updating.
 
-Talk about what?
-In the 2015 paper they talk about:
+\begin{table}
+
+\caption{\label{tab:const}Constant hyperparameter values across the 9 experiments.}
+\centering
+\begin{tabular}[t]{lr}
+\toprule
+Hyperparameter & Value\\
+\midrule
+\rowcolor{gray!6}  Total Training Steps & 1,200,000\\
+Exploration Steps & 400,000\\
+\rowcolor{gray!6}  Exploitation Steps & 800,000\\
+Policy and Target Networks Synchronization & 10,000\\
+\rowcolor{gray!6}  Experience Replay Size & 200,000\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
 
+The trained agents were evaluated by playing 100,000 steps in the environment following the greedy policy (\(\epsilon=0.0\)) over the learned \(Q\) values. The \emph{return}, \emph{sample mean} and \emph{sample standard deviation} of all the evaluation rewards per run were computed. To provide a comparison baseline the same statistics were calculated for two other agents, a heuristic and a random ones. The heuristic was the previously described of following fire cells in a 1-step Moore's neighborhood. Due to the continuing nature of our RL task the return is essentially the summatory of all the rewards obtained during the evaluation steps, no disscount is used and no resets to starting states are happening between evaluation steps per experiment.
+
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
+\hypertarget{hyperparameter-comparison}{%
+\subsection{Hyperparameter Comparison}\label{hyperparameter-comparison}}
+
+The obtained return, per experiment, from interacting with the environment 100,000 steps is shown in table \ref{tab:hyper}. Five experiments were able to perform better than the base heuristic (\(c,a,d,i,g\) runs). The maxium obtained return was 640,643 a \texttt{round(640643/503521,\ 2)} fold increase in performance over the base heuristic (return of 503,521).
+
 \begin{table}
 
-\caption{\label{tab:3x3}Hyperparameters of 3x3 forest forest environments runs. The return was computed from playing 100,000 steps following the learned policy.}
+\caption{\label{tab:hyper}Comparision of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.}
 \centering
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{lrlrlrrr}
@@ -745,6 +782,9 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps.}\label{fig:sd-vs-mean}
 \end{figure}
 
+\hypertarget{training-dynamics}{%
+\subsection{Training Dynamics}\label{training-dynamics}}
+
 
 
 \begin{figure}
@@ -770,8 +810,37 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
+\hypertarget{effect-of-hyperameters}{%
+\subsection{Effect of Hyperameters}\label{effect-of-hyperameters}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+\hypertarget{training-dynamics-1}{%
+\subsection{Training Dynamics}\label{training-dynamics-1}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+\hypertarget{benchmark-capabilities}{%
+\subsection{Benchmark Capabilities}\label{benchmark-capabilities}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+\hypertarget{appendices}{%
+\chapter*{Appendices}\label{appendices}}
+\addcontentsline{toc}{chapter}{Appendices}
 
 \hypertarget{apendix-1-algorithms}{%
 \section{Apendix 1 Algorithms}\label{apendix-1-algorithms}}

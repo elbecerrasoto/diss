@@ -78,29 +78,54 @@ knitr::include_graphics('pics/A3.png')
 
 ### Training Details
 
-A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Aditionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the inestability that arises DQN uses a replay memory and a target network.
+A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Additionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the instability that arises DQN uses a replay memory and a target network.
 
-Nine experiments were run using the described environment, between experiments some hyperparametes were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and $\gamma$ disscount parameter.
+Nine experiments were run using the described environment, between experiments some hyperparameters were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and $\gamma$ discount parameter. The overall values for the hyperparameters were taken from [@mnih2015human] and then informally scaled to observe its effects on performance. We did not perform a systematic grid search due to high computational cost. The hyperparameters that were varied are shown in Table \@ref(tab:hyper), while the constant hyperparameters can be seen in Table \@ref(tab:const).
 
-Each experiment was run on _[Google Colaboratory](https://colab.research.google.com)_ cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploting epochs. Two exploration schemes were used, for some models a linear annealing  of $\epsilon$ from $1.0$ to $0.10$ and for others a simple heruristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
+Each experiment was run on _[Google Colaboratory](https://colab.research.google.com)_ cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploiting epochs. Two exploration schemes were used, for some models a linear annealing  of $\epsilon$ from $1.0$ to $0.10$ and for others a simple heuristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
 
-The employed optimization algorithm was Adam [@kingma2014adam] with default _[Pytorch](https://pytorch.org/docs/stable/optim.html)_ values, with the exeption of _learning rate_ that was set manually per experiment (see ). Each transition tuple in the _experience replay_ only estimates a single $Q(s,a)$ value, however the output of the $Q_{network}$ is a vector of $Q$ values for all actions so during optimization steps only the weights involved in the calculation of a single $Q(s,a)$ value must be updated. 
+The employed optimization algorithm was Adam [@kingma2014adam] with default _[Pytorch](https://pytorch.org/docs/stable/optim.html)_ values, with the exception of _learning rate_ that was set manually per experiment (see Table \@ref(tab:hyper)). Each transition tuple in the _experience replay_ only estimates a single $Q(s,a)$ value, however the output of the $Q_{network}$ is a vector of $Q$ values for all actions, so during optimization steps, for each example in the minibatch, only the weights involved in the calculation of a single $Q(s,a)$ must be taken into account for the weights updating.
 
+```{r const, message=FALSE}
+caption <- 'Constant hyperparameter values across the 9 experiments.'
 
+tribble(
+  ~Hyperparameter,        ~Value,
+  'Total Training Steps', 1.2e6,
+  'Exploration Steps',    4e5,
+  'Exploitation Steps',   8e5,
+  'Policy and Target Networks Synchronization', 1e4,
+  'Experience Replay Size', 2e5
+) %>%
+knitr::kable(
+       caption=caption, format.args = list(big.mark = ",", scientific = F),
+       booktabs=T
+    ) %>%
+  kable_styling(latex_options = c('striped'))
+```
 
 ### Evaluation Procedure
 
+The trained agents were evaluated by playing 100,000 steps in the environment following the greedy policy ($\epsilon=0.0$) over the learned $Q$ values. The _return_, _sample mean_ and _sample standard deviation_ of all the evaluation rewards per run were computed. To provide a comparison baseline the same statistics were calculated for two other agents, a heuristic and a random ones. The heuristic was the previously described of following fire cells in a 1-step Moore's neighborhood. Due to the continuing nature of our RL task the return is essentially the summatory of all the rewards obtained during the evaluation steps, no disscount is used and no resets to starting states are happening between evaluation steps per experiment. 
+
 ## Results
 
-```{r 3x3, message=FALSE}
+### Hyperparameter Comparison
+
+The obtained return, per experiment, from interacting with the environment 100,000 steps is shown in table \@ref(tab:hyper). Five experiments were able to perform better than the base heuristic ($c,a,d,i,g$ runs). The maxium obtained return was 640,643 a `r round(640643/503521, 2)` fold increase in performance over the base heuristic (return of 503,521).
+
+```{r hyper, message=FALSE}
+
+caption <- 'Comparision of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.'
 opts <- options(knitr.kable.NA = "")
+
 read_csv('data/runs_3x3_v2.csv') %>%
   select(-name, -mean, -sd, -better) %>%
   arrange(desc(return)) %>%
   knitr::kable(
     col.names = c('Run', 'Return', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size', 'Gamma'),
     booktabs=T,
-    caption='Hyperparameters of 3x3 forest forest environments runs. The return was computed from playing 100,000 steps following the learned policy.',
+    caption=caption,
     format.args = list(big.mark = ",", scientific = F)
     ) %>%
   kable_styling(latex_options = c('striped', 'scale_down'))
@@ -110,6 +135,8 @@ read_csv('data/runs_3x3_v2.csv') %>%
 ```{r sd-vs-mean, fig.cap='(ref:sd-vs-mean)', fig.align='center', out.width='99%', out.height='99%'}
 knitr::include_graphics('pics/sd_vs_mean_v3.png')
 ```
+
+### Training Dynamics
 
 (ref:training-mean-window) Mean Rewards per step during training (1,000 steps sliding window).
 ```{r training-mean-window, fig.cap='(ref:training-mean-window)', fig.align='center', out.width='99%', out.height='99%'}
@@ -122,3 +149,22 @@ knitr::include_graphics('pics/loss_v3_ascending.png')
 ```
 
 ## Disscusion
+
+### Effect of Hyperameters
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+### Training Dynamics
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+
+### Benchmark Capabilities
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+

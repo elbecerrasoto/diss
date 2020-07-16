@@ -4,6 +4,11 @@
 
 Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation.  A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
 
+Talk about why automata are a good benchmark.
++ Easy to program
++ Model complex systems
++ Are models of universal computation
+
 ## Problem Statement
 
 In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of _Actions_ ($A$), _States_ ($S$) and _Rewards_ ($R$), also specify an "Agent" that interacts with the CA and explicitly or implicitly define the transitions of the MDP $p(s',r|s,a): S \times R \times S \times A \rightarrow [0,1]$.

@@ -1,6 +1,7 @@
 # Thesis Directory
 /THESIS/pics/
 /THESIS/data/
+/THESIS/test/
 
 # History files
 .Rhistory
