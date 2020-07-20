@@ -16,6 +16,8 @@ In this thesis, we consider the advantages of using Cellular Automata as underly
 
 Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an "Agent" or "Helicopter" flying over the forest trying to extinguish the wild fire.
 
+The optimaztion problem that we want to solve is: Minimize the 
+
 To Do: Describe the RL task and state the optimization problem. 
 
 ## Objectives

@@ -95,7 +95,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-07-16}
+\date{2020-07-19}
 
 \begin{document}
 \maketitle
@@ -135,9 +135,16 @@ Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec bland
 Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
 
 Talk about why automata are a good benchmark.
-+ Easy to program
-+ Model complex systems
-+ Are models of universal computation
+
+\begin{itemize}
+\tightlist
+\item
+  Easy to program
+\item
+  Model complex systems
+\item
+  Are models of universal computation
+\end{itemize}
 
 \hypertarget{problem-statement}{%
 \section{Problem Statement}\label{problem-statement}}
@@ -145,6 +152,8 @@ Talk about why automata are a good benchmark.
 In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of \emph{Actions} (\(A\)), \emph{States} (\(S\)) and \emph{Rewards} (\(R\)), also specify an ``Agent'' that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): S \times R \times S \times A \rightarrow [0,1]\).
 
 Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wild fire.
+
+The optimaztion problem that we want to solve is: Minimize the
 
 To Do: Describe the RL task and state the optimization problem.
 
@@ -360,12 +369,12 @@ The usual strategy to prove that a given CA is universal is to show its equivale
 
 On the other hand possessing the same power as a conventional digital computer plays an important role on our mathematical ability to make predictions on the behavior of CA, because all universal computers require resources in the same order of magnitude to process a particular algorithm, thus in general a computational shortcut to the simulation of any universal CA does not exist (Toffoli \protect\hyperlink{ref-toffoli1977cellular}{1977}). This implies that even if an analytical expression for exactly capturing the evolution of a universal CA is obtained, evaluating such expression would take asymptotically the same time as just running the CA and observing its own evolution. Thus remarkably the most efficient way to characterize a universal CA is through its own simulation (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).
 
-To Do: Add explanation using the \emph{Halting Problem}.
+A different explanation of why, in general, there is not an analytical expression to predict, for any time step \(t\) the grid configuration of a universal CA, is by means of the \emph{Halting Problem}, which it is known to be \emph{undeciadable} (Turing \protect\hyperlink{ref-turing1936computable}{1936}). Thus if a CA it is taken as a running program there is no general way of knowing if it would \emph{halt}, with the meaning of \emph{halting}, for this case, being that the CA would reach any configuration that signals the results of the computations.
 
 Furthermore locality being one of the main ingredients of CA imposes an almost independent update on each cell that is only influenced by its neighbors. As the execution of the program by the CA is being carried out individually by its cells the computations are being executed in a fully parallel manner. Consequently simulations on CA allow for efficient parallel implementations of any real world system that can be codified into the CA formalism. For example CA based machines CAMs (CA Machines) have been proposed by Toffoli and others (Toffoli \protect\hyperlink{ref-toffoli1984cam}{1984}). A hardware implementation of a CAM was developed at MIT (Margolus \protect\hyperlink{ref-margolus1995cam}{1995}) that for the modeling of complex systems it could achieve a performance of several orders of magnitude higher that a traditional computer at a comparable cost.
 
 \hypertarget{generalized-cellular-automata}{%
-\subsection{Generalized Cellular Automata}\label{generalized-cellular-automata}}
+\section{Generalized Cellular Automata}\label{generalized-cellular-automata}}
 
 Generalizations to the classical attributes of CA can be conceived (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) enabling extensions like:
 
@@ -602,9 +611,9 @@ The ability of allowing an agent to change the CA configurations express the att
 
 The particular environment that was used for this thesis is one that has the semantics of a ``helicopter'' trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters \(p=0.33\) (tree growth probability) and \(f=0.066\) (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them ``rocks''. The starting lattice configuration was made via random sampling by cell with probability of choosing ``tree'' of \(0.75\) and ``fire'' of \(0.25\). The second component, the agent (``helicopter'') has a starting position in the middle of the lattice (\emph{2nd row and column}), from there it can move in any direction of a Moore's neighborhood, thus the agent can choose from \(9\) actions (\emph{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a ``fire'' cell to ``empty''. After some movements of the ``helicopter'' the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: \emph{move, update, move, move, update, move, move, update, move, move, \ldots{}} (see \ref{fig:thesis-3-3-env}). In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was \(+1\) per ``tree'' cell and \(-1\) per ``fire'' cell, in other words a balance between trees and fires. Finally the RL task was continuous.
 
-We selected the parameters of the DMS by seeking a separation between the scales of \(f\) and \(p\) (\(f \ll p\)), since a steady state is reached when \(\lim \frac {f}{p} \to 0\) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}) and we wanted to see if the agent would significatively alter the dynamics of the CA. In our case \(\frac {f}{p}=\) 0.2. Alongside, empirical tunning was conducted from running the environment with a random policy to select the exact values of \(f\) and \(p\) that would make the grid relatively active at each step. It is important to note that the steady state only appears on large grids, as smaller ones are subject to finite size effects (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}), thus we paid more attention to the empirical second criterion. Nevertheless balancing the two parameters would be important in future grid scaling experiments.
+We selected the parameters of the DMS by seeking a separation between the scales of \(f\) and \(p\) (\(f \ll p\)), since a steady state is reached when \(\lim \frac {f}{p} \to 0\) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}) and we wanted to see if the agent would significantly alter the dynamics of the CA. In our case \(\frac {f}{p}=\) 0.2. Alongside, empirical tuning was conducted from running the environment with a random policy to select the exact values of \(f\) and \(p\) that would make the grid relatively active at each step. It is important to note that the steady state only appears on large grids, as smaller ones are subject to finite size effects (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}), thus we paid more attention to the empirical second criterion. Nevertheless balancing the two parameters would be important in future grid scaling experiments.
 
-Moreover the FFEM tool adds two new cells types. A ``rock'' type that does not interact with anything and is used as a barrier to the fire dynamics, it is always constant. A ``lake'' type that behaves exactly like a ``rock'' but it marks special positions in the grid that can alter the ``helicopter'' internal state. For example an idea (yet to be implemented) is to make the ``power'' of the ``helicopter'' limited so it would need to use it ``wisely'' and then would go to a ``lake'' to recharge it, akin to refilling its tank to keep fighting the wild fire. Also the FFEM tool generalizes the ``powers'' of the ``helicopter'' allowing for the exchange of any cell type for another, this lets for the creation of environments with a diversity of semantics like: An environment where the agent has to put barriers or one where it has to strategically deforest to prevent the spread of fire or even one where it has to completly reorganize the CA lattice. Even more functionality was included like a deterministic mode, generalized reward functions and several termination conditions, to check all the FFEM features consult: \emph{\url{https://github.com/elbecerrasoto/gym-forest-fire}}.
+Moreover the FFEM tool adds two new cells types. A ``rock'' type that does not interact with anything and is used as a barrier to the fire dynamics, it is always constant. A ``lake'' type that behaves exactly like a ``rock'' but it marks special positions in the grid that can alter the ``helicopter'' internal state. For example an idea (yet to be implemented) is to make the ``power'' of the ``helicopter'' limited so it would need to use it ``wisely'' and then would go to a ``lake'' to recharge it, akin to refilling its tank to keep fighting the wild fire. Also the FFEM tool generalizes the ``powers'' of the ``helicopter'' allowing for the exchange of any cell type for another, this lets for the creation of environments with a diversity of semantics like: An environment where the agent has to put barriers or one where it has to strategically deforest to prevent the spread of fire or even one where it has to completely reorganize the CA lattice. Even more functionality was included like a deterministic mode, generalized reward functions and several termination conditions, to check all the FFEM features consult: \emph{\url{https://github.com/elbecerrasoto/gym-forest-fire}}.
 
 
 
@@ -638,23 +647,23 @@ We tried to solve the proposed environment using model-free, value-function appr
 
 Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an Artificial Neural Network (ANN). We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
 
-A high level explanation of our DQN implementation \protect\hyperlink{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are syncronized.
+A high level explanation of our DQN implementation \protect\hyperlink{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are synchronized.
 
 For the full code details refer to: \emph{\url{https://github.com/elbecerrasoto/CARL}}
 
 \hypertarget{preprocessing}{%
 \subsection{Preprocessing}\label{preprocessing}}
 
-The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be infered by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a single \emph{numpy array} would fix it.
+The FFEM tool generates environments that follow the guidelines of the \emph{Open AI Gym API} (OAGA) (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}). The API specifies that the observation should be a numerical vector, that is commonly returned as a \emph{numpy} \(n\)-dimensional array (Walt, Colbert, and Varoquaux \protect\hyperlink{ref-walt2011numpy}{2011}). In our implementation we instead returned a tuple of three \emph{numpy arrays} representing: the grid data (cell states), the position of the helicopter and the remaining moves (\(m\)) to CA updating. We made the knowledge of \(m\) available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing \(m\) (just dropping its value from the tuple), thus shifting the system to a \emph{Partially Observable Markov Decision Process} (POMDP), where the hidden state \(m\) should be inferred by the agent. Strictly speaking our implementation is departing from the \emph{Open AI Gym API} observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a single \emph{numpy array} would fix it.
 
 The input to the ANN models was a one-hot encoding of the CA grid concatenated with the ``helicopter'' position and the \(m\) remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
 
 \hypertarget{ann-architectures}{%
 \subsection{ANN Architectures}\label{ann-architectures}}
 
-Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parametrized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
+Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parameterized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
 
-A naive, nonetheless intuitive, approch is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computions of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
+A naive, nonetheless intuitive, approach is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computations of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
 
 Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
 
@@ -662,13 +671,31 @@ Three different \(Q_{network}\) architectures were used. The models were build u
 \tightlist
 \item
   Architecture 1 (A1):
-  \[(30 \times 1) \to (128 \times 1) \to (256 \times 1) \to (128 \times 1) \to (32 \times 1) \to (9 \times 1)\]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Number of learnable parameters: \ensuremath{7.4313\times 10^{4}}
+    \[(30 \times 1) \to (128 \times 1) \to (256 \times 1) \to (128 \times 1) \to (32 \times 1) \to (9 \times 1)\]
+  \end{itemize}
 \item
   Architecture 2 (A2):
-  \[(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Number of learnable parameters: \ensuremath{4.9673\times 10^{4}}
+    \[(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+  \end{itemize}
 \item
   Architecture 3 (A3):
-  \[(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Number of learnable parameters: \ensuremath{2.87881\times 10^{5}}
+    \[(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)\]
+  \end{itemize}
 \end{itemize}
 
 
@@ -717,7 +744,7 @@ The employed optimization algorithm was Adam (Kingma and Ba \protect\hyperlink{r
 
 \begin{table}
 
-\caption{\label{tab:const}Constant hyperparameter values across the 9 experiments.}
+\caption{\label{tab:const}Constant DQN hyperparameters values across the 9 experiments.}
 \centering
 \begin{tabular}[t]{lr}
 \toprule
@@ -735,7 +762,7 @@ Policy and Target Networks Synchronization & 10,000\\
 \hypertarget{evaluation-procedure}{%
 \subsection{Evaluation Procedure}\label{evaluation-procedure}}
 
-The trained agents were evaluated by playing 100,000 steps in the environment following the greedy policy (\(\epsilon=0.0\)) over the learned \(Q\) values. The \emph{return}, \emph{sample mean} and \emph{sample standard deviation} of all the evaluation rewards per run were computed. To provide a comparison baseline the same statistics were calculated for two other agents, a heuristic and a random ones. The heuristic was the previously described of following fire cells in a 1-step Moore's neighborhood. Due to the continuing nature of our RL task the return is essentially the summatory of all the rewards obtained during the evaluation steps, no disscount is used and no resets to starting states are happening between evaluation steps per experiment.
+The trained agents were evaluated by playing 100,000 steps in the environment following \(\epsilon\)-greedy policies (\(\epsilon\) of \(0.00\), \(0.02\), \(0.05\), \(0.10\)) over the learned \(Q\) values. The \emph{return}, \emph{sample mean} and \emph{sample standard deviation} of all evaluation \emph{rewards} per run were computed. To provide a comparison baseline the same statistics were calculated for two other agents, a heuristic and a random ones. The heuristic was the previously described of following fire cells in a 1-step Moore neighborhood. Due to the continuing nature of our RL task the return is essentially the summation of all the \emph{rewards} obtained during the evaluation steps, no discount is used and no resets to starting states are happening between evaluation steps per experiment.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -743,7 +770,7 @@ The trained agents were evaluated by playing 100,000 steps in the environment fo
 \hypertarget{hyperparameter-comparison}{%
 \subsection{Hyperparameter Comparison}\label{hyperparameter-comparison}}
 
-The obtained return, per experiment, from interacting with the environment 100,000 steps is shown in table \ref{tab:hyper}. Five experiments were able to perform better than the base heuristic (\(c,a,d,i,g\) runs). The maxium obtained return was 640,643 a 1.27 fold increase in performance over the base heuristic (return of 503,521).
+The obtained \emph{return}, per experiment, from interacting with the environment 100,000 steps is shown in Table \ref{tab:hyper}. Five experiments were able to perform better than the base heuristic (\(c,a,d,i,g\) runs). Three were worse than random (\(h,f,e\) runs) and one (\(b\) run) was in between. The maximum obtained \emph{return} was 640,643 a 1.27 fold increase in performance over the base heuristic (return of 503,521).
 
 \begin{table}
 
@@ -771,6 +798,8 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \end{tabular}}
 \end{table}
 
+The comparison of the obtained \emph{mean reward per step} and \emph{reward standard deviation} is shown in Figure \ref{fig:sd-mean}. It can be observed that the best runs (\(c,a,d,i,g\)) also have the an smaller \emph{standard deviation}.
+
 
 
 \begin{figure}
@@ -779,8 +808,10 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 
 }
 
-\caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps.}\label{fig:sd-mean}
+\caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps, following greedy policies (\(\epsilon=0\)).}\label{fig:sd-mean}
 \end{figure}
+
+Furthermore a comparison of agents following \emph{\(\epsilon\)-greedy} policies is shown in Figure \ref{fig:sd-mean-epsilon}. It could be seen that the performance is close to their respective \emph{greedy} policies.
 
 
 
@@ -790,11 +821,13 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 
 }
 
-\caption{The mean and standard deviation for each model was computed from playing the environment 100,000 steps.}\label{fig:sd-mean-epsilon}
+\caption{Performance of \emph{\(\epsilon\)-greedy} policies with \(epsilon values\) of \(0.02, 0.05\) and \(0.10\).}\label{fig:sd-mean-epsilon}
 \end{figure}
 
 \hypertarget{training-dynamics}{%
 \subsection{Training Dynamics}\label{training-dynamics}}
+
+During training of each DQN run the change in \emph{rewards} was monitored, logging the \emph{reward} each 10 iterations. From this loggings the \emph{mean reward per step} was calculated by a sliding window of size 1,000. The \emph{mena rewards per step} during learning are shown in Figure \ref{fig:reward-dynamics}.
 
 
 
@@ -807,6 +840,8 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \caption{Mean Rewards per step during training (1,000 steps sliding window).}\label{fig:reward-dynamics}
 \end{figure}
 
+Similarly the values of the error were logged each 10 step. The error behavior during training can be seen in Figure \ref{fig:loss}.
+
 
 
 \begin{figure}
@@ -818,38 +853,77 @@ f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \caption{Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of \(\gamma\) and \emph{unrolling} were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.}\label{fig:loss}
 \end{figure}
 
+Visual demonstrations are available for the best two runs:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.youtube.com/watch?v=9qFw78__sSM}{Run C:} \emph{\url{https://www.youtube.com/watch?v=9qFw78__sSM}}
+\item
+  \href{https://www.youtube.com/watch?v=DHdRd96KEZA}{Run A:} \emph{\url{https://www.youtube.com/watch?v=DHdRd96KEZA}}
+\end{itemize}
+
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+The main objective of this thesis is to design and characterize a novel environment for \emph{Reinforcement Learning}. It must be based on Cellular Automata (CA), with the rationale that a handful of well constructed CA based environments would provide an ``interesting'' set of benchmark tasks for Reinforcement Learning algorithms.
+
+The appeal of such tasks arises from the properties of CA. Some theoretical and practical properties that could make CA a good RL benchmark are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  They are easy to implement.
+\item
+  They can model complex real world phenomena.
+\item
+  Some CA have \emph{universal computation} capabilities.
+\end{enumerate}
+
+Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wild fire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). To further characterize the proposed environment we have applied DQN to try to solve it.
 
 \hypertarget{effect-of-hyperameters}{%
 \subsection{Effect of Hyperameters}\label{effect-of-hyperameters}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters (Irpan \protect\hyperlink{ref-rlblogpost}{2018}). The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see \emph{\url{http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf}}) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect \emph{``life signals''} (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until \emph{``life signals''} are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of \(1 \times 9\), \(3 \times 3\), \(5 \times 5\) and \(8 \times 8\) (data not shown). We decided to settle on the \(3 \times 3\) grid, to further extend hyperparameter search, as bigger grid sizes were not showing \emph{``life signals''}.
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+The obtained results from the non-exhaustive hyperparameter search can be seen in Table \ref{tab:hyper}. Answering the question of to what degree the hyperparameters affect the end results of each run is not trivial and mostly experimental arguments can be provided. This is because attribution becomes difficult when multiple hyperparameters are changed at the same time since their interactions can be non-linear, yet carefully tuning a single hyperparameter can be inefficient as we would only explore a single dimension of hyperparameter space.
 
-\hypertarget{training-dynamics-1}{%
-\subsection{Training Dynamics}\label{training-dynamics-1}}
+The experiments \(c\), \(a\), \(d\), \(i\) and \(g\) have a better performance than the baseline heuristic. The hyperparameter that seems to have the greater effect is \emph{Unrolling}. When it is equal to \(1\) the experiments failed to learn (beating the heuristic). \emph{Unrolling} helps to ``accelerate'' learning as future steps rewards information is used to estimate the \(Q\) values. However in our case this ``acceleration'' meant the difference between learning something or nothing at all. A comparison between experiments \(c\), \(h\), and \(f\) is interesting as they have similar hyperparameters values but \(h\) and \(f\) failed to learn and arguably the difference can be attributed to the \emph{Unrolling} hyperparameter.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+The tried \emph{learning rate} values were \(0.0001\), \(0.0003\), both of them worked. A small \emph{minibatch size} (\(16\) and \(32\)) and a \(\gamma\) of \(0.99\) also worked.
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+One of the approaches to make the task easier was to allow some agents to train following a heuristic policy during exploration. Even though the best performing run used the heuristic exploration, other agents were capable of learning by a simple \(\epsilon\) linear decrease from \(1.0\) to \(0.10\) during the fisrt 400,000 iterations. Thus learning is achievable without the heuristic and in future experiments within the same environment it could be discarded as it can bias learning. The impact of exploring with the heuristic can be seen in the training dynamics plot (Figure \ref{fig:reward-dynamics}) where the agents using the heuristic start the training with a much better performance, but after exploration is finished some manage to learn from the heuristic (\(c\), \(d\)) and others not and its performance plummets (\(f\), \(e\)). A similar behaviour can be observed in the epochs vs loss plot (Figure \ref{fig:loss}), where, for the heuristic runs, the error started low and it was kept in that way during the exploration phase, since the linear exploration policy is steadely changing as opossed to the heuristic. Then when exploration finished and the \(0.10\)-greedy policy took effect, some runs had learned and its error was maintained and others had not and its errors blew up.
+
+The choosen ANN architectures are in increasing order of complexity: A2, A1 and A3 (see Figures \ref{fig:A2}, \ref{fig:A1} and \ref{fig:A3}). The best run employed the more complex network (A3). The number A3 has a number of parameters in the same order of magnitude as the environment states (\ensuremath{2.87881\times 10^{5}} parameters vs.~\ensuremath{3.54294\times 10^{5}} states), so it is expected to be considerably overfitting. The number of parameters of the next performing network (\ensuremath{4.9673\times 10^{4}} parameters) is of an order below, but still it is expected to be overfitting.
+
+Training for more iterations presumably would not increase significantly the performance of any experiment as it could be seen from the training dynamics plot (see Figure \ref{fig:reward-dynamics}).
+
+From the evaluation data it can be observed that the best performing runs have a lower \emph{standard deviation} to those that failed to learn (Figure \ref{fig:sd-mean}), thus the better runs not only played better but they consistentily did it. Likewise, from the same data, three overall regions, in terms of \emph{mean reward} and \emph{standard deviation} can be seen. The first one groups the best runs together. The second groups the worst runs. The third one contains the Heuristic and the \(g\) run. From the third region is interesting to notice that even so agent \(g\) plays better than the heuristic it does it with a higher \emph{standard deviation}, presumably because it performs really well in some enviroment states but really bad in others, besides \(g\) used an \emph{Unrolling} of \(10\) which could explain that some estimations of \(Q\) values were biased with such large \emph{Unrolling}.
+
+To test for the robustness and maximization bias of the learned policies, the agents were also evaluated with \(\epsilon\)-greedy policies of \(0.02\), \(0.05\) and \(0.10\). We did not find anything unexpedted, since all the agents that were better than the heurisitc only worsen their performance (Figure \ref{fig:sd-mean-epsilon}).
 
 \hypertarget{benchmark-capabilities}{%
 \subsection{Benchmark Capabilities}\label{benchmark-capabilities}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
-
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
-
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
+\hypertarget{conclusions}{%
+\section{Conclusions}\label{conclusions}}
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+\hypertarget{future-work}{%
+\section{Future Work}\label{future-work}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
 
 \hypertarget{appendices}{%
 \chapter*{Appendices}\label{appendices}}
@@ -1070,6 +1144,9 @@ Hölldobler, Bert, Edward O Wilson, and others. 1994. \emph{Journey to the Ants:
 \leavevmode\hypertarget{ref-ilachinski2001cellular}{}%
 Ilachinski, Andrew. 2001. \emph{Cellular Automata: A Discrete Universe}. World Scientific Publishing Company.
 
+\leavevmode\hypertarget{ref-rlblogpost}{}%
+Irpan, Alex. 2018. ``Deep Reinforcement Learning Doesn't Work yet.'' \url{https://www.alexirpan.com/2018/02/14/rl-hard.html}.
+
 \leavevmode\hypertarget{ref-kari1994reversibility}{}%
 Kari, Jarkko. 1994. ``Reversibility and Surjectivity Problems of Cellular Automata.'' \emph{Journal of Computer and System Sciences} 48 (1): 149--82.
 
@@ -1126,6 +1203,9 @@ Toffoli, Tommaso. 1977. ``Cellular Automata Machines.''
 
 \leavevmode\hypertarget{ref-tsitsiklis1997analysis}{}%
 Tsitsiklis, John N, and Benjamin Van Roy. 1997. ``Analysis of Temporal-Diffference Learning with Function Approximation.'' In \emph{Advances in Neural Information Processing Systems}, 1075--81.
+
+\leavevmode\hypertarget{ref-turing1936computable}{}%
+Turing, Alan Mathison. 1936. ``On Computable Numbers, with an Application to the Entscheidungsproblem.'' \emph{J. Of Math} 58 (345-363): 5.
 
 \leavevmode\hypertarget{ref-vichniac1984simulating}{}%
 Vichniac, Gérard Y. 1984. ``Simulating Physics with Cellular Automata.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 96--116.
