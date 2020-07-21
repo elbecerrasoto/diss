@@ -12,17 +12,56 @@ Deviation from this classical setting leads to the other broad categories of mac
 
 The contents of this section have mostly been adapted from Sutton and Barto's Introduction to Reinforcement Learning book [@sutton2018reinforcement].
 
-Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent affects the environment and hopefully drives it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of reward means a successful agent closer to its objective.
+Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent could affect the environment and hopefully drive it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of this reward signal mean a successful agent closer to its objective.
 
-The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever.
+The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever. The non-terminating case is known as a continuing task and the terminating one as an episodic task.
  
-So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in A(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in S$ and returns a reward $R_t \in R \subset \mathds{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in \mathcal{A}(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in \mathcal{S}$ and returns a reward $R_t \in \mathcal{R} \subset \mathds{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 $$ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...$$
  
-Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($S$, $A$ and $R$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have well defined discrete probability distributions that depend only on the previous action $A_t-1$ and state $S_t-1$. This is known as the Markov property:
-$$ p(s’, r | s, a) \doteq Pr(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
+Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($\mathcal{S}$, $\mathcal{A}$ and $\mathcal{R}$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have well defined discrete probability distributions that depend only on the previous action $A_{t-1}$ and state $S_{t-1}$. This is known as the Markov property:
+$$ p(s’, r | s, a) \doteq \text{Pr}(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
 
-This $p: S \times R \times S \times A \rightarrow [0,1]$ function is known as the _dynamics of the MDP_. The "$|$" (bar) symbol instead of a "$,$" (comma) in the function arguments is just a reminder that $p$ is calculating a conditional probability given $s$ and $a$.
+This $p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ function is known as the _dynamics of the MDP_. The "$|$" (bar) symbol instead of a "$,$" (comma) in the function arguments is just a reminder that $p$ is calculating a conditional probability given $s$ and $a$. From here on the assumed $MDP$ would be a finite one.
+
+### Goals and Return
+
+The reward signal must guide the agent into achieving a goal. The hint that the sequence of rewards provides is such that if the the agent maximizes the total amount of received rewards, the goal would be reached. Thus the agent objective turns to, not maximizing immediate reward, but instead cumulative reward in the long run. This informal idea is known as the _reward hypothesis_ and it is stated as follows:
+
+> "All of what we mean by goals and purposes can be well thought of as the maximization of the expected value of the cumulative sum of a received scalar signal." [@sutton2018reinforcement]
+
+In practice, when designing a RL task rewards can be thought of being of two types:
+
+1. **Sparse:** Rewards are only given when the goal is reached.
+2. **Shaped:** Rewards are also given when reaching subgoals.
+
+Sparse rewards are preferred since the reward signal should only communicate the _what_ we want to accomplish and not the _how_. Similarly the RL framework provides better ways of inserting domain knowledge into the system, like in the initial policy or the initial value function. So it is not surprising that shaped rewards can bias learning when the subgoals are not aligned with the final goal or when accomplishing them is given more importance by the agent. Nonetheless, if well designed, shaped rewards can accelerate learning and are often much easier to learn from.
+
+To formalize the previous discussion, the random variable $G_t$ _return_ is defined, for the time step $t$ in an episodic task with final step $T$:
+$$ G_t \doteq R_{t+1} + R_{t+2} + R_{t+3} + ... + R_{T}$$
+
+To handle the continuing task case, where $T=\infty$, the notion of _return_ can be extended by the inclusion of the discounting parameter $\gamma \in [0-1]$.
+$$G_t \doteq \sum_{k=0}^{\infty} \gamma^k R_{t+1+k}$$
+This _return_ formulation converges to a finite value if $\gamma < 1$ and the reward sequence $R_k$ is bounded. The parameter $\gamma$ represents how much weight far away rewards must be given, specifically a discount of $\gamma^{k-1}$ for the reward $R_{t+k}$, $k$ steps into the future. If $\gamma = 0$, the agent is "myopic" and is only concerned with maximizing immediate rewards. On the other hand as $\gamma$ approaches 1, more and more distant rewards are being taken into account, thus the agent becomes more farsighted.
+
+A generalization of _return_ that combines both, episodic and continuing setting is as follows:
+$$G_t \doteq \sum_{k=0}^{T} \gamma^k R_{t+1+k}$$
+Where $T$ is turned into a parameter of future steps to take into account by the convention that if the episode terminates, all the futures rewards would be $0$. So in this formulation $T$ could be unbounded ($T = \infty$) or $\gamma = 1$, but not both at the same time.
+
+The return $G_t$ at time $t$ follows and important recursive relation:
+$$G_t = R_{t+1} + \gamma G_{t+1}$$
+
+### Policy
+
+A _policy_ $\pi$ is a mapping from states to probabilities of selecting each particular action. Formally a function of $2$ arguments, where the symbol "$|$" is just to remind us that the action depends on the state.
+$$ \pi(a|s) \doteq \text{Pr}[A_t=a | S_t=s]$$
+Policy codifies the behavior of the agent in the face of environment states. A well performing policy is one that generates behavior that gets the agent closer to its goal. An optimal policy is one that accomplishes the goal. Reinforcement Learning algorithms must find policies that maximize the expected _return_, since by the _reward hypothesis_ this is the same as accomplishing the goal. In other words the problem that RL is trying to solve is $\underset {\pi} \max\ \mathds{E}_\pi G_t$.
+
+### Value Functions
+
+The _value function_ $v_\pi(s)$ of a state $s$ under a policy $\pi$ is defined as:
+$$v_\pi(s) \doteq \mathds{E}_\pi [ G_t | S_t = s ], \quad \forall s \in \mathcal{S}$$
+$$v_\pi(s) = \mathds{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s \bigg], \quad \forall s \in \mathcal{S}$$
 
 (ref:env-agent-interactions) Diagram of the _Agent-Environment system_ formalized as a MDP. At time step $t$ the "Agent" with knowledge of observation $S_t$ and reward $R_t$ performs action $A_t$ to which the "Environment" responds with a new observation $S_{t+1}$ and reward $R_{t+1}$, the cycle is iterated. Figure adapted from [@sutton2018reinforcement].
 ```{r env-agent-interactions, fig.cap='(ref:env-agent-interactions)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
@@ -34,12 +73,14 @@ knitr::include_graphics('pics/agent-env.png')
 knitr::include_graphics('pics/circulos_v2.png')
 ```
 
-(ref:rl-relations) Broad relations between different types of strategies to solving the Reinforcement Learning Problem. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
+(ref:rl-relations) Broad relations between different types of strategies to solve the Reinforcement Learning Problem. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
 ```{r rl-relations, fig.cap='(ref:rl-relations)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
 knitr::include_graphics('pics/circuloyflechas_v2.png')
 ```
 
-### RL state of the art (Notes)
+### Deep Q Networks
+
+### The Atari benchmark
 
 
 
