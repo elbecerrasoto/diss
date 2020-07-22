@@ -16,13 +16,28 @@ Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily i
 
 The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever. The non-terminating case is known as a continuing task and the terminating one as an episodic task.
  
-So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in \mathcal{A}(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in \mathcal{S}$ and returns a reward $R_t \in \mathcal{R} \subset \mathds{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+So at each time step  $t=0,1,2,3,...,T$ the agent using the information of state $S_t \in S$ of the environment must choose an action $A_t \in \mathcal{A}(S_t)$ from the available ones, then in the next time step $t+1$ the environment transits to a new state $S_{t+1} \in \mathcal{S}$ and returns a reward $R_t \in \mathcal{R} \subset \mathbb{R}$. The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 $$ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...$$
  
 Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards ($\mathcal{S}$, $\mathcal{A}$ and $\mathcal{R}$) is finite. In a finite MDP the random variables $S_t$, $R_t$ have well defined discrete probability distributions that depend only on the previous action $A_{t-1}$ and state $S_{t-1}$. This is known as the Markov property:
 $$ p(s’, r | s, a) \doteq \text{Pr}(S_t=s’,\ R_t=r\ |\ S_{t-1}=s,\ A_{t-1}=a) $$
 
 This $p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$ function is known as the _dynamics of the MDP_. The "$|$" (bar) symbol instead of a "$,$" (comma) in the function arguments is just a reminder that $p$ is calculating a conditional probability given $s$ and $a$. From here on the assumed $MDP$ would be a finite one.
+
+(ref:env-agent-interactions) Diagram of the _Agent-Environment system_ formalized as a MDP. At time step $t$ the "Agent" with knowledge of observation $S_t$ and reward $R_t$ performs action $A_t$ to which the "Environment" responds with a new observation $S_{t+1}$ and reward $R_{t+1}$, the cycle is iterated. Figure adapted from [@sutton2018reinforcement].
+```{r env-agent-interactions, fig.cap='(ref:env-agent-interactions)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/agent-env.png')
+```
+
+(ref:rl-algorithm-type) Broad classification of Reinforcement Learning algorithms. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
+```{r rl-algorithm-type, fig.cap='(ref:rl-algorithm-type)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/circulos_v2.png')
+```
+
+(ref:rl-relations) Broad relations between different types of strategies to solve the Reinforcement Learning Problem. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
+```{r rl-relations, fig.cap='(ref:rl-relations)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/circuloyflechas_v2.png')
+```
 
 ### Goals and Return
 
@@ -54,29 +69,53 @@ $$G_t = R_{t+1} + \gamma G_{t+1}$$
 ### Policy
 
 A _policy_ $\pi$ is a mapping from states to probabilities of selecting each particular action. Formally a function of $2$ arguments, where the symbol "$|$" is just to remind us that the action depends on the state.
-$$ \pi(a|s) \doteq \text{Pr}[A_t=a | S_t=s]$$
-Policy codifies the behavior of the agent in the face of environment states. A well performing policy is one that generates behavior that gets the agent closer to its goal. An optimal policy is one that accomplishes the goal. Reinforcement Learning algorithms must find policies that maximize the expected _return_, since by the _reward hypothesis_ this is the same as accomplishing the goal. In other words the problem that RL is trying to solve is $\underset {\pi} \max\ \mathds{E}_\pi G_t$.
+$$ \pi(a|s) \doteq \text{Pr}[A_t=a | S_t=s], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}$$
+Policy codifies the behavior of the agent in the face of environment states. A well performing policy is one that generates behavior that gets the agent closer to its goal. An optimal policy is one that accomplishes the goal. Reinforcement Learning algorithms must find policies that maximize the _expected return_, since by the _reward hypothesis_ this is the same as accomplishing the goal. In other words the problem that RL is trying to solve is to find a policy $\pi$ that maximizes the _expected return_ $\underset {\pi} \max\ \mathbb{E}_\pi G_t$.
 
 ### Value Functions
 
+Value functions capture the idea of how desirable each state is. They are always discussed in the context of a particular policy $\pi$. A whole family of methods uses them to solve the RL problem.
+
 The _value function_ $v_\pi(s)$ of a state $s$ under a policy $\pi$ is defined as:
-$$v_\pi(s) \doteq \mathds{E}_\pi [ G_t | S_t = s ], \quad \forall s \in \mathcal{S}$$
-$$v_\pi(s) = \mathds{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s \bigg], \quad \forall s \in \mathcal{S}$$
+$$v_\pi(s) \doteq \mathbb{E}_\pi [ G_t | S_t = s ], \quad \forall s \in \mathcal{S}$$
+$$v_\pi(s) = \mathbb{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s \bigg], \quad \forall s \in \mathcal{S}$$
 
-(ref:env-agent-interactions) Diagram of the _Agent-Environment system_ formalized as a MDP. At time step $t$ the "Agent" with knowledge of observation $S_t$ and reward $R_t$ performs action $A_t$ to which the "Environment" responds with a new observation $S_{t+1}$ and reward $R_{t+1}$, the cycle is iterated. Figure adapted from [@sutton2018reinforcement].
-```{r env-agent-interactions, fig.cap='(ref:env-agent-interactions)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
-knitr::include_graphics('pics/agent-env.png')
-```
+Similarly for action-state pairs ($a \in \mathcal{A}$, $s \in \mathcal{S}$) the _action-value_ function for policy $\pi$, $q_\pi(s,a)$ is defined:
+$$ q_\pi(s,a) \doteq \mathbb{E}_\pi [ G_t | S_t=s, A_t=a], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}$$
+$$ q_\pi(s,a) = \mathbb{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s, A_t = a \bigg], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}$$
 
-(ref:rl-algorithm-type) Broad classification of Reinforcement Learning algorithms. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
-```{r rl-algorithm-type, fig.cap='(ref:rl-algorithm-type)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
-knitr::include_graphics('pics/circulos_v2.png')
-```
+The function $q_\pi$ represents the value of forcing the agent into taking action $a$ and then following the policy $\pi$.
 
-(ref:rl-relations) Broad relations between different types of strategies to solve the Reinforcement Learning Problem. Adapted from David Silver's Lecture *https://www.youtube.com/watch?v=2pWv7GOvuf0&t=1163s*.
-```{r rl-relations, fig.cap='(ref:rl-relations)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
-knitr::include_graphics('pics/circuloyflechas_v2.png')
-```
+The functions $v_\pi$ and $q_\pi$ can be estimated from interaction with the environment. The average, per state $s$, of rewards obtained following the policy $\pi$ will converge to $v_\pi(s)$. Similarly, if keeping track of state-action pairs, $q_\pi(s,a)$ can be estimated by the same method.
+
+A fundamental property of value functions is that they satisfy a recursive relationship known as the _Bellman's Equation_:
+$$v_\pi(s) = \sum_{a} \pi(a|s) \sum_{s',r} p(s',r|s,a) \big[ r + \gamma v_\pi(s') \big], \quad \forall s \in \mathcal{S} $$
+
+If the dynamics of the environment are completely known, the _Bellman's Equation_ can be used to obtain the value function $v_\pi$ for all states since a system of linear $|\mathcal{S}|$ equations with $|\mathcal{S}|$ unknowns arises.
+
+Similarly the _Bellman's Equation_ for value-action functions is:
+$$q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) \big[ r + \gamma \sum_{a'} \pi(s'|a')\ q_\pi(s',a') \big], \quad \forall s \in \mathcal{S}, a \in \mathcal{A} $$
+
+### Optimal Policies
+
+Solving the Reinforcement Learning problem can be seen as finding a policy that achieves a high expected return. For finite MDPs the concept of an _optimal policy_ can be defined. Value functions can be used to order policies in the following way: A policy $\pi$ is said to be better than other policy $\pi'$ if and only if $v_\pi(s) \geq v_{\pi'}(s)$ for all $s \in \mathcal{S}$. Thus value functions define a partial ordering over policies, that is to say:
+$$ \pi \geq \pi'\ \text{if and only if}\ v_\pi(s) \geq v_{\pi'}(s), \quad \forall s \in \mathcal{S}$$
+There is always at least one policy that is better than or equal to all other. The policies with this property are named _optimal policies_ and are denoted by $\pi_*$. The value function under an _optimal policy_ (_optimal state-value function_) is written $v_*$ and can be expressed as:
+$$v_*(s) \doteq \underset {\pi} {\max}\ v_\pi(s), \quad \forall s \in \mathcal{S}$$
+In the same fashion, an _optimal action-value function_ is defined as:
+$$q_*(s,a) \doteq \underset {\pi} {\max}\ q_\pi(s,a), \quad \forall s \in \mathcal{S}, a \in \mathcal{A}$$
+_Bellman's  equation_ for value functions 
+can be rewritten for the _optimal state-value function_. Intuitively it represents the agent perfectly responding with the best action to any situation of the environment. For all states $s \in \mathcal{S}$:
+$$v_*(s) = \underset {a \in \mathcal{A}(s)} {\max}\ q_*(s,a)$$
+$$v_*(s) = \underset{a} \max \sum_{s', r} p(s',r|s,a) \big[ r + \gamma v_*(s') \big]$$
+The above equalities are also present on they _action-value_ $q_*(s,a)$ form:
+
+$$q_*(s,a) = \mathbb{E} \bigg[ R_{t+1} + \gamma\ \underset{a'} \max\ q_*(S_{t+1}, a')\ \bigg|\ S_t = s, A_t=a \bigg]$$
+$$q_*(s,a) = \sum_{s',r} p(s',r|s,a) \bigg[ r + \gamma\ \underset{a'}{\max}\ q_*(s',a')\bigg] $$
+
+For finite MDPs _Bellman's optimality equation_, either for $v_*$ or $q_*$, has an unique solution. If $v_*$ or $q_*$ are known for all states and actions, it is possible to solve the Reinforcement Learning problem and derive optimal behavior from them.
+$$a = \underset{a'}{\text{argmax}}\ \sum_{s',r} p(s',r|s,a') \big[ r + \gamma\ v_*(s') \big]$$
+$$a = \underset{a'}{\text{argmax}}\ q_*(s,a')$$
 
 ### Deep Q Networks
 

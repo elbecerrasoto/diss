@@ -12,7 +12,7 @@ Talk about why automata are a good benchmark.
 
 ## Problem Statement
 
-In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of _Actions_ ($A$), _States_ ($S$) and _Rewards_ ($R$), also specify an "Agent" that interacts with the CA and explicitly or implicitly define the transitions of the MDP $p(s',r|s,a): S \times R \times S \times A \rightarrow [0,1]$.
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of _Actions_ ($\mathcal{A}$), _States_ ($\mathcal{S}$) and _Rewards_ ($\mathcal{R}$), also specify an "Agent" that interacts with the CA and explicitly or implicitly define the transitions of the MDP $p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$.
 
 Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an "Agent" or "Helicopter" flying over the forest trying to extinguish the wild fire.
 
