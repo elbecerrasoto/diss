@@ -1,12 +1,12 @@
 # Conclusion
 
-## Conclusions
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
-
 ## Summary
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+## Conclusions
+
+Lack of variaty of benchmark bias algorithms.
 
 ## Future Work
 

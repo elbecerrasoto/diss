@@ -2,7 +2,7 @@
 
 ## Motivations
 
-Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation.  A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
 
 Talk about why automata are a good benchmark.
 

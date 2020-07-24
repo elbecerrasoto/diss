@@ -95,7 +95,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-07-21}
+\date{2020-07-23}
 
 \begin{document}
 \maketitle
@@ -684,10 +684,16 @@ For finite MDPs \emph{Bellman's optimality equation}, either for \(v_*\) or \(q_
 \[a = \underset{a'}{\text{argmax}}\ q_*(s,a')\]
 
 \hypertarget{deep-q-networks}{%
-\subsection{Deep Q Networks}\label{deep-q-networks}}
+\section{Deep Q Networks}\label{deep-q-networks}}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
 
 \hypertarget{the-atari-benchmark}{%
-\subsection{The Atari benchmark}\label{the-atari-benchmark}}
+\section{The Atari benchmark}\label{the-atari-benchmark}}
+
+The Arcade Learning Environment (ALE) was introduced in 2013 (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). It was quickly adopted as benchmark by the RL community. ALE consits on a wrapper around the \href{https://stella-emu.github.io/}{Stella emulator}\footnote{\url{https://stella-emu.github.io/}} for the Atari 2600 console. This wrapper provides an interface to more than 50 Atari games. ALE was used by the Google's DeepMind team in the DQN paper (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), arguibly setting the current trend of deep reinforcement learning.
+
+The desirable characteristics of Atari games for RL evaluation are their variety of tasks, their short episodic nature and scores that can be directly interpreted as rewards. The agents interact with ALE thorugh a set of 18 actions derived from 6 simple actions, namely four directions (up, down, left, right) and fire and NO-OP actions. The final 18 actions are combinations of the basic actions. The state information is raw pixel data with dimensions \(210 \times 160\), with each pixel on 7-bit color value (0-127). An important parameter
 
 \hypertarget{experiments}{%
 \chapter{Experiments}\label{experiments}}
@@ -1003,15 +1009,15 @@ To test for the robustness and maximization bias of the learned policies, the ag
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
-\hypertarget{conclusions}{%
-\section{Conclusions}\label{conclusions}}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
-
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+
+\hypertarget{conclusions}{%
+\section{Conclusions}\label{conclusions}}
+
+Lack of variaty of benchmark bias algorithms.
 
 \hypertarget{future-work}{%
 \section{Future Work}\label{future-work}}
@@ -1197,6 +1203,9 @@ Bak, Per. 2013. \emph{How Nature Works: The Science of Self-Organized Criticalit
 
 \leavevmode\hypertarget{ref-bak1990forest}{}%
 Bak, Per, Kan Chen, and Chao Tang. 1990. ``A Forest-Fire Model and Some Thoughts on Turbulence.'' \emph{Physics Letters A} 147 (5-6): 297--300.
+
+\leavevmode\hypertarget{ref-bellemare2013arcade}{}%
+Bellemare, Marc G, Yavar Naddaf, Joel Veness, and Michael Bowling. 2013. ``The Arcade Learning Environment: An Evaluation Platform for General Agents.'' \emph{Journal of Artificial Intelligence Research} 47: 253--79.
 
 \leavevmode\hypertarget{ref-1606.01540}{}%
 Brockman, Greg, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. ``OpenAI Gym.''

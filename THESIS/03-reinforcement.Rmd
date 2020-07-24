@@ -117,9 +117,16 @@ For finite MDPs _Bellman's optimality equation_, either for $v_*$ or $q_*$, has 
 $$a = \underset{a'}{\text{argmax}}\ \sum_{s',r} p(s',r|s,a') \big[ r + \gamma\ v_*(s') \big]$$
 $$a = \underset{a'}{\text{argmax}}\ q_*(s,a')$$
 
-### Deep Q Networks
-
-### The Atari benchmark
+## Deep Q Networks
 
 
 
+## The Atari benchmark
+
+The Arcade Learning Environment (ALE) was introduced in 2013 [@bellemare2013arcade]. It was quickly adopted as benchmark by the RL community. ALE consists on a wrapper around the [Stella emulator](https://stella-emu.github.io/) [^1] for the Atari 2600 console. This wrapper provides an interface to 57 Atari games. ALE was used by Google's DeepMind team in the DQN paper [@mnih2015human], arguably setting the current trend of deep reinforcement learning and the use of 57 games. Serving as common benchmark ALE has been successfully used to develop new algorithms that later were applied to other domains, such as robotics [@risi2020chess]. As 2020 a single agent is capable of outperforming standard human play for the 57 games Atari games [@badia2020agent57], however the end of the ALE benchmark is nowhere insight as a myriad of challenges still persist on Reinforcement Learning methodologies.
+
+The desirable characteristics of Atari games for RL evaluation are their variety of tasks, their short episodic nature and scores that can be, almost directly, interpreted as rewards. Also each game was created independently thus reducing the bias that would be introduced by a single party designing all the evaluation tasks. Agents interact with ALE through a set of 18 actions derived from 6 simple actions, namely four directions (up, down, left, right) and fire and NO-OP actions. The final 18 actions are combinations of the basic actions. The state information is raw pixel data with dimensions $210 \times 160$, with each pixel on a 7-bit color scale (0-127). Additionally the whole console RAM of 128 bytes can be used as input to the learning algorithms. ALE can be used as generative model in the sense that previous states, if saved, can be restored.
+
+Some criticism towards ALE are the lack of stochasticity in the environments [@yang2015proceedings] and the blackbox emulation of the games. Recent efforts are trying to address those issues, like TOYBOX [@foley2018toybox] which implements from scratch Atari games with added functionality to monitor meaningful representations of game internal states.
+
+[^1]: https://stella-emu.github.io/
