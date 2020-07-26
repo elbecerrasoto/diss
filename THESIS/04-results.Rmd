@@ -121,10 +121,6 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 ### ANN Architectures
 
-Model-free, value-function approximation RL tries to tackle the intractability of directly estimating $Q(s,a)$ for a high number of state-action pairs with a parameterized version $Q(s,a;\theta)$. In the case of Deep Reinforcement Learning $Q$ is approximated by a ANN with parameters $\theta$.
-
-A naive, nonetheless intuitive, approach is to directly translate $Q(s,a): S \times A \to \mathds{R}$ to a network architecture that predicts a $Q$-value for each state-action pair. However this approach incurs on $|A|$ forward computations of the ANN since in order to get the next action following the _greedy policy_, we need to check for all values of the available actions $\forall a \in A(S_t): Q(s,a;\theta)$. One of the key insights of the DQN algorithm [@mnih2013playing][@mnih2015human] was to change to an architecture of the form $Q_{network}: S \to \mathds{R}^{|A|}$, predicting all $Q$-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state $s$ that can be reused to predict all $Q$-values for a given $s$. This architecture is know as the $Q_{network}$.
-
 Three different $Q_{network}$ architectures were used. The models were build using the _Pytorch_ library [@NEURIPS2019_9015]. They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the _Pytorch_ defaults (_Kaiming uniform_ [@he2015delving]). The tensors transformations of the layers are described below:
 
 ```{r mlp-n-parameters}
@@ -174,7 +170,7 @@ knitr::include_graphics('pics/A3.png')
 
 ### Training Details
 
-A $Q_{network}$ capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the $Q$-values). Unluckily training a $Q_{network}$ could be tricky as theoretical convergence results are only available for linear approximators [@tsitsiklis1997analysis]. Additionally _Supervised Learning_ techniques assume that the data was generated from the same distribution and its instances are _i.i.d_, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the instability that arises DQN uses a replay memory and a target network.
+Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters [@rlblogpost]. The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see *http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf*) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect _"life signals"_ (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until _"life signals"_ are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of $1 \times 9$, $3 \times 3$, $5 \times 5$ and $8 \times 8$ (data not shown). We decided to settle on the $3 \times 3$ grid, to further extend hyperparameter search, as bigger grid sizes were not showing _"life signals"_.
 
 Nine experiments were run using the described environment, between experiments some hyperparameters were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and $\gamma$ discount parameter. The overall values for the hyperparameters were taken from [@mnih2015human] and then informally scaled to observe its effects on performance. We did not perform a systematic grid search due to high computational cost. The hyperparameters that were varied are shown in Table \@ref(tab:hyper), while the constant hyperparameters can be seen in Table \@ref(tab:const).
 
@@ -327,8 +323,6 @@ Under the previous justifications, we have shown that is possible to design a CA
 
 ### Effect of Hyperameters
 
-Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters [@rlblogpost]. The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see *http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf*) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect _"life signals"_ (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until _"life signals"_ are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of $1 \times 9$, $3 \times 3$, $5 \times 5$ and $8 \times 8$ (data not shown). We decided to settle on the $3 \times 3$ grid, to further extend hyperparameter search, as bigger grid sizes were not showing _"life signals"_.
-
 The obtained results from the non-exhaustive hyperparameter search can be seen in Table \@ref(tab:hyper). Answering the question of to what degree the hyperparameters affect the end results of each run is not trivial and mostly experimental arguments can be provided. This is because attribution becomes difficult when multiple hyperparameters are changed at the same time since their interactions can be non-linear, yet carefully tuning a single hyperparameter can be inefficient as we would only explore a single dimension of hyperparameter space.
 
 The experiments $c$, $a$, $d$, $i$ and $g$ have a better performance than the baseline heuristic. The hyperparameter that seems to have the greater effect is _Unrolling_. When it is equal to $1$ the experiments failed to learn (beating the heuristic). _Unrolling_ helps to "accelerate" learning as future steps rewards information is used to estimate the $Q$ values. However in our case this "acceleration" meant the difference between learning something or nothing at all. A comparison between experiments $c$, $h$, and $f$ is interesting as they have similar hyperparameters values but $h$ and $f$ failed to learn and arguably the difference can be attributed to the _Unrolling_ hyperparameter.
@@ -344,10 +338,3 @@ Training for more iterations presumably would not increase significantly the per
 From the evaluation data it can be observed that the best performing runs have a lower _standard deviation_ to those that failed to learn (Figure \@ref(fig:sd-mean)), thus the better runs not only played better but they consistentily did it. Likewise, from the same data, three overall regions, in terms of _mean reward_ and _standard deviation_, can be seen. The first one groups the best runs together. The second groups the worst runs. The third one contains the Heuristic and the $g$ run. From the third region is interesting to notice that even so agent $g$ plays better than the heuristic it does it with a higher _standard deviation_, presumably because it performs really well in some enviroment states but badly in others, besides $g$ used an _Unrolling_ of $10$ which could explain that some estimations of $Q$ values were biased with such large _Unrolling_.
 
 To test for the robustness and maximization bias of the learned policies, the agents were also evaluated with $\epsilon$-greedy policies of $0.02$, $0.05$ and $0.10$. We did not find anything unexpedted, since the performance of better than the heuristic agents deteriorated (Figure \@ref(fig:sd-mean-epsilon)).
-
-### Benchmark Capabilities
-
-
-
-
-

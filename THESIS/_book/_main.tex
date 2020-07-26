@@ -72,6 +72,7 @@
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage{longtable}
 \DeclareMathOperator*{\argmax}{arg\,max}
+\usepackage[utf8]{inputenc}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -95,7 +96,7 @@
 
 \title{Cellular Automata Control with Deep Reinforcement Learning}
 \author{Emanuel Becerra Soto}
-\date{2020-07-23}
+\date{2020-07-26}
 
 \begin{document}
 \maketitle
@@ -110,19 +111,34 @@
 \chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
-
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from mere real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a ``Helicopter'' trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a \(3 \times 3\) grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.
 
 \newpage
+
+\begin{quote}
+``All of what we mean by goals and purposes can be well thought of as the maximization of the expected value of the cumulative sum of a received scalar signal.'' (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018})
+\end{quote}
+
+\begin{quote}
+``I prefer to eat a cake with a lot of cherries because I like reinforcement learning.'' Pieter Abbeel.
+ce
+\newpage
+\end{quote}
 
 \hypertarget{acknowledgments}{%
 \chapter*{Acknowledgments}\label{acknowledgments}}
 \addcontentsline{toc}{chapter}{Acknowledgments}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+Writing is hard. But this is a known fact. What is not known are the particular environment and situations that any writer must endure to finish its work. This thesis is dedicated to all the persons that somehow, consciously or unconsciously, had soften the weight and let me just struggle with the hard part of writing and not the harder part of ``everything else''.
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+To my family, including pets, to always being there, no matter what.
+To my friends, who help me to put things in perspective and enjoying the ride.
+To my professors, not only for their top notch classes, but to giving me invaluable advice.
+To my advisors, for transmitting me their passion for computer science and
+showing me that work-life balance is possible in this day and age but more importantly that one should love what it does.
+To the \emph{Centro de Investigación en Computación} and the \emph{Instituto Politécnico Nacional} for providing a wonderful and life changing experience.
+
+This document was possible due to the economical support given by \emph{Consejo Nacional de Ciencia y Tecnología} (CONACYT).
 
 \newpage
 
@@ -132,30 +148,65 @@ Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec bland
 \hypertarget{motivations}{%
 \section{Motivations}\label{motivations}}
 
-Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods.
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, sciencemen, kings and commoners alike, filling us with wonder, terror and contemplation. A human creation capable of human feats, would turn us, at least in an allegorical sense, into gods. This long time dream is an inspiration for the field of Artificial Intelligence (AI). AI was born on 1956 on the the \emph{Dartmouth Summer Research Project on Artificial Intelligence}. In the early days of AI the kind of problems that were tackled were the ones that are easy for a computer to solve but difficult to humans. These kind of tasks are logical and mathematical in their very nature. Ironically the kind of tasks that are easy for humans have proved to be difficult to code on computers. Like visual identification of objects or navigation through complex environments. Because of their apparent easiness we seldom stop to think about how we actually manage to solve them and coming with a precise set of rules is labor intensive and error prone. An approach to solve those kind of tasks is called \emph{machine learning}. The basic idea of machine learning is to use data on the task at hand and let the computer to figure out how to best use the data to solve the problem, in a figurative way learning from observation. The promise of such methods is avoiding explicit programming to solve problems and perhaps getting us closer to the far away dream of a thinking machine.
 
-Talk about why automata are a good benchmark.
+Reinforcement Learning (RL) is a branch of machine learning that is inspired on how we learn through interaction to the real world. An agent interacts in an environment a receives a signal, called \emph{reward}. The main idea of RL is that the agent should get as much \emph{reward} as it is possible. In doing so it would accomplish whatever its purpose is. This is known as the \emph{reward hypothesis}, in other words plenty of reward is great for whatever thing that the agent is trying to do. The agent has some control over the environment in the sense that it can act and get a response. The RL problem is how to correctly act to accomplish a goal by means of looking for behavior that maximizes an accumulated \emph{reward} quantity, know as \emph{return}.
 
-\begin{itemize}
+A popular perspective on AI and machine learning is deep learning. Deep learning is a myriad of techniques based on artificial neural networks (ANN). ANN are loosely based in neuroscience and they are composed by several arrays of computing units called \emph{neurons}. Neurons are arranged in hierarchies called layers. The processing of an ANN is done in an orderly fashion by the layers. When an input is received it is processed by the first layer, then the second and so on, until the last layer, which outputs the final result. The adjective deep comes from the use of several layers in a single network.
+
+Naturally RL and deep learning can be combined, this union is known as Deep Reinforcement Learning (DRL). DRL has protagonized some success histories with super human performance on playing backgammon (Tesauro \protect\hyperlink{ref-tesauro1995temporal}{1995}), video games (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), poker (Moravčík et al. \protect\hyperlink{ref-moravvcik2017deepstack}{2017}), multiplayer video games (Jaderberg et al. \protect\hyperlink{ref-jaderberg2019human}{2019}), chess (Silver et al. \protect\hyperlink{ref-silver2018general}{2018}) and the decades long challenging game of go (Silver et al. \protect\hyperlink{ref-silver2016mastering}{2016})(Silver et al. \protect\hyperlink{ref-silver2018general}{2018}).
+
+One important aspect of advancing an AI area is to have adequate \emph{benchmarks}. Benchmarks are key problems that are widely used for the evaluation and design of algorithms. Having good performance on a benchmark is used to showcase the prowess of an algorithm. Nonetheless putting to much faith into a single benchmark could hurt reasearch in the long run (Hooker \protect\hyperlink{ref-hooker1995testing}{1995})(Stanley and Lehman \protect\hyperlink{ref-stanley2015greatness}{2015}). Despite their pitfalls they are essential tools of AI reasearch. To name an important example, the \emph{ImageNet} dataset (Deng et al. \protect\hyperlink{ref-deng2009imagenet}{2009}) and its assotiated challange the \emph{Large Scale Visual Recognition Challenge} (Russakovsky et al. \protect\hyperlink{ref-russakovsky2015imagenet}{2015}) were fundamental for setting the current popularity of deep learning techniques and the bonanza in the field of computer vision.
+
+In the scope of RL a widely accepted benchmark is the Arcade Learning Environment (ALE) (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). ALE is a suite of more than fifty games from the Atari 2600 console. Moreover frameworks such as Open AI Gym (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}) have lowered the barrier entry for using ALE, making Atari games easily accesible for RL algorithms and their training and evaluation. ALE primary strengths are its variety of tasks and the independent creation of each game which reduces the bias of a single manufacturer. If a single algorithm is capable of performing well on a variety of very different and difficult tasks, it would be conceivable to claim its generality, this notion is captured on ALE as challange for any relatively general RL algorithm to play well on, as many as possible, Atari games. A key event for the popularization of Atari games as a benchmark was their utilization on the seminal Deep Q-Networks (DQN) papers (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}). DQN achivied a remarkable perfomance on a dozen of a Atari games, receving as input just raw pixels, without any semantic unserstanding of the games and a single set of hyperparameters. DQN revived the interest on DRL methods.
+
+Other common benchmarks for RL are, GridWorlds (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}), robotics simulations with the MuJoCo physics engine (Todorov, Erez, and Tassa \protect\hyperlink{ref-todorov2012mujoco}{2012}), classic control tasks (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}) and a heterogeneous variety of game theoretical tasks and board games (Lanctot et al. \protect\hyperlink{ref-lanctot2019openspiel}{2019}).
+
+Despite their broad success Atari games suffer from their lack of environments with high stochasticity which allows for the explotation of such determinism by simply algorithms (Bellemare et al. \protect\hyperlink{ref-bellemare2015arcade}{2015})(Machado et al. \protect\hyperlink{ref-machado2018revisiting}{2018}). Other critiscims arises from the emulation component of the games, that functionally transforms them into black boxes. This issue is compounded when some RL methods are also blackboxes, making debbugind extremely difficult (Foley et al. \protect\hyperlink{ref-foley2018toybox}{2018}). The emulation also hinders parametrization of the environments and the extraction of meaninful statistics to broaden the understanding on why some RL algorithms work and others do not.
+
+The central idea of this document is to show that Cellular Automata are suitable for the design and evaluation of RL environments. Cellular Automata (CA) are mathematical and computational systems with interesting characteristics and a rich history of theoretical background (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}). CA are systems with discrete and local dynamics and a discrete evolution. They have been traditionally used to model complex systems, on the natural and social sciences like the weather, wild-fires, the immune system, pattern formation, galaxy formation, earthquakes, ecology, chemotaxis, epidemics, cell to cell interaction, reaction-diffusion systems, city traffic, social group formation, racial segregation, economics, just to name a few broad examples (Ganguly et al. \protect\hyperlink{ref-ganguly2003survey}{2003})(Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}). Furthermore, due to their complete discrenete nature, CA can be seen as simple computational devices and provide an ideal model for parallel and unconventional computing. Of exceptional importance is that some CA have \emph{universal computation} capabilities, in other words some CA have the same computing power of a \emph{Turing Machine} and thus capable executing any algorithm.
+
+\emph{What makes a good benchmark?} is a tough question to answer, since each field has its own requirements and expectations, and tradeoffs must be made between many design dimensions such as: \emph{difficulty}, \emph{relavance}, \emph{accesibility}, \emph{reproducibility}, \emph{intrepetability} and so on. We believe that CA would make a good benchmark for RL for the following reasons:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Easy to program
+  Easinness of implementation.
 \item
-  Model complex systems
+  Capable of modeling complex systems.
 \item
-  Are models of universal computation
-\end{itemize}
+  Computing models (\emph{universal}, \emph{parallel}, \emph{unconventional}).
+\item
+  Highly parameterizable.
+\end{enumerate}
 
 \hypertarget{problem-statement}{%
 \section{Problem Statement}\label{problem-statement}}
 
-In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropiate sets of \emph{Actions} (\(\mathcal{A}\)), \emph{States} (\(\mathcal{S}\)) and \emph{Rewards} (\(\mathcal{R}\)), also specify an ``Agent'' that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]\).
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropriate sets of \emph{Actions} (\(\mathcal{A}\)), \emph{States} (\(\mathcal{S}\)) and \emph{Rewards} (\(\mathcal{R}\)), also specify an ``Agent'' that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]\).
 
-Thus our first challange is engineering a RL task that succesfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wild fire.
+Thus our first challenge is engineering a RL task that successfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wild fire. The set of all states \(\mathcal{S}\) of the proposed environment is: all the configurations of a \(3 \times 3\) forest fire CA, with a tuple of helicopter positions \((row,col)\) and an internal parameter \(m\) that takes two values \(\{0, 1\}\) and controls the synchronization of helicopter movements and CA computations. The set of all actions \(\mathcal{A}\) is the movement to all cells in a Moore's neighborhood of the agent position \emph{\{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}\}. The rules that implicitly define the dynamics \(p\) of the environment are:
 
-The optimaztion problem that we want to solve is: Minimize the
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{-1}
+\tightlist
+\item
+  The selection of any action could affect the ``Helicopter'' position tuple, this is referred as ``moving''.
+\item
+  After moving to any cell the ``Helicopter'' extinguishes the fire by: changing, if applicable, a current ``fire'' cell to an ``empty'' cell.
+\item
+  The \(m\) parameter is decreased by \(1\) after each ``Helicopter'' movement.
+\item
+  Before moving, if \(m=0\) then the grid is updated following the Forest Fire CA rules, then \(m\) is reset to its initial value (\(m=1\)).
+\end{enumerate}
 
-To Do: Describe the RL task and state the optimization problem.
+After precisely defining the environment, the semantics are those of an helicopter trying to extinguish a wild-fire in a simulated forest, thus the optimization problem that we want to solve is:
+
+\begin{quote}
+Minimize the count of fire cells in the enviroment on a given time interval.
+\end{quote}
 
 \hypertarget{objectives}{%
 \section{Objectives}\label{objectives}}
@@ -552,7 +603,7 @@ Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily i
 
 The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever. The non-terminating case is known as a continuing task and the terminating one as an episodic task.
 
-So at each time step \(t=0,1,2,3,...,T\) the agent using the information of state \(S_t \in S\) of the environment must choose an action \(A_t \in \mathcal{A}(S_t)\) from the available ones, then in the next time step \(t+1\) the environment transits to a new state \(S_{t+1} \in \mathcal{S}\) and returns a reward \(R_t \in \mathcal{R} \subset \mathbb{R}\). The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
+So at each time step \(t=0,1,2,3,...,T\) the agent using the information of state \(S_t \in S\) of the environment must choose an action \(A_t \in \mathcal{A}(S_t)\) from the available ones, then in the next time step \(t+1\) the environment transits to a new state \(S_{t+1} \in \mathcal{S}\) and returns a reward \(R_t \in \mathcal{R} \subset \mathds{R}\). The dynamics between the agent and environment produces a trajectory of states, actions and rewards indexed by time.
 \[ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, ...\]
 
 Of special importance is the case of a finite MDP, in which the cardinality of states, actions and rewards (\(\mathcal{S}\), \(\mathcal{A}\) and \(\mathcal{R}\)) is finite. In a finite MDP the random variables \(S_t\), \(R_t\) have well defined discrete probability distributions that depend only on the previous action \(A_{t-1}\) and state \(S_{t-1}\). This is known as the Markov property:
@@ -633,8 +684,8 @@ The return \(G_t\) at time \(t\) follows and important recursive relation:
 \subsection{Policy}\label{policy}}
 
 A \emph{policy} \(\pi\) is a mapping from states to probabilities of selecting each particular action. Formally a function of \(2\) arguments, where the symbol ``\(|\)'' is just to remind us that the action depends on the state.
-\[ \pi(a|s) \doteq \text{Pr}[A_t=a | S_t=s], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}\]
-Policy codifies the behavior of the agent in the face of environment states. A well performing policy is one that generates behavior that gets the agent closer to its goal. An optimal policy is one that accomplishes the goal. Reinforcement Learning algorithms must find policies that maximize the \emph{expected return}, since by the \emph{reward hypothesis} this is the same as accomplishing the goal. In other words the problem that RL is trying to solve is to find a policy \(\pi\) that maximizes the \emph{expected return} \(\underset {\pi} \max\ \mathbb{E}_\pi G_t\).
+\[ \pi(a|s) \doteq \text{Pr}[A_t=a | S_t=s], \quad \forall s \in \mathcal{S}, \forall a \in \mathcal{A}\]
+Policy codifies the behavior of the agent in the face of environment states. A well performing policy is one that generates behavior that gets the agent closer to its goal. An optimal policy is one that accomplishes the goal. Reinforcement Learning algorithms must find policies that maximize the \emph{expected return}, since by the \emph{reward hypothesis} this is the same as accomplishing the goal. In other words the problem that RL is trying to solve is to find a policy \(\pi\) that maximizes the \emph{expected return} \(\underset {\pi} \max\ \mathds{E}_\pi G_t\).
 
 \hypertarget{value-functions}{%
 \subsection{Value Functions}\label{value-functions}}
@@ -642,12 +693,12 @@ Policy codifies the behavior of the agent in the face of environment states. A w
 Value functions capture the idea of how desirable each state is. They are always discussed in the context of a particular policy \(\pi\). A whole family of methods uses them to solve the RL problem.
 
 The \emph{value function} \(v_\pi(s)\) of a state \(s\) under a policy \(\pi\) is defined as:
-\[v_\pi(s) \doteq \mathbb{E}_\pi [ G_t | S_t = s ], \quad \forall s \in \mathcal{S}\]
-\[v_\pi(s) = \mathbb{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s \bigg], \quad \forall s \in \mathcal{S}\]
+\[v_\pi(s) \doteq \mathds{E}_\pi [ G_t | S_t = s ], \quad \forall s \in \mathcal{S}\]
+\[v_\pi(s) = \mathds{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s \bigg], \quad \forall s \in \mathcal{S}\]
 
 Similarly for action-state pairs (\(a \in \mathcal{A}\), \(s \in \mathcal{S}\)) the \emph{action-value} function for policy \(\pi\), \(q_\pi(s,a)\) is defined:
-\[ q_\pi(s,a) \doteq \mathbb{E}_\pi [ G_t | S_t=s, A_t=a], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}\]
-\[ q_\pi(s,a) = \mathbb{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s, A_t = a \bigg], \quad \forall s \in \mathcal{S}, a \in \mathcal{A}\]
+\[ q_\pi(s,a) \doteq \mathds{E}_\pi [ G_t | S_t=s, A_t=a], \quad \forall s \in \mathcal{S}, \forall a \in \mathcal{A}\]
+\[ q_\pi(s,a) = \mathds{E}_\pi \bigg[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \bigg| S_t = s, A_t = a \bigg], \quad \forall s \in \mathcal{S}, \forall a \in \mathcal{A}\]
 
 The function \(q_\pi\) represents the value of forcing the agent into taking action \(a\) and then following the policy \(\pi\).
 
@@ -659,7 +710,7 @@ A fundamental property of value functions is that they satisfy a recursive relat
 If the dynamics of the environment are completely known, the \emph{Bellman's Equation} can be used to obtain the value function \(v_\pi\) for all states since a system of linear \(|\mathcal{S}|\) equations with \(|\mathcal{S}|\) unknowns arises.
 
 Similarly the \emph{Bellman's Equation} for value-action functions is:
-\[q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) \big[ r + \gamma \sum_{a'} \pi(s'|a')\ q_\pi(s',a') \big], \quad \forall s \in \mathcal{S}, a \in \mathcal{A} \]
+\[q_\pi(s,a) = \sum_{s',r} p(s',r|s,a) \big[ r + \gamma \sum_{a'} \pi(s'|a')\ q_\pi(s',a') \big], \quad \forall s \in \mathcal{S}, \forall a \in \mathcal{A} \]
 
 \hypertarget{optimal-policies}{%
 \subsection{Optimal Policies}\label{optimal-policies}}
@@ -669,15 +720,15 @@ Solving the Reinforcement Learning problem can be seen as finding a policy that 
 There is always at least one policy that is better than or equal to all other. The policies with this property are named \emph{optimal policies} and are denoted by \(\pi_*\). The value function under an \emph{optimal policy} (\emph{optimal state-value function}) is written \(v_*\) and can be expressed as:
 \[v_*(s) \doteq \underset {\pi} {\max}\ v_\pi(s), \quad \forall s \in \mathcal{S}\]
 In the same fashion, an \emph{optimal action-value function} is defined as:
-\[q_*(s,a) \doteq \underset {\pi} {\max}\ q_\pi(s,a), \quad \forall s \in \mathcal{S}, a \in \mathcal{A}\]
+\[q_*(s,a) \doteq \underset {\pi} {\max}\ q_\pi(s,a), \quad \forall s \in \mathcal{S}, \forall a \in \mathcal{A}\]
 \emph{Bellman's equation} for value functions
 can be rewritten for the \emph{optimal state-value function}. Intuitively it represents the agent perfectly responding with the best action to any situation of the environment. For all states \(s \in \mathcal{S}\):
 \[v_*(s) = \underset {a \in \mathcal{A}(s)} {\max}\ q_*(s,a)\]
 \[v_*(s) = \underset{a} \max \sum_{s', r} p(s',r|s,a) \big[ r + \gamma v_*(s') \big]\]
-The above equalities are also present on they \emph{action-value} \(q_*(s,a)\) form:
+The above equalities are also present on they \emph{action-value} \(q_*(s,a)\) form, for all states \(s \in \mathcal{S}\) and all actions \(a \in \mathcal{A}\):
 
-\[q_*(s,a) = \mathbb{E} \bigg[ R_{t+1} + \gamma\ \underset{a'} \max\ q_*(S_{t+1}, a')\ \bigg|\ S_t = s, A_t=a \bigg]\]
-\[q_*(s,a) = \sum_{s',r} p(s',r|s,a) \bigg[ r + \gamma\ \underset{a'}{\max}\ q_*(s',a')\bigg] \]
+\[q_*(s,a) = \mathds{E} \bigg[ R_{t+1} + \gamma\ \underset{a'} \max\ q_*(S_{t+1}, a')\ \bigg|\ S_t = s, A_t=a \bigg]\]
+\[q_*(s,a) = \sum_{s',r} p(s',r|s,a) \bigg[ r + \gamma\ \underset{a'}{\max}\ q_*(s',a')\bigg]\]
 
 For finite MDPs \emph{Bellman's optimality equation}, either for \(v_*\) or \(q_*\), has an unique solution. If \(v_*\) or \(q_*\) are known for all states and actions, it is possible to solve the Reinforcement Learning problem and derive optimal behavior from them.
 \[a = \underset{a'}{\text{argmax}}\ \sum_{s',r} p(s',r|s,a') \big[ r + \gamma\ v_*(s') \big]\]
@@ -686,14 +737,38 @@ For finite MDPs \emph{Bellman's optimality equation}, either for \(v_*\) or \(q_
 \hypertarget{deep-q-networks}{%
 \section{Deep Q Networks}\label{deep-q-networks}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+The \emph{optimal action-value function} \(q_*(s,a)\) also referred as \(Q^*(s,a)\) is the maximum expected return achievable by selecting action \(a\) and then following an \emph{optimal policy}. The \emph{Bellman equation} for \(Q^*(s,a)\) is:
+\[Q^*(s,a) = \mathds{E}\ \bigg[ r + \gamma\ \underset{a'}{\max}\ Q^*(s',a')\ \bigg|\ S_t=s, A_t=a \bigg]\]
+If \(Q^*\) is known the RL problem can be solved, thus estimating \(Q^*\) is the basic idea behind many RL algorithms. The \emph{Bellman equation} can be used as an iterative update: \(Q(s,a)_{i+1} \leftarrow \mathds{E}\ [ r + \gamma\ \underset{a'}{\max}\ Q_i(s',a')| s, a ]\), this \emph{value iteration} technique converges to the \emph{optimal action-value function} (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}), \(Q_i \rightarrow Q^*\) as \(i \rightarrow \infty\). In practice \emph{value iteration} must be truncated at some point, with the conventional practice of stopping after, under a threshold, no significative update change is obtained. For many tasks this approach is unsustainable due to the high dimensionality of states and vast number of state-action pairs.
+
+Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parameterized version \(Q(s,a;\theta) \approx Q^*(s,a)\). In the case of Deep Reinforcement Learning (DRL) \(Q\) is approximated by a ANN with parameters \(\theta\).
+
+A naive, nonetheless intuitive, approach is to directly translate \(Q(s,a): \mathcal{S} \times \mathcal{A} \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|\mathcal{A}|\) forward computations of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in \mathcal{A}(S_t): Q(s,a;\theta)\). One of the key insights of the Deep Q-Networks (DQN) algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: \mathcal{S} \to \mathds{R}^{|\mathcal{A}|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
+
+A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Additionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the instability that arises DQN uses an \emph{experience replay} (\emph{memory buffer}) and a \emph{target network}.
+
+For the \(Q\)-values update through the \emph{Bellman's equation} a tuple of \emph{state}, \emph{action}, \emph{reward} and \emph{next reached state} \((s,a,r,s')\) is required. Interaction with the environment supplies such tuples, however the environment must be explored in such a way that allows for favorable training. A straightforward manner to obtain the observation tuples is by an \(\epsilon\)-greedy policy, that is, with a small \(\epsilon\) a random action is selected, otherwise \(a \leftarrow \underset{a'}{\text{argmax}}\ Q(s,a';\theta)\), thus \(Q\) generates policy and it is fittingly called the \emph{policy network}. The observation tuples are being stored on the \emph{experience replay}. The \emph{experience replay} is just a memory with fixed size to save past observations, when the memory is filled, the oldest observation is eliminated to make space for the new incoming observation. The training of \(Q\) is done by sampling a minibatch of past observations from the \emph{experience replay}, this with the objective of alleviating the problem of highly correlated observations that are being produced by the policy network.
+
+The target network \(\hat{Q}_{network}\) is a mere copy of the \(Q_{network}\), with the sole purpose of estimating the target update \(Q\), for reward \(r_i\) and state \(s'_i\):
+\[y_i = r_i + \gamma\ \underset{a'}{\max}\ \hat{Q}(s_i',a';\theta)\]
+
+The target network \(\hat{Q}_{network}\) parameters are kept constant for a \(C\) number of epochs, thus stabilizing the bootstrapping (\emph{Bellman's equation} update). To illustrate how just using the policy network (\(Q_{network}\)) for learning and updating can lead to instability we can think of two relatively similar states \(s_1\) and \(s_2\). Suppose that \(s_1\) is used to estimate the value of \(s_2\), when updating the parameters to minimize the error on \(s_2\) inadvertently we would be changing \(s_1\) estimated \(Q\)-value, as both states share the same parameters and are similar, so if \(s_1\) value is required again for bootstrapping the estimation would be deteriorated, this effect may compound and cause the whole network estimation to diverge. Decoupling estimation and acting is the main idea behind the use of two networks, each \(C\) number of epochs both networks are synchronized. Consequently the loss function of DQN is:
+\[MSE(\theta) = \mathds{E}\ \Bigg[ \bigg( y_i - Q(s_i,a_i;\theta)\bigg)^2 \Bigg]\].
+
+The error is then minimized through any general optimization algorithm, in the case of DQN typically by any variation of gradient descent.
+
+For an episodic task termination states must be handled. The needed adjustments are a change on the error calculation to include the termination case (\(y_i = r_i\), if termination occurred at iteration \(i\)) and an outer loop for episodes iteration or without it, through the use of the Open AI Gym framework.
+
+The complete DQN algorithm can be found at \protect\hyperlink{deep-q-networks-dqn-using-open-ai-gym-api}{Apendix 1}.
 
 \hypertarget{the-atari-benchmark}{%
 \section{The Atari benchmark}\label{the-atari-benchmark}}
 
-The Arcade Learning Environment (ALE) was introduced in 2013 (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). It was quickly adopted as benchmark by the RL community. ALE consits on a wrapper around the \href{https://stella-emu.github.io/}{Stella emulator}\footnote{\url{https://stella-emu.github.io/}} for the Atari 2600 console. This wrapper provides an interface to more than 50 Atari games. ALE was used by the Google's DeepMind team in the DQN paper (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), arguibly setting the current trend of deep reinforcement learning.
+The Arcade Learning Environment (ALE) was introduced in 2013 (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). It was quickly adopted as benchmark by the RL community. ALE consists on a wrapper around the \href{https://stella-emu.github.io/}{Stella emulator}\footnote{\url{https://stella-emu.github.io/}} for the Atari 2600 console. This wrapper provides an interface to more than 50 Atari games. ALE was used by Google's DeepMind team in the DQN paper (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), arguably setting the current trend of deep reinforcement learning. Serving as common benchmark ALE has been successfully used to develop new algorithms that later were applied to other domains, such as robotics (Risi and Preuss \protect\hyperlink{ref-risi2020chess}{2020}). As 2020 a single agent is capable of outperforming standard human play for 57 games Atari games (Badia et al. \protect\hyperlink{ref-badia2020agent57}{2020}), however the end of the ALE benchmark is nowhere insight as a myriad of challenges still persist on Reinforcement Learning methodologies.
 
-The desirable characteristics of Atari games for RL evaluation are their variety of tasks, their short episodic nature and scores that can be directly interpreted as rewards. The agents interact with ALE thorugh a set of 18 actions derived from 6 simple actions, namely four directions (up, down, left, right) and fire and NO-OP actions. The final 18 actions are combinations of the basic actions. The state information is raw pixel data with dimensions \(210 \times 160\), with each pixel on 7-bit color value (0-127). An important parameter
+The desirable characteristics of Atari games for RL evaluation are their variety of tasks, their short episodic nature and scores that can be, almost directly, interpreted as rewards. Also each game was created independently thus reducing the bias that would be introduced by a single party designing all the evaluation tasks. Agents interact with ALE through a set of 18 actions derived from 6 simple actions, namely four directions (up, down, left, right) and fire and NO-OP actions. The final 18 actions are combinations of the basic actions. The state information is raw pixel data with dimensions \(210 \times 160\), with each pixel on a 7-bit color scale (0-127). Additionally the whole console RAM of 128 bytes can be used as input to the learning algorithms. ALE can be used as generative model in the sense that previous states, if saved, can be restored.
+
+Some criticism towards ALE are the scarce stochasticity in the environments (Bellemare et al. \protect\hyperlink{ref-bellemare2015arcade}{2015})(Machado et al. \protect\hyperlink{ref-machado2018revisiting}{2018}) and the blackbox emulation of the games. Recent efforts are trying to address those issues, like TOYBOX (Foley et al. \protect\hyperlink{ref-foley2018toybox}{2018}) which implements from scratch Atari games with added functionality to monitor meaningful representations of game internal states.
 
 \hypertarget{experiments}{%
 \chapter{Experiments}\label{experiments}}
@@ -759,10 +834,6 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 \hypertarget{ann-architectures}{%
 \subsection{ANN Architectures}\label{ann-architectures}}
-
-Model-free, value-function approximation RL tries to tackle the intractability of directly estimating \(Q(s,a)\) for a high number of state-action pairs with a parameterized version \(Q(s,a;\theta)\). In the case of Deep Reinforcement Learning \(Q\) is approximated by a ANN with parameters \(\theta\).
-
-A naive, nonetheless intuitive, approach is to directly translate \(Q(s,a): S \times A \to \mathds{R}\) to a network architecture that predicts a \(Q\)-value for each state-action pair. However this approach incurs on \(|A|\) forward computations of the ANN since in order to get the next action following the \emph{greedy policy}, we need to check for all values of the available actions \(\forall a \in A(S_t): Q(s,a;\theta)\). One of the key insights of the DQN algorithm (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) was to change to an architecture of the form \(Q_{network}: S \to \mathds{R}^{|A|}\), predicting all \(Q\)-values in a single forward pass and also with the extra justification that perhaps the model would learn features about state \(s\) that can be reused to predict all \(Q\)-values for a given \(s\). This architecture is know as the \(Q_{network}\).
 
 Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
 
@@ -833,7 +904,7 @@ Three different \(Q_{network}\) architectures were used. The models were build u
 \hypertarget{training-details}{%
 \subsection{Training Details}\label{training-details}}
 
-A \(Q_{network}\) capable of predicting the values of the actions would solve the Reinforcement Learning problem (the agent would act greedily over the \(Q\)-values). Unluckily training a \(Q_{network}\) could be tricky as theoretical convergence results are only available for linear approximators (Tsitsiklis and Van Roy \protect\hyperlink{ref-tsitsiklis1997analysis}{1997}). Additionally \emph{Supervised Learning} techniques assume that the data was generated from the same distribution and its instances are \emph{i.i.d}, both assumptions are violated because the training distribution is constantly changing as the implicit policy defined by the network is changing and the generated observations are highly correlated. To combat the instability that arises DQN uses a replay memory and a target network.
+Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters (Irpan \protect\hyperlink{ref-rlblogpost}{2018}). The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see \emph{\url{http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf}}) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect \emph{``life signals''} (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until \emph{``life signals''} are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of \(1 \times 9\), \(3 \times 3\), \(5 \times 5\) and \(8 \times 8\) (data not shown). We decided to settle on the \(3 \times 3\) grid, to further extend hyperparameter search, as bigger grid sizes were not showing \emph{``life signals''}.
 
 Nine experiments were run using the described environment, between experiments some hyperparameters were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and \(\gamma\) discount parameter. The overall values for the hyperparameters were taken from (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) and then informally scaled to observe its effects on performance. We did not perform a systematic grid search due to high computational cost. The hyperparameters that were varied are shown in Table \ref{tab:hyper}, while the constant hyperparameters can be seen in Table \ref{tab:const}.
 
@@ -985,8 +1056,6 @@ Under the previous justifications, we have shown that is possible to design a CA
 \hypertarget{effect-of-hyperameters}{%
 \subsection{Effect of Hyperameters}\label{effect-of-hyperameters}}
 
-Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters (Irpan \protect\hyperlink{ref-rlblogpost}{2018}). The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see \emph{\url{http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf}}) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect \emph{``life signals''} (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until \emph{``life signals''} are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of \(1 \times 9\), \(3 \times 3\), \(5 \times 5\) and \(8 \times 8\) (data not shown). We decided to settle on the \(3 \times 3\) grid, to further extend hyperparameter search, as bigger grid sizes were not showing \emph{``life signals''}.
-
 The obtained results from the non-exhaustive hyperparameter search can be seen in Table \ref{tab:hyper}. Answering the question of to what degree the hyperparameters affect the end results of each run is not trivial and mostly experimental arguments can be provided. This is because attribution becomes difficult when multiple hyperparameters are changed at the same time since their interactions can be non-linear, yet carefully tuning a single hyperparameter can be inefficient as we would only explore a single dimension of hyperparameter space.
 
 The experiments \(c\), \(a\), \(d\), \(i\) and \(g\) have a better performance than the baseline heuristic. The hyperparameter that seems to have the greater effect is \emph{Unrolling}. When it is equal to \(1\) the experiments failed to learn (beating the heuristic). \emph{Unrolling} helps to ``accelerate'' learning as future steps rewards information is used to estimate the \(Q\) values. However in our case this ``acceleration'' meant the difference between learning something or nothing at all. A comparison between experiments \(c\), \(h\), and \(f\) is interesting as they have similar hyperparameters values but \(h\) and \(f\) failed to learn and arguably the difference can be attributed to the \emph{Unrolling} hyperparameter.
@@ -1003,26 +1072,16 @@ From the evaluation data it can be observed that the best performing runs have a
 
 To test for the robustness and maximization bias of the learned policies, the agents were also evaluated with \(\epsilon\)-greedy policies of \(0.02\), \(0.05\) and \(0.10\). We did not find anything unexpedted, since the performance of better than the heuristic agents deteriorated (Figure \ref{fig:sd-mean-epsilon}).
 
-\hypertarget{benchmark-capabilities}{%
-\subsection{Benchmark Capabilities}\label{benchmark-capabilities}}
-
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+In this document we have explored the advantages of using Cellular Automata as Reinforcement Learning environments. In particular a novel task has been proposed. It consists of an agent navigating through a forest fire CA with the goal of reducing the extension and amount of fire cells. The task has the semantics of an ``Helicopter'' trying to extinguish a wild fire. The optimization problem was put in terms of the Reinforcement Learning paradigm and then tried to be solved with the Deep Q-Networks algorithm.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+Our results suggest that CA can successfully be used as RL environments. Furthermore we believe that CA could be a promising benchmark for RL due to their simple formulation yet they are capable of modeling complex systems and have interesting computing characteristics. Consequently CA based environments might be closer to real applications than current video game based benchmarks.
 
-\hypertarget{conclusions}{%
-\section{Conclusions}\label{conclusions}}
+Future work would include extending the grid size, as for now our results are very preliminary on a \(3 \times 3\) grid. Further characterization of our proposed environment still remains, as only one algorithm was applied, so a natural step is to try other families of RL methods, like policy gradients and comparisons to other RL complementary methodologies such as \emph{searching} and \emph{planning} would be necessary.
 
-Lack of variaty of benchmark bias algorithms.
-
-\hypertarget{future-work}{%
-\section{Future Work}\label{future-work}}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+Encouraging a CA based RL benchmark must involve featuring a broad number of interesting tasks, as this was one of the key factors for the success of ALE. Modifications on the parameters of our proposed environment would change the semantics of our task. For example changing the effects of the agent to transform tree cells to empty cells or to rock cells would modify the semantics to one of a ``builder'' or ``worker'' trying to extinguish the fire be means of barriers or calculated tree cut downs. This task could be translated to an algorithmic context of finding cuts on graph, represented by the forest structure, that minimize the spread of a controlled initial fire. In addition completely new and relevant tasks could be proposed from the CA literature.
 
 \hypertarget{appendices}{%
 \chapter*{Appendices}\label{appendices}}
@@ -1198,6 +1257,9 @@ $
 \leavevmode\hypertarget{ref-alonso2011discrete}{}%
 Alonso-Sanz, Ramon. 2011. \emph{Discrete Systems with Memory}. Vol. 75. World Scientific.
 
+\leavevmode\hypertarget{ref-badia2020agent57}{}%
+Badia, Adrià Puigdomènech, Bilal Piot, Steven Kapturowski, Pablo Sprechmann, Alex Vitvitskyi, Daniel Guo, and Charles Blundell. 2020. ``Agent57: Outperforming the Atari Human Benchmark.'' \emph{arXiv Preprint arXiv:2003.13350}.
+
 \leavevmode\hypertarget{ref-bak2013nature}{}%
 Bak, Per. 2013. \emph{How Nature Works: The Science of Self-Organized Criticality}. Springer Science \& Business Media.
 
@@ -1206,6 +1268,9 @@ Bak, Per, Kan Chen, and Chao Tang. 1990. ``A Forest-Fire Model and Some Thoughts
 
 \leavevmode\hypertarget{ref-bellemare2013arcade}{}%
 Bellemare, Marc G, Yavar Naddaf, Joel Veness, and Michael Bowling. 2013. ``The Arcade Learning Environment: An Evaluation Platform for General Agents.'' \emph{Journal of Artificial Intelligence Research} 47: 253--79.
+
+\leavevmode\hypertarget{ref-bellemare2015arcade}{}%
+---------. 2015. ``The Arcade Learning Environment: An Evaluation Platform for General Agents (Extended Abstract).'' \emph{In Proceedings of the International Joint Conference on Artificial Intelligence (IJCAI)}, 4148--52.
 
 \leavevmode\hypertarget{ref-1606.01540}{}%
 Brockman, Greg, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech Zaremba. 2016. ``OpenAI Gym.''
@@ -1216,6 +1281,9 @@ Codd, EF. 1968. ``Cellular Automata, Academic Press.'' \emph{New York}.
 \leavevmode\hypertarget{ref-cook2004universality}{}%
 Cook, Matthew. 2004. ``Universality in Elementary Cellular Automata.'' \emph{Complex Systems} 15 (1): 1--40.
 
+\leavevmode\hypertarget{ref-deng2009imagenet}{}%
+Deng, Jia, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. 2009. ``Imagenet: A Large-Scale Hierarchical Image Database.'' In \emph{2009 Ieee Conference on Computer Vision and Pattern Recognition}, 248--55. Ieee.
+
 \leavevmode\hypertarget{ref-drossel1992self}{}%
 Drossel, Barbara, and Franz Schwabl. 1992. ``Self-Organized Critical Forest-Fire Model.'' \emph{Physical Review Letters} 69 (11): 1629.
 
@@ -1224,6 +1292,9 @@ Elwin, R Berkelamp, John H Conway, and Richard K Guy. 1982. ``Winning Ways for Y
 
 \leavevmode\hypertarget{ref-ermentrout1993cellular}{}%
 Ermentrout, G Bard, and Leah Edelstein-Keshet. 1993. ``Cellular Automata Approaches to Biological Modeling.'' \emph{Journal of Theoretical Biology} 160 (1): 97--133.
+
+\leavevmode\hypertarget{ref-foley2018toybox}{}%
+Foley, John, Emma Tosch, Kaleigh Clary, and David Jensen. 2018. ``Toybox: Better Atari Environments for Testing Reinforcement Learning Agents.'' \emph{arXiv Preprint arXiv:1812.02850}.
 
 \leavevmode\hypertarget{ref-ganguly2003survey}{}%
 Ganguly, Niloy, Biplab K Sikdar, Andreas Deutsch, Geoffrey Canright, and P Pal Chaudhuri. 2003. ``A Survey on Cellular Automata.''
@@ -1240,6 +1311,9 @@ Hedlund, Gustav A. 1969. ``Endomorphisms and Automorphisms of the Shift Dynamica
 \leavevmode\hypertarget{ref-hoekstra2010simulating}{}%
 Hoekstra, Alfons G, Jiri Kroc, and Peter MA Sloot. 2010. \emph{Simulating Complex Systems by Cellular Automata}. Springer.
 
+\leavevmode\hypertarget{ref-hooker1995testing}{}%
+Hooker, John N. 1995. ``Testing Heuristics: We Have It All Wrong.'' \emph{Journal of Heuristics} 1 (1): 33--42.
+
 \leavevmode\hypertarget{ref-holldobler1994journey}{}%
 Hölldobler, Bert, Edward O Wilson, and others. 1994. \emph{Journey to the Ants: A Story of Scientific Exploration.} Harvard University Press.
 
@@ -1248,6 +1322,9 @@ Ilachinski, Andrew. 2001. \emph{Cellular Automata: A Discrete Universe}. World S
 
 \leavevmode\hypertarget{ref-rlblogpost}{}%
 Irpan, Alex. 2018. ``Deep Reinforcement Learning Doesn't Work yet.'' \url{https://www.alexirpan.com/2018/02/14/rl-hard.html}.
+
+\leavevmode\hypertarget{ref-jaderberg2019human}{}%
+Jaderberg, Max, Wojciech M Czarnecki, Iain Dunning, Luke Marris, Guy Lever, Antonio Garcia Castaneda, Charles Beattie, et al. 2019. ``Human-Level Performance in 3D Multiplayer Games with Population-Based Reinforcement Learning.'' \emph{Science} 364 (6443): 859--65.
 
 \leavevmode\hypertarget{ref-kari1994reversibility}{}%
 Kari, Jarkko. 1994. ``Reversibility and Surjectivity Problems of Cellular Automata.'' \emph{Journal of Computer and System Sciences} 48 (1): 149--82.
@@ -1261,8 +1338,14 @@ Kingma, Diederik P, and Jimmy Ba. 2014. ``Adam: A Method for Stochastic Optimiza
 \leavevmode\hypertarget{ref-kuurka1997languages}{}%
 Kůrka, Petr. 1997. ``Languages, Equicontinuity and Attractors in Cellular Automata.'' \emph{Ergodic Theory and Dynamical Systems} 17 (2): 417--33.
 
+\leavevmode\hypertarget{ref-lanctot2019openspiel}{}%
+Lanctot, Marc, Edward Lockhart, Jean-Baptiste Lespiau, Vinicius Zambaldi, Satyaki Upadhyay, Julien Pérolat, Sriram Srinivasan, et al. 2019. ``OpenSpiel: A Framework for Reinforcement Learning in Games.'' \emph{arXiv Preprint arXiv:1908.09453}.
+
 \leavevmode\hypertarget{ref-louis2018probabilistic}{}%
 Louis, Pierre-Yves, and Francesca R Nardi. 2018. \emph{Probabilistic Cellular Automata}. Springer.
+
+\leavevmode\hypertarget{ref-machado2018revisiting}{}%
+Machado, Marlos C, Marc G Bellemare, Erik Talvitie, Joel Veness, Matthew Hausknecht, and Michael Bowling. 2018. ``Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents.'' \emph{Journal of Artificial Intelligence Research} 61: 523--62.
 
 \leavevmode\hypertarget{ref-margolus1984physics}{}%
 Margolus, Norman. 1984. ``Physics-Like Models of Computation.'' \emph{Physica D: Nonlinear Phenomena} 10 (1-2): 81--95.
@@ -1279,6 +1362,9 @@ Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglo
 \leavevmode\hypertarget{ref-mnih2015human}{}%
 Mnih, Volodymyr, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Bellemare, Alex Graves, et al. 2015. ``Human-Level Control Through Deep Reinforcement Learning.'' \emph{Nature} 518 (7540): 529--33.
 
+\leavevmode\hypertarget{ref-moravvcik2017deepstack}{}%
+Moravčík, Matej, Martin Schmid, Neil Burch, Viliam Lisỳ, Dustin Morrill, Nolan Bard, Trevor Davis, Kevin Waugh, Michael Johanson, and Michael Bowling. 2017. ``Deepstack: Expert-Level Artificial Intelligence in Heads-up No-Limit Poker.'' \emph{Science} 356 (6337): 508--13.
+
 \leavevmode\hypertarget{ref-NEURIPS2019_9015}{}%
 Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, et al. 2019. ``PyTorch: An Imperative Style, High-Performance Deep Learning Library.'' In \emph{Advances in Neural Information Processing Systems 32}, edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. d\textquotesingle Alché-Buc, E. Fox, and R. Garnett, 8024--35. Curran Associates, Inc. \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}.
 
@@ -1288,14 +1374,35 @@ Popovici, Adriana, and Dan Popovici. 2002. ``Cellular Automata in Image Processi
 \leavevmode\hypertarget{ref-poundstone2013recursive}{}%
 Poundstone, William. 2013. \emph{The Recursive Universe: Cosmic Complexity and the Limits of Scientific Knowledge}. Courier Corporation.
 
+\leavevmode\hypertarget{ref-risi2020chess}{}%
+Risi, Sebastian, and Mike Preuss. 2020. ``From Chess and Atari to Starcraft and Beyond: How Game Ai Is Driving the World of Ai.'' \emph{KI-Künstliche Intelligenz} 34 (1): 7--17.
+
+\leavevmode\hypertarget{ref-russakovsky2015imagenet}{}%
+Russakovsky, Olga, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, et al. 2015. ``Imagenet Large Scale Visual Recognition Challenge.'' \emph{International Journal of Computer Vision} 115 (3): 211--52.
+
+\leavevmode\hypertarget{ref-silver2016mastering}{}%
+Silver, David, Aja Huang, Chris J Maddison, Arthur Guez, Laurent Sifre, George Van Den Driessche, Julian Schrittwieser, et al. 2016. ``Mastering the Game of Go with Deep Neural Networks and Tree Search.'' \emph{Nature} 529 (7587): 484--89.
+
+\leavevmode\hypertarget{ref-silver2018general}{}%
+Silver, David, Thomas Hubert, Julian Schrittwieser, Ioannis Antonoglou, Matthew Lai, Arthur Guez, Marc Lanctot, et al. 2018. ``A General Reinforcement Learning Algorithm That Masters Chess, Shogi, and Go Through Self-Play.'' \emph{Science} 362 (6419): 1140--4.
+
 \leavevmode\hypertarget{ref-smith1971simple}{}%
 Smith III, Alvy Ray. 1971. ``Simple Computation-Universal Cellular Spaces.'' \emph{Journal of the ACM (JACM)} 18 (3): 339--53.
+
+\leavevmode\hypertarget{ref-stanley2015greatness}{}%
+Stanley, Kenneth O, and Joel Lehman. 2015. \emph{Why Greatness Cannot Be Planned: The Myth of the Objective}. Springer.
 
 \leavevmode\hypertarget{ref-sutton1988learning}{}%
 Sutton, Richard S. 1988. ``Learning to Predict by the Methods of Temporal Differences.'' \emph{Machine Learning} 3 (1): 9--44.
 
 \leavevmode\hypertarget{ref-sutton2018reinforcement}{}%
 Sutton, Richard S, and Andrew G Barto. 2018. \emph{Reinforcement Learning: An Introduction}. MIT press.
+
+\leavevmode\hypertarget{ref-tesauro1995temporal}{}%
+Tesauro, Gerald. 1995. ``Temporal Difference Learning and Td-Gammon.'' \emph{Communications of the ACM} 38 (3): 58--68.
+
+\leavevmode\hypertarget{ref-todorov2012mujoco}{}%
+Todorov, Emanuel, Tom Erez, and Yuval Tassa. 2012. ``Mujoco: A Physics Engine for Model-Based Control.'' In \emph{2012 Ieee/Rsj International Conference on Intelligent Robots and Systems}, 5026--33. IEEE.
 
 \leavevmode\hypertarget{ref-toffoli1977cellular}{}%
 Toffoli, Tommaso. 1977. ``Cellular Automata Machines.''

@@ -5,6 +5,7 @@ bookdown::gitbook:
     toolbar:
       position: static
 bookdown::pdf_book:
-  keep_tex: yes
+    latex_engine: xelatex
+    keep_tex: yes
 bookdown::html_book:
   css: toc.css

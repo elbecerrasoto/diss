@@ -20,6 +20,7 @@ header-includes:
    - \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
    - \usepackage{longtable}
    - \DeclareMathOperator*{\argmax}{arg\,max}
+   - \usepackage[utf8]{inputenc}
 ---
 
 ```{r chunk-global, include=FALSE}
@@ -28,16 +29,27 @@ knitr::opts_chunk$set(echo=F, message=F, warning=F, dev="cairo_pdf")
 
 # Abstract {-}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from mere real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a "Helicopter" trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+\newpage
 
+> "All of what we mean by goals and purposes can be well thought of as the maximization of the expected value of the cumulative sum of a received scalar signal." [@sutton2018reinforcement]
+
+>  "I prefer to eat a cake with a lot of cherries because I like reinforcement learning." Pieter Abbeel.
+ce
 \newpage
 
 # Acknowledgments {-}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non enim id arcu hendrerit pulvinar. Suspendisse vehicula nibh sed leo porttitor cursus. Cras vel quam interdum, suscipit tortor in, tempus ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec dictum velit non sapien vestibulum efficitur finibus ac ipsum. Proin eget diam condimentum, aliquam orci vel, auctor sapien. Nulla ac magna suscipit, tincidunt mi a, gravida quam. Proin eros leo, dapibus id luctus at, interdum et nunc. Morbi dapibus dictum ex ut volutpat. Donec consectetur eget urna facilisis hendrerit. Ut sodales cursus magna. Vivamus ipsum ipsum, congue vitae maximus eu, pellentesque vel erat.
+Writing is hard. But this is a known fact. What is not known are the particular environment and situations that any writer must endure to finish its work. This thesis is dedicated to all the persons that somehow, consciously or unconsciously, had soften the weight and let me just struggle with the hard part of writing and not the harder part of "everything else".
 
-Curabitur ex orci, venenatis ut nulla id, varius dignissim orci. Donec nec blandit nisi. Vivamus ex nibh, accumsan imperdiet maximus at, viverra id libero. Quisque magna dolor, facilisis eget nisi ut, vehicula luctus turpis. Sed in eros in lectus mattis auctor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam sit amet pellentesque lectus, blandit porta nisl. Duis vulputate faucibus erat, non dapibus enim congue non. Curabitur bibendum nibh sit amet congue congue. Mauris eleifend a justo rutrum sagittis.
+To my family, including pets, to always being there, no matter what.
+To my friends, who help me to put things in perspective and enjoying the ride.
+To my professors, not only for their top notch classes, but to giving me invaluable advice.
+To my advisors, for transmitting me their passion for computer science and 
+showing me that work-life balance is possible in this day and age but more importantly that one should love what it does.
+To the _Centro de Investigación en Computación_ and the _Instituto Politécnico Nacional_ for providing a wonderful and life changing experience.
+
+This document was possible due to the economical support given by _Consejo Nacional de Ciencia y Tecnología_ (CONACYT).
 
 \newpage
