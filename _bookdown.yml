@@ -1,0 +1,6 @@
+book_filename: "becerra_emanuel_CARLv2.0"
+language:
+  ui:
+    chapter_name: "Chapter "
+delete_merged_file: true
+output_dir: "docs"

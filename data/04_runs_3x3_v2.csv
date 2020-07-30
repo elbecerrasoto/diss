@@ -1,0 +1,12 @@
+name,run,return,mean,sd,better,exploration,unrolling,architecture,LR,batch_size,gamma
+06_08_3x3fc_a,c,640658,6.4066,2.2503,T,heuristic,2,A3,1e-4,16,0.99
+06_06_3x3fc_a,a,638094,6.3809,2.303,T,linear,2,A1,3e-4,32,0.99
+06_08_3x3fc_b,d,615091,6.1509,2.4723,T,heuristic,3,A3,3e-4,32,0.99
+06_09_3x3fc_b,i,591021,5.9102,2.5346,T,linear,2,A3,3e-4,32,0.99
+06_08_3x3fc_d,g,507313,5.0731,3.2834,T,linear,10,A3,3e-4,32,0.99
+06_06_3x3fc_b_Trainedp,b,327597,3.276,3.6327,F,linear,1,A2,1e-4,256,0.9
+06_09_3x3fc_a,h,294965,2.9496000000000002,3.5554,F,linear,1,A3,1e-4,16,0.99
+06_08_3x3fc_c,f,293722,2.9372,3.5316,F,heuristic,1,A3,3e-4,32,0.99
+06_08_3x3fc_b_Trainedp,e,293600,2.936,3.5398,F,heuristic,1,A2,1e-4,16,0.9
+random,R,319833,3.1983,3.439,F,NA,NA,NA,NA,NA,NA
+heuristic,H,503521,5.0352,2.9946,T,NA,NA,NA,NA,NA,NA

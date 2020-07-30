@@ -1,7 +1,5 @@
-# Thesis Directory
-/THESIS/pics/
-/THESIS/data/
-/THESIS/test/
+# Custom ignores
+.log
 
 # History files
 .Rhistory
@@ -44,4 +42,4 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/
+# docs/

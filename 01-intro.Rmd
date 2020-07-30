@@ -1,0 +1,57 @@
+# Introduction
+
+## Motivations
+
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, inventors, kings, and commoners alike, filling us with wonder, terror, and contemplation. A human creation capable of human feats would turn us, at least in an allegorical sense, into gods. This long time dream is an inspiration for the field of Artificial Intelligence (AI). AI was born in 1956 on the _Dartmouth Summer Research Project on Artificial Intelligence_. In the early days of AI, the kind of problems that were tackled were the ones that are easy for a computer to solve but difficult for humans. These kinds of tasks are logical and mathematical in their very nature. Ironically the kind of tasks that are easy for humans have proved to be difficult to code on computers. Like visual identification of objects or navigation through complex environments. Because of their apparent easiness we seldom stop to think about how we actually manage to solve them and coming with a precise set of rules is labor-intensive and error-prone. An approach to solve those kinds of tasks is called _machine learning_. The basic idea of machine learning is to use data on the task at hand and let the computer figure out how to best use the data to solve the problem, in a figurative way learning from observation. The promise of such methods is avoiding explicit programming to solve problems and perhaps getting us closer to the faraway dream of a thinking machine. 
+
+Reinforcement Learning (RL) is a branch of machine learning that is inspired by how we learn through interaction with the real world. An agent interacts in an environment a receives a signal, called _reward_. The main idea of RL is that the agent should get as much _reward_ as it is possible. In doing so it would accomplish whatever its purpose is. This is known as the _reward hypothesis_, in other words, plenty of rewards is great for whatever thing that the agent is trying to do. The agent has some control over the environment in the sense that it can act and get a response. The RL problem is how to correctly act to accomplish a goal by means of looking for behavior that maximizes an accumulated _reward_ quantity, know as _return_.
+
+A popular perspective on AI and machine learning is deep learning. Deep learning is a myriad of techniques based on artificial neural networks (ANN). ANN are loosely based in neuroscience and they are composed of several arrays of computing units called _neurons_. Neurons are arranged in hierarchies called layers. The processing of an ANN is done in an orderly fashion by the layers. When an input is received it is processed by the first layer, then the second and so on, until the last layer, which outputs the final result. The adjective deep comes from the use of several layers in a single network.
+
+Naturally, RL and deep learning can be combined, this union is known as Deep Reinforcement Learning (DRL). DRL has protagonized some success histories with superhuman performance on playing backgammon [@tesauro1995temporal], video games [@mnih2015human], poker [@moravvcik2017deepstack], multiplayer video games [@jaderberg2019human], chess [@silver2018general] and the decades-long challenging game of go [@silver2016mastering][@silver2018general].
+
+One important aspect of advancing an AI area is to have adequate _benchmarks_. Benchmarks are key problems that are widely used for the evaluation and design of algorithms. Having good performance on a benchmark is used to showcase the prowess of an algorithm. Nonetheless putting too much faith into a single benchmark could hurt research in the long run [@hooker1995testing][@stanley2015greatness]. Despite their pitfalls, they are essential tools of AI research. To name an important example, the _ImageNet_ dataset [@deng2009imagenet] and its associated challenge the _Large Scale Visual Recognition Challenge_ [@russakovsky2015imagenet] were fundamental for setting the current popularity of deep learning techniques and the bonanza in the field of computer vision.
+
+In the scope of RL, a widely accepted benchmark is the Arcade Learning Environment (ALE) [@bellemare2013arcade]. ALE is a suite of more than fifty games from the Atari 2600 console. Moreover, frameworks such as Open AI Gym [@1606.01540] have lowered the barrier entry for using ALE, making Atari games easily accessible for RL algorithms and their training and evaluation. ALE's primary strengths are its variety of tasks and the independent creation of each game which reduces the bias of a single manufacturer. If a single algorithm is capable of performing well on a variety of very different and difficult tasks, it would be conceivable to claim its generality, this notion is captured on ALE as challenge for any relatively general RL algorithm to play well on, as many as possible, Atari games. A key event for the popularization of Atari games as a benchmark was their utilization on the seminal Deep Q-Networks (DQN) papers [@mnih2013playing][@mnih2015human]. DQN achieved a remarkable performance on a dozen of Atari games, receiving as input just raw pixels, without any semantic understanding of the games and a single set of hyperparameters. DQN revived the interest in DRL methods.
+
+Other common benchmarks for RL are, GridWorlds [@sutton2018reinforcement], robotics simulations with the MuJoCo physics engine [@todorov2012mujoco], classic control tasks [@1606.01540] and a heterogeneous variety of game theoretical tasks and board games [@lanctot2019openspiel].
+
+Despite their broad success, Atari games suffer from their lack of environments with high stochasticity which allows for the exploitation of such determinism by simply algorithms [@bellemare2015arcade][@machado2018revisiting]. Other criticisms arises from the emulation component of the games, that functionally transforms them into black boxes. This issue is compounded when some RL methods are also black boxes, making debugging extremely difficult [@foley2018toybox]. The emulation also hinders the parametrization of the environments and the extraction of meaningful statistics to broaden the understanding of why some RL algorithms work and others do not.
+
+The central idea of this document is to show that Cellular Automata are suitable for the design and evaluation of RL environments. Cellular Automata (CA) are mathematical and computational systems with interesting characteristics and rich history of theoretical background [@ilachinski2001cellular]. CA are systems with discrete and local dynamics and a discrete evolution. They have been traditionally used to model complex systems, on the natural and social sciences like the weather, wild-fires, the immune system, pattern formation, galaxy formation, earthquakes, ecology, chemotaxis, epidemics, cell to cell interaction, reaction-diffusion systems, city traffic, social group formation, racial segregation, economics, just to name a few broad examples [@ganguly2003survey][@hoekstra2010simulating]. Furthermore, due to their complete discrete nature, CA can be seen as simple computational devices and provide an ideal model for parallel and unconventional computing. Of exceptional importance is that some CA have _universal computation_ capabilities, in other words, some CA have the same computing power of a _Turing Machine_ and thus capable of executing any algorithm.
+
+_What makes a good benchmark?_ is a tough question to answer, since each field has its requirements and expectations, and tradeoffs must be made between many design dimensions such as _difficulty_, _relevance_, _accessibility_, _reproducibility_, _interpretability_ and so on. We believe that CA would make a good benchmark for RL for the following reasons:
+
+1. Easiness of implementation.
+2. Capable of modeling complex systems.
+3. Computing models (_universal_, _parallel_, _unconventional_).
+4. Highly parameterizable.
+
+## Problem Statement
+
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropriate sets of _Actions_ ($\mathcal{A}$), _States_ ($\mathcal{S}$) and _Rewards_ ($\mathcal{R}$), also specify an "Agent" that interacts with the CA and explicitly or implicitly define the transitions of the MDP $p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]$.
+
+Thus our first challenge is engineering a RL task that successfully integrates the Forest Fire CA with the semantics of an "Agent" or "Helicopter" flying over the forest trying to extinguish the wildfire. The set of all states $\mathcal{S}$ of the proposed environment is: all the configurations of a $3 \times 3$ forest fire CA, with a tuple of helicopter positions $(row,col)$ and an internal parameter $m$ that takes two values $\{0, 1\}$ and controls the synchronization of helicopter movements and CA computations. The set of all actions $\mathcal{A}$ is the movement to all cells in a Moore's neighborhood of the agent position _{"Left-Up", "Up", "Right-Up", "Right", "Stay", "Left", "Left-Down", "Down", "Right-Down"_}. The rules that implicitly define the dynamics $p$ of the environment are:
+
+0. The selection of any action could affect the "Helicopter" position tuple, this is referred as "moving".
+1. After moving to any cell the "Helicopter" extinguishes the fire by changing, if applicable, a current "fire" cell to an "empty" cell.
+2. The $m$ parameter is decreased by $1$ after each "Helicopter" movement.
+3. Before moving, if $m=0$ then the grid is updated following the Forest Fire CA rules, then $m$ is reset to its initial value ($m=1$).
+
+After precisely defining the environment, the semantics are those of a helicopter trying to extinguish a wild-fire in a simulated forest, thus the optimization problem that we want to solve is:
+
+> Minimize the count of fire cells in the environment on a given time interval.
+
+## Objectives
+
+### Main Objectives
+
++ Propose a novel environment for Reinforcement Learning tasks, based on Cellular Automata, that could be used as an alternative benchmark instead of Atari games.
++ Characterize the environment by solving it by state of the art methods.
+
+### Specific Objectives
+
++ Select a Cellular Automaton model for the environment, in this case the Forest Fire Cellular Automaton.
++ Design a RL task incorporating the CA dynamics.
++ Implementation of the RL environment, following the Open AI gym API.
++ Apply DQN to solve the proposed task.

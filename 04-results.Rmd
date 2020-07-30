@@ -1,0 +1,340 @@
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(kableExtra))
+```
+
+```{r figures-set-up}
+# Libraries ----------------------------------------------------------------------
+
+library(tidyverse) # Wrangling
+library(ggrepel) # Point Labels
+library(cowplot) # Theme and Joining Plots
+library(stringr) # Vectorized Reg-Ex
+
+# Data Files ----------------------------------------------------------------------
+
+# Statistics of Evaluation 100k
+RUNS_FILE <- 'data/01_normal_and_eps_prof.csv'
+
+# Mean Reward window, size=1000
+WINDOWS_DATA <- 'data/02_windows_means_3x3.csv'
+
+# Loss data each 10 steps
+LOSS_DATA <- 'data/03_loss_3x3.csv'
+
+# Defaults ----------------------------------------------------------------------
+
+# Down sample factor of the mean reward and loss per step
+DOWN_SAMPLING <- 111
+
+# Cap error at:
+CAP_ERRORS <- 1200
+
+# Theme ----------------------------------------------------------------------
+
+# Select a system font
+FONT <- 'TeX Gyre Bonum'
+
+# Theme for plots
+theme_set(theme_minimal_grid(12, font_family=FONT))
+
+# Colors for SD vs Mean plot
+GREEN <- "#75C660"
+BROWN <- "#B1A898"
+
+# Colors for Training Dynamics plots
+CUSTOM_PALETTE <- c("#2E4A00", "#B1A898", "#AA8600", "#6A4100", "#75C660", "#666666", "#7F2700", "#FFC300", "#F07E5B")
+```
+
+```{r sd-mean-set-up}
+stats_100k <- read_csv(RUNS_FILE)
+
+cutoff <- stats_100k %>%
+  filter(run =='Heuristic') %>%
+  select(mean) %>%
+  as.numeric()
+
+# Better or equal than Heuristic
+stats_100k <- stats_100k %>%
+  mutate(better = (mean >= cutoff))
+
+# Which runs to label
+epsilon_r <- str_detect(stats_100k$run, '[a-z]_e[0-9]?')
+stats_100k <- stats_100k %>%
+  mutate(epsilon_r = epsilon_r)
+```
+
+```{r reading-windows}
+df_window_mean <- read_csv(WINDOWS_DATA)
+
+runs_descending <- c('c', 'a', 'd', 'i', 'g', 'b', 'h', 'f', 'e')
+runs_ascending <- rev(runs_descending)
+```
+
+```{r reading-loss}
+df_loss <- read_csv(LOSS_DATA)
+```
+
+# Experiments
+
+## Materials and Methods
+
+### Environment
+
+A general tool for creating RL tasks was design (_Forest Fire Environment Maker (FFEM)_). The tool generates environments based on the forest fire CA, specifically the Drossel and Schwabl model (DSM) [@drossel1992self]. We developed the tool from an initial idea of a "helicopter" flying over the symbolic wildfire, represented by the DMS, trying to extinguish the fire by means of allowing the "helicopter" to change fire cells to empty cells. During the implementation the environment was naturally generalized. The basic idea is to have an agent on top of the CA lattice. The agent has its own state and parameters. Particularly it has an specified position at one of the nodes of the CA, where it can act by changing the cell on that position to another of its cell states. The agent navigates the CA changing cells states. When the agent reads its next instruction it moves to a new cell (or stays in place) and then affects, if applicable, the destination. After some agent movements the CA is updated and the full process is repeated.
+
+The ability of allowing an agent to change the CA configurations express the attempt to drive the CA to a desired global state. In the RL framework this is done by giving a reward to the agent at each emitted action. This was done by merely counting all cell states indicating unwanted behavior and then multiplying by some weight (usually negative). This was generalized into getting the frequency of any cell type and then multiplying by a weight to generate a score per cell type. Then all the scores were combined into a global score. In summary the used reward function was the dot product of the cell-states frequencies by some weights, with the semantics that weights for desirable states are greater than the unwanted ones.
+
+The particular environment that was used for this thesis is one that has the semantics of a "helicopter" trying to extinguish a forest fire. This is represented by an agent influencing the dynamics of a DSM and is as follows: The first component is a DSM with a lattice of size 3x3 with parameters $p=0.33$ (tree growth probability) and $f=0.066$ (tree spontaneous burning probability). The used boundary conditions were set to invariant using an extra exogenous cell type that it is not involved in any CA dynamics, we just called them "rocks". The starting lattice configuration was made via random sampling by cell with probability of choosing "tree" of $0.75$ and "fire" of $0.25$. The second component, the agent ("helicopter") has a starting position in the middle of the lattice (_2nd row and column_), from where it can move in any direction of a Moore's neighborhood, thus the agent can choose from $9$ actions (_"Left-Up", "Up", "Right-Up", "Right", "Stay", "Left", "Left-Down", "Down", "Right-Down"_), then after arriving to its new destination the helicopter extinguishes the fire, represented by changing, if applicable, a "fire" cell to "empty". After some movements of the "helicopter" the forest fire CA is updated following the dynamics dictated by DSM. The specific sequence of agent movements and CA updates is: _move, update, move, move, update, move, move, update, move, move, ..._ (see \@ref(fig:thesis-3-3-env)). In accordance to the RL paradigm, at each performed action the environment must respond with a reward signal, in our setting this was $+1$ per "tree" cell and $-1$ per "fire" cell, in other words a balance between trees and fires. Finally the RL task was continuous.
+
+We selected the parameters of the DMS by seeking a separation between the scales of $f$ and $p$ ($f \ll p$), since a steady state is reached when $\lim \frac {f}{p} \to 0$ [@drossel1992self] and we wanted to see if the agent would significantly alter the dynamics of the CA. In our case $\frac {f}{p}=$ `r 0.066/0.33`. Alongside, empirical tuning was conducted from running the environment with a random policy to select the exact values of $f$ and $p$ that would make the grid relatively active at each step. It is important to note that the steady state only appears on large grids, as smaller ones are subject to finite size effects [@drossel1992self], thus we paid more attention to the empirical second criterion. Nevertheless balancing the two parameters would be important in future grid scaling experiments.
+
+Moreover the FFEM tool adds two new cells types. A "rock" type that does not interact with anything and is used as a barrier to the fire dynamics, it is always constant. A "lake" type that behaves exactly like a "rock" but it marks special positions in the grid that can alter the "helicopter" internal state. For example an idea (yet to be implemented) is to make the "power" of the "helicopter" limited so it would need to use it "wisely" and then would go to a "lake" to recharge it, akin to refilling its tank to keep fighting the wildfire. Also the FFEM tool generalizes the "powers" of the "helicopter" allowing for the exchange of any cell type for another, this lets for the creation of environments with a diversity of semantics like: An environment where the agent has to put barriers or one where it has to strategically deforest to prevent the spread of fire or even one where it has to completely reorganize the CA lattice. Even more functionality was included like a deterministic mode, generalized reward functions and several termination conditions, to check all the FFEM features consult: *https://github.com/elbecerrasoto/gym-forest-fire*.
+
+(ref:thesis-3-3-env) Illustration of two transitions in the proposed environment. On time $t$ the helicopter is at 2nd row and column, then it moves to the left, on arriving to its new position it changes the "fire" cell to "empty". Then, at the next time step, it returns to its original position, however the CA was updated before its arrival, anyway the "fire" cell at the middle (not shown) is promptly eliminated and replaced by an "empty" cell. The parameter $m$ is an internal state of the environment, that is decreased by $1$ at each step, when it reaches $0$ the CA is updated at the next step, before the action takes place, and then $m$ is restored to it max value ($m=1$). The current reward $r$ is $+1$ per "tree" and $-1$ per "fire".
+```{r thesis-3-3-env, fig.cap='(ref:thesis-3-3-env)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+knitr::include_graphics('pics/agent-env_3x3.png')
+```
+
+### Code Availability
+
+The source code for this thesis is openly available at:
+
+1. *https://github.com/elbecerrasoto/gym-forest-fire* for the RL environments.
+2. *https://github.com/elbecerrasoto/CARL* for the DQN implementations.
+
+### Deep Q Networks
+
+We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics [@ilachinski2001cellular] and their combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are $3^9$ grid states multiplied by $3^2$ "helicopter" positions and $2$ internal states for the agent-environment synchronization, giving a total of $2 \times 3^2 \times 3^9 =$ `r 2 * 3^2 * 3^9`, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable $\approx 10^{124}$ states.
+
+Deep Q Networks (DQN) [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with $n$-step unrolling of the Bellman optimality equation for $Q$ values [@sutton1988learning]. The implementation was made in Python 3.x, the _lingua franca_ of AI and RL. The non-linear $Q$ function approximator was an Artificial Neural Network (ANN). We implemented the _experience replay_ memory as a _double-ended queue_ (deque) data structure, which behaves as a list but allows for efficient "appends" and "pops" from either side ($\mathcal{O}(1)$). (see *https://docs.python.org/3.8/library/collections.html?highlight=collections#collections.deque*). Thus for a fixed size of an _experience replay_, incoming observations are appended to one end and old observations are "popped" from the other.
+
+A high level explanation of our DQN implementation [(see Apendix 1)](#deep-q-networks-dqn-using-open-ai-gym-api) is as follows: The logic of the $e$-greedy policy was abstracted into an "Agent class" which also holds a memory of past observations (_experience replay_), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple $(s,a,r,s')$ into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of $Q$ values for all $9$ actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during $T$ steps. Each $C$ training steps the weights of the policy and target networks are synchronized.
+
+For the full code details refer to: *https://github.com/elbecerrasoto/CARL*
+
+### Preprocessing
+
+The FFEM tool generates environments that follow the guidelines of the _Open AI Gym API_ (OAGA) [@1606.01540]. The API specifies that the observation should be a numerical vector, that is commonly returned as a _numpy_ $n$-dimensional array [@walt2011numpy]. In our implementation we instead returned a tuple of three _numpy arrays_ representing: the grid data (cell states), the position of the helicopter and the remaining moves ($m$) to CA updating. We made the knowledge of $m$ available to the agent to guarantee the Markov property. A more difficult RL task can be made by not knowing $m$ (just dropping its value from the tuple), thus shifting the system to a _Partially Observable Markov Decision Process_ (POMDP), where the hidden state $m$ should be inferred by the agent. Strictly speaking our implementation is departing from the _Open AI Gym API_ observation specification, however it does it in favor of facilitating the data processing and if purity is insisted on, merely concatenating the data and reshaping it into a single _numpy array_ would fix it.
+
+The input to the ANN models was a one-hot encoding of the CA grid concatenated with the "helicopter" position and the $m$ remaining moves parameter. This was supported by a FFEM feature to indicate the output format of the CA lattice, that can be returned in plain numeric representation, one-hot encoding or by channels as the CA lattice can be interpreted as an image.
+
+### ANN Architectures
+
+Three different $Q_{network}$ architectures were used. The models were build using the _Pytorch_ library [@NEURIPS2019_9015]. They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the _Pytorch_ defaults (_Kaiming uniform_ [@he2015delving]). The tensors transformations of the layers are described below:
+
+```{r mlp-n-parameters}
+A1 <- c(30, 128, 256, 128, 32, 9)
+A2 <- c(30, 256, 128, 64, 9)
+A3 <- c(30, 256, 512, 256, 64, 9)
+
+parameters_in_MLP <- function(layers){
+  n <- length(layers)
+  total <- 0
+  for( i in seq_along(layers)){
+    if(i < n){
+      layer_params <- layers[i]*layers[i+1] + layers[i+1]
+      total <- total + layer_params
+    }
+  }
+  return(total)
+}
+
+# lapply(list(A1, A2, A3), parameters_in_MLP)
+```
+
++ Architecture 1 (A1):
+  - Number of learnable parameters: `r parameters_in_MLP(A1)`
+$$(30 \times 1) \to (128 \times 1) \to (256 \times 1) \to (128 \times 1) \to (32 \times 1) \to (9 \times 1)$$
++ Architecture 2 (A2):
+  - Number of learnable parameters: `r parameters_in_MLP(A2)`
+$$(30 \times 1) \to (256 \times 1) \to (128 \times 1) \to (64 \times 1) \to (9 \times 1)$$
++ Architecture 3 (A3):
+  - Number of learnable parameters: `r parameters_in_MLP(A3)`
+$$(30 \times 1) \to (256 \times 1) \to (512 \times 1) \to (256 \times 1) \to (64 \times 1) \to (9 \times 1)$$
+
+(ref:A1) Diagram of Architecture 1 (A1).
+```{r A1, fig.cap='(ref:A1)', out.width='80%', fig.asp=.75, fig.align='center'}
+knitr::include_graphics('pics/A1.pdf')
+```
+
+(ref:A2) Diagram of Architecture 2 (A2).
+```{r A2, fig.cap='(ref:A2)', out.width='80%', fig.asp=.75, fig.align='center'}
+knitr::include_graphics('pics/A2.pdf')
+```
+
+(ref:A3) Diagram of Architecture 3 (A3).
+```{r A3, fig.cap='(ref:A3)', out.width='80%', fig.asp=.75, fig.align='center'}
+knitr::include_graphics('pics/A3.pdf')
+```
+
+### Training Details
+
+Training DRL algorithms is difficult. One of the reasons is that they are quite sensitive to hyperparameters [@rlblogpost]. The improvement of training stability is a substantial part of DRL research. An advice to train RL algorithms (see *http://rll.berkeley.edu/deeprlcourse/docs/nuts-and-bolts.pdf*) is to start with small instances of the problem and then proceed with a hyperparameter search to try to detect _"life signals"_ (a successful DRL run), if despite this the DRL algorithm is not learning anything, the difficulty of the task should be decreased until _"life signals"_ are detected. This training strategy was followed. Consequently profiling runs were made with grid configurations of $1 \times 9$, $3 \times 3$, $5 \times 5$ and $8 \times 8$ (data not shown). We decided to settle on the $3 \times 3$ grid, to further extend hyperparameter search, as bigger grid sizes were not showing _"life signals"_.
+
+Nine experiments were run using the described environment, between experiments some hyperparameters were allowed to vary, namely the type of initial exploration, the unrolling of the Bellman's update, the network architecture, learning rate, batch size, and $\gamma$ discount parameter. The overall values for the hyperparameters were taken from [@mnih2015human] and then informally scaled to observe its effects on performance. We did not perform a systematic grid search due to high computational cost. The hyperparameters that were varied are shown in Table \@ref(tab:hyper), while the constant hyperparameters can be seen in Table \@ref(tab:const).
+
+Each experiment was run on _[Google Colaboratory](https://colab.research.google.com)_ cloud service using their provided GPUs and computing resources. Their run for 1,200,000 epochs each, divided in 400,000 exploration and 800,000 of exploiting epochs. Two exploration schemes were used, for some models a linear annealing  of $\epsilon$ from $1.0$ to $0.10$ and for others a simple heuristic that moves the helicopter to any fire cell on the neighborhood, choosing randomly when more than one fire cell was present.
+
+The employed optimization algorithm was Adam [@kingma2014adam] with default _[Pytorch](https://pytorch.org/docs/stable/optim.html)_ values, with the exception of _learning rate_ that was set manually per experiment (see Table \@ref(tab:hyper)). Each transition tuple in the _experience replay_ only estimates a single $Q(s,a)$ value, however the output of the $Q_{network}$ is a vector of $Q$ values for all actions, so during optimization steps, for each example in the minibatch, only the weights involved in the calculation of a single $Q(s,a)$ must be taken into account for the updating of the weights.
+
+```{r const, message=FALSE}
+caption <- 'Constant DQN hyperparameters values across the 9 experiments.'
+
+tribble(
+  ~Hyperparameter,        ~Value,
+  'Total Training Steps', 1.2e6,
+  'Exploration Steps',    4e5,
+  'Exploitation Steps',   8e5,  
+  'Policy and Target Networks Synchronization', 1e4,
+  'Experience Replay Size', 2e5
+) %>%
+knitr::kable(
+       caption=caption, format.args = list(big.mark = ",", scientific = F),
+       booktabs=T
+    ) %>%
+  kable_styling(latex_options = c('striped'))
+```
+
+### Evaluation Procedure
+
+The trained agents were evaluated by playing 100,000 steps in the environment following $\epsilon$-greedy policies ($\epsilon$ of $0.00$, $0.02$, $0.05$, $0.10$) over the learned $Q$ values. The _return_, _sample mean_ and _sample standard deviation_ of all evaluation _rewards_ per run were computed. To provide a comparison baseline the same statistics were calculated for two other agents, a heuristic and a random ones. The heuristic was the previously described of following fire cells in a 1-step Moore neighborhood. Due to the continuing nature of our RL task the return is essentially the summation of all the _rewards_ obtained during the evaluation steps, no discount is used and no resets to starting states are happening between evaluation steps per experiment.
+
+## Results
+
+### Hyperparameter Comparison
+
+The obtained _return_, per experiment, from interacting with the environment 100,000 steps is shown in Table \@ref(tab:hyper). Five experiments were able to perform better than the base heuristic ($c,a,d,i,g$ runs). Three were worse than random ($h,f,e$ runs) and one ($b$ run) was in between. The maximum obtained _return_ was 640,643 a `r round(640643/503521, 2)` fold increase in performance over the base heuristic (return of 503,521). 
+
+```{r hyper, message=FALSE}
+caption <- 'Comparision of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.'
+opts <- options(knitr.kable.NA = "")
+
+read_csv('data/04_runs_3x3_v2.csv') %>%
+  select(-name, -mean, -sd, -better) %>%
+  arrange(desc(return)) %>%
+  knitr::kable(
+    col.names = c('Run', 'Return', 'Exploration', 'Unrolling', 'Architecture', 'LR', 'Batch Size', 'Gamma'),
+    booktabs=T,
+    caption=caption,
+    format.args = list(big.mark = ",", scientific = F)
+    ) %>%
+  kable_styling(latex_options = c('striped', 'scale_down'))
+```
+
+The comparison of the obtained _mean reward per step_ and _reward standard deviation_ is shown in Figure \@ref(fig:sd-mean). It can be observed that the best runs ($c,a,d,i,g$) also have an smaller _standard deviation_.
+
+(ref:sd-mean) The mean and standard deviation for each model was computed from playing the environment 100,000 steps, following greedy policies ($\epsilon=0$).
+```{r sd-mean, fig.cap='(ref:sd-mean)', fig.align='center'}
+# SD vs Mean reward
+stats_100k %>%
+  filter(! epsilon_r) %>% 
+  ggplot(aes(y=mean, x=sd))+
+  geom_point(aes(color=better), size=2.5)+
+  geom_text_repel(aes(label=run), size=6, family = FONT)+
+  labs(title = 'Is the Agent policy better than a Heuristic?',
+       subtitle = 'DQN Runs [a-i]',
+       x = 'Standard Deviation',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = '')+
+  scale_color_manual(labels = c('Worse', 'Better'), values = c(BROWN, GREEN))
+```
+
+Furthermore a comparison of agents following _$\epsilon$-greedy_ policies is shown in Figure \@ref(fig:sd-mean-epsilon). It could be seen that the performance is close to their respective _greedy_ policies.
+
+(ref:sd-mean-epsilon) Performance of _$\epsilon$-greedy_ policies with $\epsilon$ values of $0.02$, $0.05$ and  $0.10$.
+```{r sd-mean-epsilon, fig.cap='(ref:sd-mean-epsilon)', fig.align='center'}
+# SD vs Mean reward
+stats_100k %>%
+  ggplot(aes(y=mean, x=sd))+
+  geom_point(aes(color=better), size=1.5)+
+  geom_text_repel(aes(label=run), size=3, segment.alpha=1/5, family = FONT)+
+  labs(title = 'Robustness of agents policies',
+       subtitle = 'Runs with a small epsilon of 0.02, 0.05 and 0.10',
+       x = 'Standard Deviation',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = '')+
+  scale_color_manual(labels = c('Worse', 'Better'), values = c(BROWN, GREEN))
+```
+
+### Training Dynamics
+
+During training of each DQN run the change in _rewards_ was monitored, logging the _reward_ each 10 iterations. From this loggings the _mean reward per step_ was calculated by a sliding window of size 1,000. The _mena rewards per step_ during learning are shown in Figure \@ref(fig:reward-dynamics).
+
+(ref:reward-dynamics) Mean Rewards per step during training (1,000 steps sliding window).
+```{r reward-dynamics, fig.cap='(ref:reward-dynamics)', fig.align='center'}
+df_window_mean[c(T, rep(F,DOWN_SAMPLING)),] %>%
+  gather(key = 'run', value='window_1000k', -epoch) %>%
+  mutate(run = ordered(run, levels = runs_ascending)) %>%
+  ggplot(aes(x=epoch,y=window_1000k))+
+  geom_line(aes(color=run), size=1.3, alpha=0.80)+
+  #scale_color_brewer(type='qual', palette='Set3')+
+  scale_color_manual(values = CUSTOM_PALETTE)+
+  labs(title = 'DQN training dynamics for different runs',
+       subtitle = 'Mean reward by windows of 1000 epochs',
+       x = 'Epoch',
+       y = 'Mean Reward per Step',
+       caption = 'author: Becerra-Soto E.',
+       color = 'Experiment\n(from worst to best)')
+```
+
+Similarly the values of the error were logged each 10 step. The error behavior during training can be seen in Figure \@ref(fig:loss).
+
+(ref:loss) Mean Squared Error (MSE) during training. The scale of the y-axis varies between experiments as different values of $\gamma$ and _unrolling_ were used. Also the error was capped at 1,200 due to the increasing error of the divergent models.
+```{r loss, fig.cap='(ref:loss)', fig.align='center'}
+df_loss[c(T, rep(F,DOWN_SAMPLING)),] %>%
+  gather(key = 'run', value='loss', -epoch) %>%
+  mutate(run = ordered(run, levels = runs_ascending)) %>%
+  filter(loss < CAP_ERRORS) %>%
+  ggplot(aes(x=epoch, y=loss))+
+  geom_line(aes(color=run))+
+  # scale_color_brewer(type='qual', palette='Set3')+
+  scale_color_manual(values = CUSTOM_PALETTE)+
+  facet_grid(vars(run), scales='free')+
+  labs(title = 'Best runs maintain relatively stable error',
+       subtitle = 'Q-Network loss for different runs',
+       x = 'Epoch',
+       y = 'Mean Squared Error',
+       caption = 'author: Becerra-Soto E.',
+       color = 'Experiment\n(from worst to best)')+
+  theme(strip.text.x = element_text(angle = 90),
+        axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=6))
+```
+
+Visual demonstrations are available for the best two runs:
+
+* [Run C:](https://www.youtube.com/watch?v=9qFw78__sSM) *https://www.youtube.com/watch?v=9qFw78__sSM*
+* [Run A:](https://www.youtube.com/watch?v=DHdRd96KEZA) *https://www.youtube.com/watch?v=DHdRd96KEZA*
+
+## Disscusion
+
+The main objective of this thesis is to design and characterize a novel environment for _Reinforcement Learning_. It must be based on Cellular Automata (CA), with the rationale that a handful of well constructed CA based environments would provide an "interesting" set of benchmark tasks for Reinforcement Learning algorithms.
+
+The appeal of such tasks arises from the properties of CA. Some theoretical and practical properties that could make CA a good RL benchmark are:
+
+1. They are easy to implement.
+2. They can model complex real world phenomena.
+3. Some CA have _universal computation_ capabilities.
+
+Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wildfire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model (DSM) [@drossel1992self]. To further characterize the proposed environment we have applied DQN to try to solve it.
+
+### Effect of Hyperameters
+
+The obtained results from the non-exhaustive hyperparameter search can be seen in Table \@ref(tab:hyper). Answering the question of to what degree the hyperparameters affect the results of each run is not trivial and mostly experimental arguments can be provided. This is because attribution becomes difficult when multiple hyperparameters are changed at the same time since their interactions can be non-linear, yet carefully tuning a single hyperparameter can be inefficient as we would only explore a single dimension of hyperparameter space.
+
+The experiments $c$, $a$, $d$, $i$ and $g$ have a better performance than the baseline heuristic. The hyperparameter that seems to have the greater effect is _Unrolling_. When it is equal to $1$ the experiments failed to learn (beating the heuristic). _Unrolling_ helps to "accelerate" learning as future steps rewards information is used to estimate the $Q$ values. However in our case this "acceleration" meant the difference between learning something or nothing at all. A comparison between experiments $c$, $h$, and $f$ is interesting as they have similar hyperparameters values but $h$ and $f$ failed to learn and arguably the difference can be attributed to the _Unrolling_ hyperparameter.
+
+The tried _learning rate_ values were $0.0001$, $0.0003$, both of them worked. A small _minibatch size_ ($16$ and $32$) and a $\gamma$ of $0.99$ also worked.
+
+One of the approaches to make the task easier was to allow some agents to train following a heuristic policy during exploration. Even though the best performing run used the heuristic exploration, other agents were capable of learning by a simple $\epsilon$ linear decrease from $1.0$ to $0.10$ during the fisrt 400,000 iterations. Thus learning is achievable without the heuristic and in future experiments within the same environment it could be discarded as it can bias learning. The impact of exploring with the heuristic can be seen in the training dynamics plot (Figure \@ref(fig:reward-dynamics)) where the agents using the heuristic start the training with  much better performance, but after exploration is finished some manage to learn from the heuristic ($c$, $d$) and others not and its performance plummets ($f$, $e$). Similar behaviour can be observed in the epochs vs loss plot (Figure \@ref(fig:loss)), where, for the heuristic runs, the error started low and it was kept in that way during the exploration phase, since the linear exploration policy is steadily changing as opossed to the heuristic. Then when exploration finished and the $0.10$-greedy policy took effect, some runs had learned and its error was maintained and others had not and its errors blew up.
+
+The chosen ANN architectures are in increasing order of complexity: A2, A1 and A3 (see Figures \@ref(fig:A2), \@ref(fig:A1) and \@ref(fig:A3)). The best run employed the more complex network (A3). The number A3 has several of parameters in the same order of magnitude as the environment states (`r parameters_in_MLP(A3)` parameters vs. `r 2 * 3^2 * 3^9` states), so it is expected to be considerably overfitting. The number of parameters of the next performing network (`r parameters_in_MLP(A2)` parameters) is of an order below, but still it is expected to be overfitting.
+
+Training for more iterations presumably would not increase significantly the performance of any experiment as it could be seen from the training dynamics plot (see Figure  \@ref(fig:reward-dynamics)).
+
+From the evaluation data it can be observed that the best performing runs have a lower _standard deviation_ to those that failed to learn (Figure \@ref(fig:sd-mean)), thus the better runs not only played better but they consistently did it. Likewise, from the same data, three overall regions, in terms of _mean reward_ and _standard deviation_, can be seen. The first one groups the best runs together. The second groups the worst runs. The third one contains the Heuristic and the $g$ run. From the third region is interesting to notice that even so agent $g$ plays better than the heuristic it does it with a higher _standard deviation_, presumably because it performs really well in some environment states but badly in others, besides $g$ used an _Unrolling_ of $10$ which could explain that some estimations of $Q$ values were biased with such large _Unrolling_.
+
+To test for the robustness and maximization bias of the learned policies, the agents were also evaluated with $\epsilon$-greedy policies of $0.02$, $0.05$ and $0.10$. We did not find anything unexpedted, since the performance of better than the heuristic agents deteriorated (Figure \@ref(fig:sd-mean-epsilon)).

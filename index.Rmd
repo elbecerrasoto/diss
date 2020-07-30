@@ -1,0 +1,59 @@
+--- 
+output:
+  bookdown::pdf_book:
+    latex_engine: xelatex
+    keep_tex: yes
+    toc: no
+    includes:
+      in_header: parameters/preamble.tex
+      before_body: parameters/preface.tex
+documentclass: book
+site: bookdown::bookdown_site
+classoption: openany
+bibliography: references.bib
+biblio-style: apalike
+link-citations: yes
+fontsize: 12pt
+linestretch: 1.5
+geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
+github-repo: elbecerrasoto/diss
+description: "Emanuel Becerra Soto Master's Thesis"
+---
+
+```{r chunk-global, include=FALSE}
+knitr::opts_chunk$set(echo=F, message=F, warning=F, dev="cairo_pdf")
+```
+
+# Abstract {-}
+
+\textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from mere real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
+
+# Acknowledgments {-}
+
+Writing is hard. But this is a known fact. What is not known is the particular environment and situations that any writer must endure finishing its work. This thesis is dedicated to all the persons that somehow, consciously or unconsciously, have softened the weight and have let me only to struggle with the hard part of writing and not the harder part of "everything else".
+
+\begin{flushleft}
+\emph{To my family,\\including pets, for always being there, no matter what.}
+
+\emph{To my friends,\\who help me to put things in perspective and enjoy the ride.}
+
+\emph{To my professors,\\not only for their top-notch classes but giving me invaluable advice.}
+
+\emph{To my advisors,\\for transmitting me their passion for computer science and for
+showing me that work-life balance is possible in this day and age but more importantly that one should love what it does.}
+
+\emph{And to the \say{Centro de Investigación en Computación} and the \say{Instituto Politécnico Nacional}, for providing a wonderful and life-changing experience.}
+\end{flushleft}
+
+\begin{flushright}
+\footnotesize{This document was possible due to the economic support given by CONACYT.}
+\end{flushright}
+
+\newpage
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
