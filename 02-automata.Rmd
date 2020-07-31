@@ -1,10 +1,18 @@
+```{r}
+suppressMessages(library(tidyverse))
+suppressMessages(library(knitr))
+suppressMessages(library(kableExtra))
+GREEN <- "#75C660"
+BROWN <- "#B1A898"
+```
+
 # Cellular Automata
 
 ## Introduction
 
-Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
+_Cellular Automata_ (sg. _Cellular Automaton_) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
 
-A quick _Google Scholar_ search for the term "Cellular Automata", retrieves roughly 13,000 research articles (during 2019-2020 period). Despite not being as popular (by the same metric) as other topics, like "Cancer" (~128,000) or "Deep Learning" (~104,000), they are, arguably, still popular.
+A quick _Google Scholar_ search for the term "Cellular Automata", retrieves roughly 13,000 research articles (from 2019 to mid 2020). Despite not being as popular (by the same metric) as other topics, like "Cancer" (~128,000) or "Deep Learning" (~104,000), they are, arguably, still popular.
 
 The topic of CA dates back to the 1950's spanning a history of 70 years. Since then the mathematical and practical properties of CA have been studied and its applications have been explored in different branches of science including physical and social.
 
@@ -21,7 +29,7 @@ knitr::include_graphics('pics/Game_of_life_glider_gun.pdf')
 Cellular Automata are mathematical objects that are mainly characterized by [@ilachinski2001cellular]:
 
 1. A discrete lattice of cells:
-A $n$-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
+A $n$-dimensional arrangement of cells, usually $1$-D, $2$-D or $3$-D.
 
 2. Homogeneity:
 Cells are equivalent in the sense that they share an update function and a set of possible states.
@@ -39,7 +47,7 @@ The system evolves in discrete time steps. At each step the update function is a
 
 The following is adapted from the book Probabilistic Cellular Automata [@louis2018probabilistic].
 
-Cellular Automata (CA) are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.
+Cellular Automata are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.
 
 The main mathematical aspects of a CA are:
 
@@ -65,8 +73,7 @@ $$ F: S^{V(G)} \rightarrow S^{V(G)} $$
 $$ (F(\sigma))_k = f_k(\sigma_{V_k}) $$
 The global update $F$ is calculated by applying a local function $f_k$ per automata at $k$. In the classical setting $f_k$ is the same for all the automata.
 
-(ref:CA-lattice) The underlying graph structure of a Cellular Automaton. 
-A highlighted cell and its neighbors. Image adapted from [@hoekstra2010simulating].
+(ref:CA-lattice) The underlying graph structure of a Cellular Automaton. A highlighted cell and its neighbors (c). Image adapted from [@hoekstra2010simulating].
 ```{r CA-lattice, fig.cap='(ref:CA-lattice)', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
 knitr::include_graphics('pics/graph_structure.pdf')
 ```
@@ -78,7 +85,7 @@ knitr::include_graphics('pics/neighborhoods.pdf')
 
 ## Classification
 
-Wolfram from extensive simulations of 1-D CA grouped the general behavior of CA in four informally defined classes [@wolfram2002new]. The classification is done by simulation from a variety of lattice initializations to broadly characterize the CA.
+Wolfram from extensive simulations of $1$-D CA grouped the general behavior of CA in four informally defined classes [@wolfram2002new]. The classification is done by simulation from a variety of lattice initializations to broadly characterize the CA.
 
 1. Class 1: A quick evolution towards a homogeneous global state is observed. All cells stop changing and all the randomness in the initial configuration disappears.
 
@@ -91,7 +98,7 @@ CA are capable of universal computation [@wolfram2002new].
 
 This classification was inspired by the behavior observed in continuum dynamical systems. For example the homogeneous states of class 1 CA are analogous to fixed-point attracting states, or the repeating structures of class 2 CA are analogous to continuous limit cycles and class 3 chaotic patterns are analogous to strange attractors, while class 4 behavior does not have an obvious continuum analogy [@ilachinski2001cellular].
 
-Other classification schemes can be found in the literature like: based in the structure of their attractors [@kuurka1997languages] or by the structure of their "Garden of Eden" states (non-reachable global states) [@kari1994reversibility].
+Other classification schemes can be found in the literature, like based on the structure of their attractors [@kuurka1997languages] or by the structure of their "Garden of Eden" states (non-reachable global states) [@kari1994reversibility].
 
 ## Modeling of Complex Systems
 
@@ -101,20 +108,25 @@ A third scientific paradigm recently appeared, namely the "computational" paradi
 
 The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an "abstract model" or simply a "model". Mathematical and computational models can be grouped according on how _state_, _space_ and _time_ variables are abstracted into the model [@hoekstra2010simulating].
 
-Table: (\#tab:models) How different models handle _state_, _space_ and _time_. _C_ stands for continuous and _D_ for discrete. The discrete nature of CA is highlighted.
-Table adapted from the book "Simulating complex systems by cellular automata" [@hoekstra2010simulating].
+```{r models, message=FALSE}
+caption_str <- 'How different models handle \\textit{state}, \\textit{space} and \\textit{time}. "C" stands for continuous and "D" for discrete. The discrete nature of CA is highlighted. Table adapted from the book "Simulating complex systems by cellular automata" (Hoekstra, Kroc, and Sloot 2010).'
 
-Type of model                                 State  Space  Time
---------------------------------------------- ------ ------ ------
-Partial differential equations (PDEs)           C     C      C
-Integro-difference equations                    C     C      D
-Coupled ordinary differential equations (ODEs)  C     D      C
-Interacting particle systems                    D     D      C
-Coupled map lattices (CMLs)                     C     D      D
-Systems of difference equations                 C     D      D
-Lattice Boltzmann equations (LBEs)              C     D      D
-**Cellular Automata (CA)**                    **D**  **D**   **D**
-Lattice gas automata (LGAs)                     D     D      D
+tribble(
+  ~`Type of model`, ~State, ~Space, ~Time,
+  'Partial differential equations (PDEs)', 'C', 'C', 'C',
+  'Integro-difference equations', 'C', 'C', 'D',
+  'Coupled ordinary differential equations (ODEs)', 'C', 'D', 'C',
+  'Interacting particle systems', 'D', 'D', 'C',
+  'Coupled map lattices (CMLs)', 'C', 'D', 'D',
+  'Systems of difference equations', 'C', 'D', 'D',
+  'Lattice Boltzmann equations (LBEs)', 'C', 'D', 'D',
+  'Cellular Automata (CA)', 'D', 'D','D',
+  'Lattice gas automata (LGAs)', 'D', 'D', 'D'
+) %>%
+  kable(booktabs=T, caption = caption_str) %>%
+  kable_styling(latex_options = c('striped')) %>%
+  row_spec(8, color=GREEN, bold = T)
+```
 
 Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in other words systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it [@holldobler1994journey]. Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following 20 to 40 responses to a particular stimuli.
 
@@ -168,15 +180,15 @@ Considers the possibility of evolving cell arrangement. In standard CA the latti
 
 ## History
 
-Precursor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of excitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed upon inception was when in 1948 John von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
+Precursor ideas about Cellular Automata can be traced back to 1946 cybernetics models of excitable media of Wiener and Rosenbluth [@weiner1946mathematical], however their usual agreed upon inception was when in 1948 John von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones [@von1951general][@von1966theory].
 
 Von Neumann's basic idea was to build a lattice in $\mathds{Z}^2$ capable of copying itself, to another location in $\mathds{Z}^2$. The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states [@codd1968cellular]. 
 
 In the 1960's theoretical studies of CA were made, especially as instances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem [@hedlund1969endomorphisms], which characterizes translation-invariant CA transformations. 
 
-In 1969 Konrad Zuse published the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundamentally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demonstrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second [@smith1971simple].
+In 1969 Konrad Zuse published the book _Calculating Space_  [@zuse1970calculating] with the thesis that the universe is fundamentally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demonstrated that $1$-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second [@smith1971simple].
 
-A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkerboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerizing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a metaphor [@ermentrout1993cellular].
+A key moment came with the invention of $2$-D CA Game of Life. Pure mathematician J.H. Conway created "Life" as a solitaire and simulation type game. To play "Life" a checkerboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerizing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 [@gardner1970mathematical]. Despite its name and interesting properties "Life" has little biological meaning and should be only interpreted as a metaphor [@ermentrout1993cellular].
 
 During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT [@ilachinski2001cellular] and that a seminal review article of Stephen Wolfram was published [@wolfram1983statistical].
 
@@ -200,12 +212,13 @@ key_events <- tibble::tribble(
   1992,  'Varela, et al',          'First European conference on artificial life.'
 )
 
-knitr::kable(key_events, booktabs=T, caption = caption_str)
+knitr::kable(key_events, booktabs=T, caption = caption_str) %>%
+  kableExtra::kable_styling(latex_options = c('striped'))
 ```
 
 ## Forest Fire Models
 
-Forest fire models are a type of Probabilistic Cellular Automata (PCA). They try to capture the dynamics and general patterns of tree clusters that emerge from an evolving forest subject to perturbations.
+Forest fire models are a type of _Probabilistic Cellular Automata_. They try to capture the dynamics and general patterns of tree clusters that emerge from an evolving forest subject to perturbations.
 
 They trace their origins to statistical physics and are closely related with percolation phenomena and dissipative structures. However they have been proved a valuable tool for ecological and natural hazard sciences as simple but powerful modeling tools [@zinck2010wildfire].
 

@@ -1,6 +1,6 @@
 # Appendices {-}
 
-## Apendix 1 Algorithms
+## Appendix A Algorithms
 
 ### Agent-Environment interactions
 

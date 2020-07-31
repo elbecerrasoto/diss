@@ -3,16 +3,17 @@
 \usepackage{amsmath}
 % Algotirhms 
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
-% Pretty Tables
+% Pretty Tables, not breaking tables across pages
 \usepackage{longtable}
 % Unicode
 \usepackage[utf8]{inputenc}
 % Add pdf pages
 \usepackage{pdfpages}
 
-
+% ArgMax operator
 \DeclareMathOperator*{\argmax}{arg\,max}
 
+% Environment to use before bookdown
 \newenvironment{preliminary}%
 {\pagestyle{empty}\pagenumbering{roman}}%
 {\pagenumbering{arabic}}

@@ -73,16 +73,17 @@
 \usepackage{amsmath}
 % Algotirhms 
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
-% Pretty Tables
+% Pretty Tables, not breaking tables across pages
 \usepackage{longtable}
 % Unicode
 \usepackage[utf8]{inputenc}
 % Add pdf pages
 \usepackage{pdfpages}
 
-
+% ArgMax operator
 \DeclareMathOperator*{\argmax}{arg\,max}
 
+% Environment to use before bookdown
 \newenvironment{preliminary}%
 {\pagestyle{empty}\pagenumbering{roman}}%
 {\pagenumbering{arabic}}
@@ -129,6 +130,7 @@
 
 \includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}
 
+% Empty page
 \newpage
 \thispagestyle{empty}
 \mbox{}
@@ -136,6 +138,7 @@
 
 \includepdf[pages=1, pagecommand={}]{pages/02_cover2.pdf}
 
+% Empty page
 \newpage
 \thispagestyle{empty}
 \mbox{}
@@ -170,7 +173,7 @@
 \chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
 
-\textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from mere real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
+\textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
 
 \hypertarget{acknowledgments}{%
 \chapter*{Acknowledgments}\label{acknowledgments}}
@@ -195,13 +198,41 @@ showing me that work-life balance is possible in this day and age but more impor
 \footnotesize{This document was possible due to the economic support given by CONACYT.}
 \end{flushright}
 
-\newpage
-
 \tableofcontents
 
 \listoffigures
 
 \listoftables
+
+\hypertarget{list-of-abbreviations}{%
+\chapter*{List of Abbreviations}\label{list-of-abbreviations}}
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+
+\begin{tabular}{>{\bfseries}ll}
+\toprule
+Abbreviation & Explanation\\
+\midrule
+AI & Artificial Intelligence\\
+ALE & Arcade Learning Environment\\
+ANN & Artificial Neural Networks\\
+API & Application programming interface\\
+CA & Cellular Automata or Cellular Automaton\\
+\addlinespace
+CAM & Cellular Automata Machines\\
+DQN & Deep Q-Networks\\
+DRL & Deep Reinforcement Learning\\
+DSM & Drossel ans Schwabl Model\\
+FFEM & Forest Fire Environment Maker\\
+\addlinespace
+MDP & Markov Decision Process\\
+ML & Machine Learning\\
+MLP & Multilayer Perceptron\\
+OAGA & Open AI Gym API\\
+POMDP & Partially Observable Markov Decision Process\\
+\addlinespace
+RL & Reinforcement Learning\\
+\bottomrule
+\end{tabular}
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
@@ -209,23 +240,24 @@ showing me that work-life balance is possible in this day and age but more impor
 \hypertarget{motivations}{%
 \section{Motivations}\label{motivations}}
 
-Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, inventors, kings, and commoners alike, filling us with wonder, terror, and contemplation. A human creation capable of human feats would turn us, at least in an allegorical sense, into gods. This long time dream is an inspiration for the field of Artificial Intelligence (AI). AI was born in 1956 on the \emph{Dartmouth Summer Research Project on Artificial Intelligence}. In the early days of AI, the kind of problems that were tackled were the ones that are easy for a computer to solve but difficult for humans. These kinds of tasks are logical and mathematical in their very nature. Ironically the kind of tasks that are easy for humans have proved to be difficult to code on computers. Like visual identification of objects or navigation through complex environments. Because of their apparent easiness we seldom stop to think about how we actually manage to solve them and coming with a precise set of rules is labor-intensive and error-prone. An approach to solve those kinds of tasks is called \emph{machine learning}. The basic idea of machine learning is to use data on the task at hand and let the computer figure out how to best use the data to solve the problem, in a figurative way learning from observation. The promise of such methods is avoiding explicit programming to solve problems and perhaps getting us closer to the faraway dream of a thinking machine.
+Since antiquity the idea of building a thinking machine has always been in the minds of philosophers, artists, inventors, kings, and commoners alike, filling us with wonder, terror, and contemplation. A human creation capable of human feats would turn us, at least in an allegorical sense, into gods. This long time dream is an inspiration for the field of \emph{Artificial Intelligence} (AI). AI was born in 1956 on the \emph{Dartmouth Summer Research Project on Artificial Intelligence}. In the early days of AI, the kind of problems that were tackled were the ones that are easy for a computer to solve but difficult for humans. These kinds of tasks are logical and mathematical in their very nature. Ironically the kind of tasks that are easy for humans have proved to be difficult to code on computers. Like visual identification of objects or navigation through complex environments. Because of their apparent easiness we seldom stop to think about how we actually manage to solve them and coming with a precise set of rules is labor-intensive and error-prone. An approach to solve those kinds of tasks is called \emph{Machine Learning} (ML). The basic idea of machine learning is to use data on the task at hand and let the computer figure out how to best use the data to solve the problem, in a figurative way learning from observation. The promise of such methods is avoiding explicit programming to solve problems and perhaps getting us closer to the faraway dream of a thinking machine.
 
-Reinforcement Learning (RL) is a branch of machine learning that is inspired by how we learn through interaction with the real world. An agent interacts in an environment a receives a signal, called \emph{reward}. The main idea of RL is that the agent should get as much \emph{reward} as it is possible. In doing so it would accomplish whatever its purpose is. This is known as the \emph{reward hypothesis}, in other words, plenty of rewards is great for whatever thing that the agent is trying to do. The agent has some control over the environment in the sense that it can act and get a response. The RL problem is how to correctly act to accomplish a goal by means of looking for behavior that maximizes an accumulated \emph{reward} quantity, know as \emph{return}.
+\emph{Reinforcement Learning} (RL) is a branch of ML that is inspired by how we learn through interaction with the real world. An agent interacts with an environment a receives a signal, called \emph{reward}. The main idea of RL is that the agent should accumulate as much \emph{reward} as possible. In doing so it would accomplish whatever its purpose is. This is known as the \emph{reward hypothesis}, in other words, getting plenty of favorable rewards is great for whatever the agent is trying to do. The agent, from its current knowledge, chooses an \emph{action} and then receives a \emph{reward} and an \emph{observation} from the environment, this process is repetead over and over while the agents seeks for its goal by accumulating \emph{reward}. In summary, the \emph{RL problem} is how to correctly act to accomplish a goal by looking for behavior that maximizes an accumulated \emph{reward} quantity, know as \emph{return}.
 
-A popular perspective on AI and machine learning is deep learning. Deep learning is a myriad of techniques based on artificial neural networks (ANN). ANN are loosely based in neuroscience and they are composed of several arrays of computing units called \emph{neurons}. Neurons are arranged in hierarchies called layers. The processing of an ANN is done in an orderly fashion by the layers. When an input is received it is processed by the first layer, then the second and so on, until the last layer, which outputs the final result. The adjective deep comes from the use of several layers in a single network.
+A popular perspective on AI and ML is deep learning. \emph{Deep Learning} is a myriad of techniques based on \emph{artificial neural networks} (ANN). ANN are loosely based in neuroscience and the brain structure. They are composed of several arrays of computing units called \emph{neurons}. Neurons are arranged in hierarchies called layers. The processing of an ANN is done in an orderly fashion by the layers. When an input is received it is processed by the first layer, then the second and so on, until the last layer, which outputs the final result. If a technique or method is designated as \emph{deep learning} it only implies that such technique employs an ANN with a bunch of layers.
 
-Naturally, RL and deep learning can be combined, this union is known as Deep Reinforcement Learning (DRL). DRL has protagonized some success histories with superhuman performance on playing backgammon (Tesauro \protect\hyperlink{ref-tesauro1995temporal}{1995}), video games (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), poker (Moravčík et al. \protect\hyperlink{ref-moravvcik2017deepstack}{2017}), multiplayer video games (Jaderberg et al. \protect\hyperlink{ref-jaderberg2019human}{2019}), chess (Silver et al. \protect\hyperlink{ref-silver2018general}{2018}) and the decades-long challenging game of go (Silver et al. \protect\hyperlink{ref-silver2016mastering}{2016})(Silver et al. \protect\hyperlink{ref-silver2018general}{2018}).
+Naturally, RL and deep learning can be combined, this union is known as \emph{Deep Reinforcement Learning} (DRL). DRL has protagonized recent successes with superhuman performance on playing backgammon (Tesauro \protect\hyperlink{ref-tesauro1995temporal}{1995}), video games (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), poker (Moravčík et al. \protect\hyperlink{ref-moravvcik2017deepstack}{2017}), multiplayer video games (Jaderberg et al. \protect\hyperlink{ref-jaderberg2019human}{2019}), chess (Silver et al. \protect\hyperlink{ref-silver2018general}{2018}) and the decades-long challenging game of go (Silver et al. \protect\hyperlink{ref-silver2016mastering}{2016})(Silver et al. \protect\hyperlink{ref-silver2018general}{2018}).
 
-One important aspect of advancing an AI area is to have adequate \emph{benchmarks}. Benchmarks are key problems that are widely used for the evaluation and design of algorithms. Having good performance on a benchmark is used to showcase the prowess of an algorithm. Nonetheless putting too much faith into a single benchmark could hurt research in the long run (Hooker \protect\hyperlink{ref-hooker1995testing}{1995})(Stanley and Lehman \protect\hyperlink{ref-stanley2015greatness}{2015}). Despite their pitfalls, they are essential tools of AI research. To name an important example, the \emph{ImageNet} dataset (Deng et al. \protect\hyperlink{ref-deng2009imagenet}{2009}) and its associated challenge the \emph{Large Scale Visual Recognition Challenge} (Russakovsky et al. \protect\hyperlink{ref-russakovsky2015imagenet}{2015}) were fundamental for setting the current popularity of deep learning techniques and the bonanza in the field of computer vision.
+One important aspect of advancing an AI area is to have adequate benchmarks. \emph{Benchmarks} are key problems that are widely used for the evaluation and design of algorithms. Having good performance on a benchmark is used to showcase the prowess of an algorithm. Nonetheless putting too much faith into a single benchmark could hurt research in the long run (Hooker \protect\hyperlink{ref-hooker1995testing}{1995})(Stanley and Lehman \protect\hyperlink{ref-stanley2015greatness}{2015}). Despite their pitfalls, they are essential tools of AI research. To name an important example, the \emph{ImageNet} dataset (Deng et al. \protect\hyperlink{ref-deng2009imagenet}{2009}) and its associated challenge the \emph{Large Scale Visual Recognition Challenge} (Russakovsky et al. \protect\hyperlink{ref-russakovsky2015imagenet}{2015}) were fundamental for setting the current popularity of deep learning techniques and the bonanza in the field of computer vision.
 
-In the scope of RL, a widely accepted benchmark is the Arcade Learning Environment (ALE) (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). ALE is a suite of more than fifty games from the Atari 2600 console. Moreover, frameworks such as Open AI Gym (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}) have lowered the barrier entry for using ALE, making Atari games easily accessible for RL algorithms and their training and evaluation. ALE's primary strengths are its variety of tasks and the independent creation of each game which reduces the bias of a single manufacturer. If a single algorithm is capable of performing well on a variety of very different and difficult tasks, it would be conceivable to claim its generality, this notion is captured on ALE as challenge for any relatively general RL algorithm to play well on, as many as possible, Atari games. A key event for the popularization of Atari games as a benchmark was their utilization on the seminal Deep Q-Networks (DQN) papers (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}). DQN achieved a remarkable performance on a dozen of Atari games, receiving as input just raw pixels, without any semantic understanding of the games and a single set of hyperparameters. DQN revived the interest in DRL methods.
+In the scope of RL, a widely accepted benchmark is the \emph{Arcade Learning Environment} (ALE) (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). ALE is a suite of more than fifty games from the Atari 2600 console. Moreover, frameworks such as \emph{Open AI Gym} (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}) have lowered the barrier entry for using ALE, making Atari games easily accessible for RL algorithms and their training and evaluation. ALE's primary strengths are its variety of tasks and the independent creation of each game which reduces the bias of a single manufacturer. If a single algorithm is capable of performing well on a variety of very different and difficult tasks, it would be conceivable to claim its generality. Thus, ALE challanges any general RL algorithm to play well on as many as possible Atari games. A key event for the popularization of Atari games as a benchmark was their utilization on the seminal \emph{Deep Q-Networks} (DQN) papers (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}). The DQN algorithm achieved a remarkable performance on a dozen of Atari games, receiving as input just raw pixels, hence without the games rules and from a single set of hyperparameters. DQN revived the interest in DRL methods.
 
 Other common benchmarks for RL are, GridWorlds (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}), robotics simulations with the MuJoCo physics engine (Todorov, Erez, and Tassa \protect\hyperlink{ref-todorov2012mujoco}{2012}), classic control tasks (Brockman et al. \protect\hyperlink{ref-1606.01540}{2016}) and a heterogeneous variety of game theoretical tasks and board games (Lanctot et al. \protect\hyperlink{ref-lanctot2019openspiel}{2019}).
 
-Despite their broad success, Atari games suffer from their lack of environments with high stochasticity which allows for the exploitation of such determinism by simply algorithms (Bellemare et al. \protect\hyperlink{ref-bellemare2015arcade}{2015})(Machado et al. \protect\hyperlink{ref-machado2018revisiting}{2018}). Other criticisms arises from the emulation component of the games, that functionally transforms them into black boxes. This issue is compounded when some RL methods are also black boxes, making debugging extremely difficult (Foley et al. \protect\hyperlink{ref-foley2018toybox}{2018}). The emulation also hinders the parametrization of the environments and the extraction of meaningful statistics to broaden the understanding of why some RL algorithms work and others do not.
+Despite their broad success, Atari games suffer from their lack of environments with high stochasticity, which allows for the exploitation of such determinism by simply algorithms (Bellemare et al. \protect\hyperlink{ref-bellemare2015arcade}{2015})(Machado et al. \protect\hyperlink{ref-machado2018revisiting}{2018}). Other criticisms arises from the emulation component of the games, that functionally transforms them into black boxes. This issue is compounded when some RL methods are also black boxes, making debugging extremely difficult (Foley et al. \protect\hyperlink{ref-foley2018toybox}{2018}). The emulation also hinders the parametrization of the environments and the extraction of meaningful statistics to broaden the understanding of why some RL algorithms work and others do not.
 
-The central idea of this document is to show that Cellular Automata are suitable for the design and evaluation of RL environments. Cellular Automata (CA) are mathematical and computational systems with interesting characteristics and rich history of theoretical background (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}). CA are systems with discrete and local dynamics and a discrete evolution. They have been traditionally used to model complex systems, on the natural and social sciences like the weather, wild-fires, the immune system, pattern formation, galaxy formation, earthquakes, ecology, chemotaxis, epidemics, cell to cell interaction, reaction-diffusion systems, city traffic, social group formation, racial segregation, economics, just to name a few broad examples (Ganguly et al. \protect\hyperlink{ref-ganguly2003survey}{2003})(Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}). Furthermore, due to their complete discrete nature, CA can be seen as simple computational devices and provide an ideal model for parallel and unconventional computing. Of exceptional importance is that some CA have \emph{universal computation} capabilities, in other words, some CA have the same computing power of a \emph{Turing Machine} and thus capable of executing any algorithm.
+The central idea of this document is to show that \emph{Cellular Automata} (sg. \emph{Cellular Automaton}) are suitable for the design and evaluation of RL environments. \emph{Cellular Automata} (CA) are mathematical and computational systems with interesting characteristics
+and a rich history of theoretical background (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}). CA are systems with discrete and local dynamics and a discrete evolution. They have been traditionally used to model complex systems, on the natural and social sciences like the weather, wildfires, the immune system, pattern formation, galaxy formation, earthquakes, ecology, chemotaxis, epidemics, cell to cell interaction, reaction-diffusion systems, city traffic, social group formation, racial segregation, economics, just to name a few broad examples (Ganguly et al. \protect\hyperlink{ref-ganguly2003survey}{2003})(Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}). Furthermore, due to their complete discrete nature, CA can be seen as simple computational devices and provide an ideal model for parallel and unconventional computing. Of exceptional importance is that some CA have \emph{universal computation} capabilities, in other words, some CA have the same computing power of a \emph{Turing Machine} and thus capable of executing any algorithm.
 
 \emph{What makes a good benchmark?} is a tough question to answer, since each field has its requirements and expectations, and tradeoffs must be made between many design dimensions such as \emph{difficulty}, \emph{relevance}, \emph{accessibility}, \emph{reproducibility}, \emph{interpretability} and so on. We believe that CA would make a good benchmark for RL for the following reasons:
 
@@ -245,16 +277,15 @@ The central idea of this document is to show that Cellular Automata are suitable
 \hypertarget{problem-statement}{%
 \section{Problem Statement}\label{problem-statement}}
 
-In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a CA into the RL framework a Markov Decision Process (MDP) should be defined. So we need to be able to find appropriate sets of \emph{Actions} (\(\mathcal{A}\)), \emph{States} (\(\mathcal{S}\)) and \emph{Rewards} (\(\mathcal{R}\)), also specify an ``Agent'' that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]\).
+In this thesis, we consider the advantages of using Cellular Automata as underlying environments for RL tasks. To fully incorporate a Cellular Automaton into the RL framework a \emph{Markov Decision Process} (MDP) should be defined. So we need to be able to find appropriate sets of \emph{Actions} (\(\mathcal{A}\)), \emph{States} (\(\mathcal{S}\)) and \emph{Rewards} (\(\mathcal{R}\)), also specify an \emph{Agent} that interacts with the CA and explicitly or implicitly define the transitions of the MDP \(p(s',r|s,a): \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0,1]\).
 
-Thus our first challenge is engineering a RL task that successfully integrates the Forest Fire CA with the semantics of an ``Agent'' or ``Helicopter'' flying over the forest trying to extinguish the wildfire. The set of all states \(\mathcal{S}\) of the proposed environment is: all the configurations of a \(3 \times 3\) forest fire CA, with a tuple of helicopter positions \((row,col)\) and an internal parameter \(m\) that takes two values \(\{0, 1\}\) and controls the synchronization of helicopter movements and CA computations. The set of all actions \(\mathcal{A}\) is the movement to all cells in a Moore's neighborhood of the agent position \emph{\{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}\}. The rules that implicitly define the dynamics \(p\) of the environment are:
+The particular CA that we would be using through this document is the \emph{Drossel and Schwabl model} (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}) also refered as the Forest Fire CA. DSM captures the dynamics of wildfires. Thus our first challenge is engineering a RL task that successfully integrates the DSM with some practical semantics. Thus, we propose an \emph{Agent} or ``Helicopter'' flying over the forest trying to extinguish the wildfire. For an initial characterization, a grid of \(3 \ times 3\) will be used. Therefore, the set of all states \(\mathcal{S}\) of the proposed environment will be the configurations of a \(3 \times 3\) forest fire CA, with a tuple of helicopter positions \((row,col)\) and an internal parameter \(m\) that takes two values \(\{0, 1\}\) and controls the synchronization of helicopter movements and CA computations. The set of all actions \(\mathcal{A}\) is the possible movement to all cells in a Moore's neighborhood from the agent position \emph{\{``Left-Up'', ``Up'', ``Right-Up'', ``Right'', ``Stay'', ``Left'', ``Left-Down'', ``Down'', ``Right-Down''}\}. The rules that implicitly define the dynamics \(p\) of the environment are:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{-1}
 \tightlist
 \item
-  The selection of any action could affect the ``Helicopter'' position tuple, this is referred as ``moving''.
+  The selection of any action would affect the ``Helicopter'' position tuple (unless the \emph{``Stay''} action was chosen), this is referred as ``moving''.
 \item
   After moving to any cell the ``Helicopter'' extinguishes the fire by changing, if applicable, a current ``fire'' cell to an ``empty'' cell.
 \item
@@ -263,10 +294,13 @@ Thus our first challenge is engineering a RL task that successfully integrates t
   Before moving, if \(m=0\) then the grid is updated following the Forest Fire CA rules, then \(m\) is reset to its initial value (\(m=1\)).
 \end{enumerate}
 
-After precisely defining the environment, the semantics are those of a helicopter trying to extinguish a wild-fire in a simulated forest, thus the optimization problem that we want to solve is:
+\hypertarget{appendix-a-algorithms}{%
+\section{Appendix A Algorithms}\label{appendix-a-algorithms}}
+
+After precisely defining the environment (see Appendix A \ref{agent-environment-interactions}), the semantics are those of a helicopter trying to extinguish a wildfire in a simulated forest, thus the optimization problem that we want to solve is:
 
 \begin{quote}
-Minimize the count of fire cells in the environment on a given time interval.
+Minimize the accumulated count of fire cells for a given time interval.
 \end{quote}
 
 \hypertarget{objectives}{%
@@ -304,9 +338,9 @@ Minimize the count of fire cells in the environment on a given time interval.
 \hypertarget{introduction-1}{%
 \section{Introduction}\label{introduction-1}}
 
-Cellular Automata (sg. Cellular Automaton) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
+\emph{Cellular Automata} (sg. \emph{Cellular Automaton}) are computational and mathematical systems with two essential characteristics: a discrete structure and a local interaction between its parts, but its killer feature is that they are simple, yet capable of producing complex behaviour.
 
-A quick \emph{Google Scholar} search for the term ``Cellular Automata'', retrieves roughly 13,000 research articles (during 2019-2020 period). Despite not being as popular (by the same metric) as other topics, like ``Cancer'' (\textasciitilde128,000) or ``Deep Learning'' (\textasciitilde104,000), they are, arguably, still popular.
+A quick \emph{Google Scholar} search for the term ``Cellular Automata'', retrieves roughly 13,000 research articles (from 2019 to mid 2020). Despite not being as popular (by the same metric) as other topics, like ``Cancer'' (\textasciitilde128,000) or ``Deep Learning'' (\textasciitilde104,000), they are, arguably, still popular.
 
 The topic of CA dates back to the 1950's spanning a history of 70 years. Since then the mathematical and practical properties of CA have been studied and its applications have been explored in different branches of science including physical and social.
 
@@ -332,7 +366,7 @@ Cellular Automata are mathematical objects that are mainly characterized by (Ila
 \def\labelenumi{\arabic{enumi}.}
 \item
   A discrete lattice of cells:
-  A \(n\)-dimensional arrangement of cells, usually 1-D, 2-D or 3-D.
+  A \(n\)-dimensional arrangement of cells, usually \(1\)-D, \(2\)-D or \(3\)-D.
 \item
   Homogeneity:
   Cells are equivalent in the sense that they share an update function and a set of possible states.
@@ -352,7 +386,7 @@ Cellular Automata are mathematical objects that are mainly characterized by (Ila
 
 The following is adapted from the book Probabilistic Cellular Automata (Louis and Nardi \protect\hyperlink{ref-louis2018probabilistic}{2018}).
 
-Cellular Automata (CA) are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.
+Cellular Automata are dynamical systems of interconnected finite-state automata (cells). The automata evolution is through discrete time steps and it is dictated by a function dependent on a neighborhood of interacting automata.
 
 The main mathematical aspects of a CA are:
 
@@ -383,15 +417,13 @@ The main mathematical aspects of a CA are:
 
 
 
-
 \begin{figure}
 
 {\centering \includegraphics[width=0.8\linewidth]{pics/graph_structure} 
 
 }
 
-\caption{The underlying graph structure of a Cellular Automaton.
-A highlighted cell and its neighbors. Image adapted from (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\label{fig:CA-lattice}
+\caption{The underlying graph structure of a Cellular Automaton. A highlighted cell and its neighbors (c). Image adapted from (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\label{fig:CA-lattice}
 \end{figure}
 
 
@@ -408,7 +440,7 @@ A highlighted cell and its neighbors. Image adapted from (Hoekstra, Kroc, and Sl
 \hypertarget{classification}{%
 \section{Classification}\label{classification}}
 
-Wolfram from extensive simulations of 1-D CA grouped the general behavior of CA in four informally defined classes (Wolfram \protect\hyperlink{ref-wolfram2002new}{2002}). The classification is done by simulation from a variety of lattice initializations to broadly characterize the CA.
+Wolfram from extensive simulations of \(1\)-D CA grouped the general behavior of CA in four informally defined classes (Wolfram \protect\hyperlink{ref-wolfram2002new}{2002}). The classification is done by simulation from a variety of lattice initializations to broadly characterize the CA.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -425,7 +457,7 @@ Wolfram from extensive simulations of 1-D CA grouped the general behavior of CA 
 
 This classification was inspired by the behavior observed in continuum dynamical systems. For example the homogeneous states of class 1 CA are analogous to fixed-point attracting states, or the repeating structures of class 2 CA are analogous to continuous limit cycles and class 3 chaotic patterns are analogous to strange attractors, while class 4 behavior does not have an obvious continuum analogy (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}).
 
-Other classification schemes can be found in the literature like: based in the structure of their attractors (Kůrka \protect\hyperlink{ref-kuurka1997languages}{1997}) or by the structure of their ``Garden of Eden'' states (non-reachable global states) (Kari \protect\hyperlink{ref-kari1994reversibility}{1994}).
+Other classification schemes can be found in the literature, like based on the structure of their attractors (Kůrka \protect\hyperlink{ref-kuurka1997languages}{1997}) or by the structure of their ``Garden of Eden'' states (non-reachable global states) (Kari \protect\hyperlink{ref-kari1994reversibility}{1994}).
 
 \hypertarget{modeling-of-complex-systems}{%
 \section{Modeling of Complex Systems}\label{modeling-of-complex-systems}}
@@ -436,28 +468,27 @@ A third scientific paradigm recently appeared, namely the ``computational'' para
 
 The theoretical and computational paradigms force us to formally disclose our assumptions in the form of variables, processes and relationships among them, thus forming what is known as an ``abstract model'' or simply a ``model''. Mathematical and computational models can be grouped according on how \emph{state}, \emph{space} and \emph{time} variables are abstracted into the model (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).
 
-\begin{longtable}[]{@{}llll@{}}
-\caption{\label{tab:models} How different models handle \emph{state}, \emph{space} and \emph{time}. \emph{C} stands for continuous and \emph{D} for discrete. The discrete nature of CA is highlighted.
-Table adapted from the book ``Simulating complex systems by cellular automata'' (Hoekstra, Kroc, and Sloot \protect\hyperlink{ref-hoekstra2010simulating}{2010}).}\tabularnewline
+\begin{table}
+
+\caption{\label{tab:models}How different models handle \textit{state}, \textit{space} and \textit{time}. "C" stands for continuous and "D" for discrete. The discrete nature of CA is highlighted. Table adapted from the book "Simulating complex systems by cellular automata" (Hoekstra, Kroc, and Sloot 2010).}
+\centering
+\begin{tabular}[t]{llll}
 \toprule
-Type of model & State & Space & Time\tabularnewline
+Type of model & State & Space & Time\\
 \midrule
-\endfirsthead
-\toprule
-Type of model & State & Space & Time\tabularnewline
-\midrule
-\endhead
-Partial differential equations (PDEs) & C & C & C\tabularnewline
-Integro-difference equations & C & C & D\tabularnewline
-Coupled ordinary differential equations (ODEs) & C & D & C\tabularnewline
-Interacting particle systems & D & D & C\tabularnewline
-Coupled map lattices (CMLs) & C & D & D\tabularnewline
-Systems of difference equations & C & D & D\tabularnewline
-Lattice Boltzmann equations (LBEs) & C & D & D\tabularnewline
-\textbf{Cellular Automata (CA)} & \textbf{D} & \textbf{D} & \textbf{D}\tabularnewline
-Lattice gas automata (LGAs) & D & D & D\tabularnewline
+\rowcolor{gray!6}  Partial differential equations (PDEs) & C & C & C\\
+Integro-difference equations & C & C & D\\
+\rowcolor{gray!6}  Coupled ordinary differential equations (ODEs) & C & D & C\\
+Interacting particle systems & D & D & C\\
+\rowcolor{gray!6}  Coupled map lattices (CMLs) & C & D & D\\
+\addlinespace
+Systems of difference equations & C & D & D\\
+\rowcolor{gray!6}  Lattice Boltzmann equations (LBEs) & C & D & D\\
+\textcolor[HTML]{75C660}{\textbf{Cellular Automata (CA)}} & \textcolor[HTML]{75C660}{\textbf{D}} & \textcolor[HTML]{75C660}{\textbf{D}} & \textcolor[HTML]{75C660}{\textbf{D}}\\
+\rowcolor{gray!6}  Lattice gas automata (LGAs) & D & D & D\\
 \bottomrule
-\end{longtable}
+\end{tabular}
+\end{table}
 
 Complex systems is a broadly defined term to encompass dynamical systems with more than a few interacting parts commonly in a non-linear way, in other words systems that have emergent properties from individual interactions. This kind of systems are common in the the natural and social sciences. One of the classical examples is the formation of ant colonies and the organization that comes with it (Hölldobler, Wilson, and others \protect\hyperlink{ref-holldobler1994journey}{1994}). Each ant is sensing external stimuli and acting upon them, the cumulative reactions of all the ants culminates in the building of the ant-hill, feeding it, defending it and attacking other ant colonies. Everything from following 20 to 40 responses to a particular stimuli.
 
@@ -517,15 +548,15 @@ Generalizations to the classical attributes of CA can be conceived (Ilachinski \
 \hypertarget{history}{%
 \section{History}\label{history}}
 
-Precursor ideas about Cellular Automata (CA) can be traced back to 1946 cybernetics models of excitable media of Wiener and Rosenbluth (Weiner and Rosenblunth \protect\hyperlink{ref-weiner1946mathematical}{1946}), however their usual agreed upon inception was when in 1948 John von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones (Von Neumann and others \protect\hyperlink{ref-von1951general}{1951})(Von Neumann, Burks, and others \protect\hyperlink{ref-von1966theory}{1966}).
+Precursor ideas about Cellular Automata can be traced back to 1946 cybernetics models of excitable media of Wiener and Rosenbluth (Weiner and Rosenblunth \protect\hyperlink{ref-weiner1946mathematical}{1946}), however their usual agreed upon inception was when in 1948 John von Neumann following a suggestion from mathematician Stanislaw Ulam introduced CA to study self replicating systems, particularly biological ones (Von Neumann and others \protect\hyperlink{ref-von1951general}{1951})(Von Neumann, Burks, and others \protect\hyperlink{ref-von1966theory}{1966}).
 
 Von Neumann's basic idea was to build a lattice in \(\mathds{Z}^2\) capable of copying itself, to another location in \(\mathds{Z}^2\). The solution, in spite of being elaborate and involving 29 different cell states, was modular and intuitive. Since then more constructions capable of the same feat have been found with a lesser number of states (Codd \protect\hyperlink{ref-codd1968cellular}{1968}).
 
 In the 1960's theoretical studies of CA were made, especially as instances of dynamical systems and their relation to the field of symbolic dynamics. A notable result from the epoch is the Curtis-Hedlund-Lyndon theorem (Hedlund \protect\hyperlink{ref-hedlund1969endomorphisms}{1969}), which characterizes translation-invariant CA transformations.
 
-In 1969 Konrad Zuse published the book \emph{Calculating Space} (Zuse \protect\hyperlink{ref-zuse1970calculating}{1970}) with the thesis that the universe is fundamentally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demonstrated that 1-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second (Smith III \protect\hyperlink{ref-smith1971simple}{1971}).
+In 1969 Konrad Zuse published the book \emph{Calculating Space} (Zuse \protect\hyperlink{ref-zuse1970calculating}{1970}) with the thesis that the universe is fundamentally discrete as a result of the computations of a CA-like machinery. Likewise during 1960's computer scientist Alvy Ray Smith demonstrated that \(1\)-D CA are capable of universal computation and showed equivalences between Moore and von Neumann neighborhoods, reducing the first to the second (Smith III \protect\hyperlink{ref-smith1971simple}{1971}).
 
-A key moment came with the invention of 2-D CA Game of Life. Pure mathematician J.H. Conway created ``Life'' as a solitaire and simulation type game. To play ``Life'' a checkerboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerizing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 (Gardner \protect\hyperlink{ref-gardner1970mathematical}{1970}). Despite its name and interesting properties ``Life'' has little biological meaning and should be only interpreted as a metaphor (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}).
+A key moment came with the invention of \(2\)-D CA Game of Life. Pure mathematician J.H. Conway created ``Life'' as a solitaire and simulation type game. To play ``Life'' a checkerboard was needed, then counters or chips were put on top of some squares. This represented an initial alive population of organisms and the initial configuration would evolve following reproduction and dying rules. The rules were tweaked by Conway to produce unpredictable and mesmerizing patterns. The game was made popular when was published as recreational mathematics by Martin Gardner in 1970 (Gardner \protect\hyperlink{ref-gardner1970mathematical}{1970}). Despite its name and interesting properties ``Life'' has little biological meaning and should be only interpreted as a metaphor (Ermentrout and Edelstein-Keshet \protect\hyperlink{ref-ermentrout1993cellular}{1993}).
 
 During the 80s the notoriety of CA was boosted to the current status as CA became quintessential examples of complex systems. The focus of research was shifted towards CA as modeling tools. Is in this decade that the first CA conference was held at MIT (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and that a seminal review article of Stephen Wolfram was published (Wolfram \protect\hyperlink{ref-wolfram1983statistical}{1983}).
 
@@ -539,19 +570,19 @@ Since then applications have been coming in a variety of domains. In the biologi
 \toprule
 Year & Researcher & Discovery\\
 \midrule
-1936 & Turing & Formalized the concept of computability.\\
+\rowcolor{gray!6}  1936 & Turing & Formalized the concept of computability.\\
 1948 & von Neumann & Introduced self-reproducing automata.\\
-1950 & Ulam & Realistic models for complex extended systems.\\
+\rowcolor{gray!6}  1950 & Ulam & Realistic models for complex extended systems.\\
 1966 & Burks & Extended von Neumann's work.\\
-1967 & von Bertalanffy, et al & Applied System Theory to human systems.\\
+\rowcolor{gray!6}  1967 & von Bertalanffy, et al & Applied System Theory to human systems.\\
 \addlinespace
 1969 & Zuse & Introduced the concept of "computing spaces".\\
-1970 & Conway & Introduced the CA "Game of Life".\\
+\rowcolor{gray!6}  1970 & Conway & Introduced the CA "Game of Life".\\
 1977 & Toffoli & Applied CA to modeling physical laws.\\
-1983 & Wolfram & Authored a seminal review article about CA.\\
+\rowcolor{gray!6}  1983 & Wolfram & Authored a seminal review article about CA.\\
 1984 & Cowan, et al & The Santa Fe Institute is founded.\\
 \addlinespace
-1987 & Toffoli, Wolfram & First CA conference held at MIT.\\
+\rowcolor{gray!6}  1987 & Toffoli, Wolfram & First CA conference held at MIT.\\
 1992 & Varela, et al & First European conference on artificial life.\\
 \bottomrule
 \end{tabular}
@@ -560,7 +591,7 @@ Year & Researcher & Discovery\\
 \hypertarget{forest-fire-models}{%
 \section{Forest Fire Models}\label{forest-fire-models}}
 
-Forest fire models are a type of Probabilistic Cellular Automata (PCA). They try to capture the dynamics and general patterns of tree clusters that emerge from an evolving forest subject to perturbations.
+Forest fire models are a type of \emph{Probabilistic Cellular Automata}. They try to capture the dynamics and general patterns of tree clusters that emerge from an evolving forest subject to perturbations.
 
 They trace their origins to statistical physics and are closely related with percolation phenomena and dissipative structures. However they have been proved a valuable tool for ecological and natural hazard sciences as simple but powerful modeling tools (Zinck, Johst, and Grimm \protect\hyperlink{ref-zinck2010wildfire}{2010}).
 
@@ -649,7 +680,7 @@ For each state \(\sigma_k(n)\) at site \(k\) and time step \(n\).
 \hypertarget{machine-learning}{%
 \section{Machine Learning}\label{machine-learning}}
 
-Machine Learning is a subfield of Computer Science and Artificial Intelligence (AI). It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data. In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
+Machine Learning is a subfield of Computer Science and Artificial Intelligence. It aims at creating entities capable of learning from examples. What distinguishes it from other AI approaches is the special emphasis on avoiding explicit programming for the task at hand, instead relying only on examples (data) to solve it and from there generalizing to previously unseen cases. So at the heart of this approach lies data. In the classical machine learning setting the algorithm is provided with a set of questions and answers. Then after a period of computations over the pairs questions-answers, the algorithm is presented with new questions, some of them never seen before, that must be answered well enough.
 
 The formalization of this setting leads to an approach known as Supervised Learning, where the questions-answers pairs are codified into mathematical objects, usually numeric vectors for questions and real numbers or categories for answers and the proposed solution comes in the form of a function that maps questions to answers. The name supervised comes from the fact that the algorithm is provided with the answers to the questions, so in a figurative way it is being supervised by a teacher.
 
@@ -660,7 +691,7 @@ Deviation from this classical setting leads to the other broad categories of mac
 
 The contents of this section have mostly been adapted from Sutton and Barto's Introduction to Reinforcement Learning book (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).
 
-Reinforcement Learning (RL) aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent could affect the environment and hopefully drive it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of this reward signal mean a successful agent closer to its objective.
+Reinforcement Learning aims to develop algorithms that can satisfactorily inform an agent which decisions to make in order to achieve a goal. The world in which the agent acts is called the environment. The decisions made by the agent could affect the environment and hopefully drive it closer to the goal. A signal of how well the agent is performing is received at each decision step. The signal is called reward and it is an abstraction to represent great or poor sequences of actions. Plenty of this reward signal mean a successful agent closer to its objective.
 
 The Reinforcement Learning Problem could be formalized with Markov Decision Processes (MDPs). The MDP framework models the interaction between an agent and an environment. The agent takes actions and the environment responds with observations and a reward signal, this process is repeated until termination or forever. The non-terminating case is known as a continuing task and the terminating one as an episodic task.
 
@@ -680,7 +711,7 @@ This \(p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \
 
 }
 
-\caption{Diagram of the \emph{Agent-Environment system} formalized as a MDP. At time step \(t\) the ``Agent'' with knowledge of observation \(S_t\) and reward \(R_t\) performs action \(A_t\) to which the ``Environment'' responds with a new observation \(S_{t+1}\) and reward \(R_{t+1}\), the cycle is iterated. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
+\caption{Diagram of the \emph{Agent-Environment system} formalized as a MDP. At time step \(t\) the \emph{``Agent''} with knowledge of observation \(S_t\) and reward \(R_t\) performs action \(A_t\) to which the \emph{``Environment''} responds with a new observation \(S_{t+1}\) and reward \(R_{t+1}\), the cycle is iterated. Figure adapted from (Sutton and Barto \protect\hyperlink{ref-sutton2018reinforcement}{2018}).}\label{fig:env-agent-interactions}
 \end{figure}
 
 
@@ -691,7 +722,7 @@ This \(p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \
 
 }
 
-\caption{Broad classification of Reinforcement Learning algorithms. Adapted from David Silver's Lecture \emph{\url{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}}.}\label{fig:rl-algorithm-type}
+\caption{Broad classification of Reinforcement Learning algorithms. Adapted from \href{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}{David Silver's Lecture 1}.}\label{fig:rl-algorithm-type}
 \end{figure}
 
 
@@ -702,7 +733,7 @@ This \(p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \
 
 }
 
-\caption{Broad relations between different types of strategies to solve the Reinforcement Learning Problem. Adapted from David Silver's Lecture \emph{\url{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}}.}\label{fig:rl-relations}
+\caption{Broad relations between different types of strategies to solve the Reinforcement Learning Problem. Adapted from \href{https://www.youtube.com/watch?v=2pWv7GOvuf0\&t=1163s}{David Silver's Lecture 1}.}\label{fig:rl-relations}
 \end{figure}
 
 \hypertarget{goals-and-return}{%
@@ -814,7 +845,7 @@ The target network \(\hat{Q}_{network}\) is a mere copy of the \(Q_{network}\), 
 \[y_i = r_i + \gamma\ \underset{a'}{\max}\ \hat{Q}(s_i',a';\theta)\]
 
 The target network \(\hat{Q}_{network}\) parameters are kept constant for a \(C\) number of epochs, thus stabilizing the bootstrapping (\emph{Bellman's equation} update). To illustrate how just using the policy network (\(Q_{network}\)) for learning and updating can lead to instability we can think of two relatively similar states \(s_1\) and \(s_2\). Suppose that \(s_1\) is used to estimate the value of \(s_2\), when updating the parameters to minimize the error on \(s_2\) inadvertently we would be changing \(s_1\) estimated \(Q\)-value, as both states share the same parameters and are similar, so if \(s_1\) value is required again for bootstrapping the estimation would be deteriorated, this effect may compound and cause the whole network estimation to diverge. Decoupling estimation and acting is the main idea behind the use of two networks, each \(C\) number of epochs both networks are synchronized. Consequently the loss function of DQN is:
-\[MSE(\theta) = \mathds{E}\ \Bigg[ \bigg( y_i - Q(s_i,a_i;\theta)\bigg)^2 \Bigg]\].
+\[MSE(\theta) = \mathds{E}\ \Bigg[ \bigg( y_i - Q(s_i,a_i;\theta)\bigg)^2 \Bigg]\]
 
 The error is then minimized through any general optimization algorithm, in the case of DQN typically by any variation of gradient descent.
 
@@ -825,7 +856,7 @@ The complete DQN algorithm can be found at \protect\hyperlink{deep-q-networks-dq
 \hypertarget{the-atari-benchmark}{%
 \section{The Atari benchmark}\label{the-atari-benchmark}}
 
-The Arcade Learning Environment (ALE) was introduced in 2013 (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). It was quickly adopted as a benchmark by the RL community. ALE consists on a wrapper around the \href{https://stella-emu.github.io/}{Stella emulator}\footnote{\url{https://stella-emu.github.io/}} for the Atari 2600 console. This wrapper provides an interface to more than 50 Atari games. ALE was used by Google's DeepMind team in the DQN paper (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), arguably setting the current trend of deep reinforcement learning. Serving as a common benchmark ALE has been successfully used to develop new algorithms that later were applied to other domains, such as robotics (Risi and Preuss \protect\hyperlink{ref-risi2020chess}{2020}). As 2020 a single agent is capable of outperforming standard human play for 57 games Atari games (Badia et al. \protect\hyperlink{ref-badia2020agent57}{2020}), however the end of the ALE benchmark is nowhere insight as a myriad of challenges still persist on Reinforcement Learning methodologies.
+ALE was introduced in 2013 (Bellemare et al. \protect\hyperlink{ref-bellemare2013arcade}{2013}). It was quickly adopted as a benchmark by the RL community. ALE consists on a wrapper around the \href{https://stella-emu.github.io/}{Stella emulator}\footnote{\url{https://stella-emu.github.io/}} for the Atari 2600 console. This wrapper provides an interface to more than 50 Atari games. ALE was used by Google's DeepMind team in the DQN paper (Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}), arguably setting the current trend of deep reinforcement learning. Serving as a common benchmark ALE has been successfully used to develop new algorithms that later were applied to other domains, such as robotics (Risi and Preuss \protect\hyperlink{ref-risi2020chess}{2020}). As 2020 a single agent is capable of outperforming standard human play for 57 games Atari games (Badia et al. \protect\hyperlink{ref-badia2020agent57}{2020}), however the end of the ALE benchmark is nowhere insight as a myriad of challenges still persist on Reinforcement Learning methodologies.
 
 The desirable characteristics of Atari games for RL evaluation are their variety of tasks, their short episodic nature and scores that can be, almost directly, interpreted as rewards. Also each game was created independently thus reducing the bias that would be introduced by a single party designing all the evaluation tasks. Agents interact with ALE through a set of 18 actions derived from 6 simple actions, namely four directions (up, down, left, right) and fire and NO-OP actions. The final 18 actions are combinations of the basic actions. The state information is raw pixel data with dimensions \(210 \times 160\), with each pixel on a 7-bit color scale (0-127). Additionally the whole console RAM of 128 bytes can be used as input to the learning algorithms. ALE can be used as generative model in the sense that previous states, if saved, can be restored.
 
@@ -880,7 +911,7 @@ The source code for this thesis is openly available at:
 
 We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics (Ilachinski \protect\hyperlink{ref-ilachinski2001cellular}{2001}) and their combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are \(3^9\) grid states multiplied by \(3^2\) ``helicopter'' positions and \(2\) internal states for the agent-environment synchronization, giving a total of \(2 \times 3^2 \times 3^9 =\) \ensuremath{3.54294\times 10^{5}}, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable \(\approx 10^{124}\) states.
 
-Deep Q Networks (DQN) (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an Artificial Neural Network (ANN). We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
+DQN (Mnih et al. \protect\hyperlink{ref-mnih2013playing}{2013})(Mnih et al. \protect\hyperlink{ref-mnih2015human}{2015}) meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with \(n\)-step unrolling of the Bellman optimality equation for \(Q\) values (Sutton \protect\hyperlink{ref-sutton1988learning}{1988}). The implementation was made in Python 3.x, the \emph{lingua franca} of AI and RL. The non-linear \(Q\) function approximator was an ANN. We implemented the \emph{experience replay} memory as a \emph{double-ended queue} (deque) data structure, which behaves as a list but allows for efficient ``appends'' and ``pops'' from either side (\(\mathcal{O}(1)\)). (see \emph{\url{https://docs.python.org/3.8/library/collections.html?highlight=collections\#collections.deque}}). Thus for a fixed size of an \emph{experience replay}, incoming observations are appended to one end and old observations are ``popped'' from the other.
 
 A high level explanation of our DQN implementation \protect\hyperlink{deep-q-networks-dqn-using-open-ai-gym-api}{(see Apendix 1)} is as follows: The logic of the \(e\)-greedy policy was abstracted into an ``Agent class'' which also holds a memory of past observations (\emph{experience replay}), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple \((s,a,r,s')\) into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of \(Q\) values for all \(9\) actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during \(T\) steps. Each \(C\) training steps the weights of the policy and target networks are synchronized.
 
@@ -896,7 +927,7 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 \hypertarget{ann-architectures}{%
 \subsection{ANN Architectures}\label{ann-architectures}}
 
-Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
+Three different \(Q_{network}\) architectures were used. The models were build using the \emph{Pytorch} library (Paszke et al. \protect\hyperlink{ref-NEURIPS2019_9015}{2019}). They were Multilayer Perceptrons (MLPs) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the \emph{Pytorch} defaults (\emph{Kaiming uniform} (He et al. \protect\hyperlink{ref-he2015delving}{2015})). The tensors transformations of the layers are described below:
 
 \begin{itemize}
 \tightlist
@@ -1010,7 +1041,7 @@ The obtained \emph{return}, per experiment, from interacting with the environmen
 \resizebox{\linewidth}{!}{
 \begin{tabular}[t]{lrlrlrrr}
 \toprule
-Run & Return & Exploration & Unrolling & Architecture & LR & Batch Size & Gamma\\
+\rotatebox{45}{Run} & \rotatebox{45}{Return} & \rotatebox{45}{Exploration} & \rotatebox{45}{Unrolling} & \rotatebox{45}{Architecture} & \rotatebox{45}{LR} & \rotatebox{45}{Batch Size} & \rotatebox{45}{Gamma}\\
 \midrule
 \rowcolor{gray!6}  c & 640,658 & heuristic & 2 & A3 & 0.0001 & 16 & 0.99\\
 a & 638,094 & linear & 2 & A1 & 0.0003 & 32 & 0.99\\
@@ -1018,9 +1049,9 @@ a & 638,094 & linear & 2 & A1 & 0.0003 & 32 & 0.99\\
 i & 591,021 & linear & 2 & A3 & 0.0003 & 32 & 0.99\\
 \rowcolor{gray!6}  g & 507,313 & linear & 10 & A3 & 0.0003 & 32 & 0.99\\
 \addlinespace
-H & 503,521 &  &  &  &  &  & \\
+\textcolor[HTML]{75C660}{\textbf{H}} & \textcolor[HTML]{75C660}{\textbf{503,521}} & \textcolor[HTML]{75C660}{\textbf{}} & \textcolor[HTML]{75C660}{\textbf{}} & \textcolor[HTML]{75C660}{\textbf{}} & \textcolor[HTML]{75C660}{\textbf{}} & \textcolor[HTML]{75C660}{\textbf{}} & \textcolor[HTML]{75C660}{\textbf{}}\\
 \rowcolor{gray!6}  b & 327,597 & linear & 1 & A2 & 0.0001 & 256 & 0.90\\
-R & 319,833 &  &  &  &  &  & \\
+\textcolor[HTML]{B1A898}{\textbf{R}} & \textcolor[HTML]{B1A898}{\textbf{319,833}} & \textcolor[HTML]{B1A898}{\textbf{}} & \textcolor[HTML]{B1A898}{\textbf{}} & \textcolor[HTML]{B1A898}{\textbf{}} & \textcolor[HTML]{B1A898}{\textbf{}} & \textcolor[HTML]{B1A898}{\textbf{}} & \textcolor[HTML]{B1A898}{\textbf{}}\\
 \rowcolor{gray!6}  h & 294,965 & linear & 1 & A3 & 0.0001 & 16 & 0.99\\
 f & 293,722 & heuristic & 1 & A3 & 0.0003 & 32 & 0.99\\
 \addlinespace
@@ -1097,7 +1128,7 @@ Visual demonstrations are available for the best two runs:
 \hypertarget{disscusion}{%
 \section{Disscusion}\label{disscusion}}
 
-The main objective of this thesis is to design and characterize a novel environment for \emph{Reinforcement Learning}. It must be based on Cellular Automata (CA), with the rationale that a handful of well constructed CA based environments would provide an ``interesting'' set of benchmark tasks for Reinforcement Learning algorithms.
+The main objective of this thesis is to design and characterize a novel environment for \emph{Reinforcement Learning}. It must be based on Cellular Automata, with the rationale that a handful of well constructed CA based environments would provide an ``interesting'' set of benchmark tasks for Reinforcement Learning algorithms.
 
 The appeal of such tasks arises from the properties of CA. Some theoretical and practical properties that could make CA a good RL benchmark are:
 
@@ -1112,7 +1143,7 @@ The appeal of such tasks arises from the properties of CA. Some theoretical and 
   Some CA have \emph{universal computation} capabilities.
 \end{enumerate}
 
-Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wildfire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model (DSM) (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). To further characterize the proposed environment we have applied DQN to try to solve it.
+Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wildfire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model (Drossel and Schwabl \protect\hyperlink{ref-drossel1992self}{1992}). To further characterize the proposed environment we have applied DQN to try to solve it.
 
 \hypertarget{effect-of-hyperameters}{%
 \subsection{Effect of Hyperameters}\label{effect-of-hyperameters}}
@@ -1148,8 +1179,8 @@ Encouraging a CA-based RL benchmark must involve featuring a broad number of int
 \chapter*{Appendices}\label{appendices}}
 \addcontentsline{toc}{chapter}{Appendices}
 
-\hypertarget{apendix-1-algorithms}{%
-\section{Apendix 1 Algorithms}\label{apendix-1-algorithms}}
+\hypertarget{appendix-a-algorithms-1}{%
+\section{Appendix A Algorithms}\label{appendix-a-algorithms-1}}
 
 \hypertarget{agent-environment-interactions}{%
 \subsection{Agent-Environment interactions}\label{agent-environment-interactions}}

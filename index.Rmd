@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo=F, message=F, warning=F, dev="cairo_pdf")
 
 # Abstract {-}
 
-\textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from mere real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
+\textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
 
 # Acknowledgments {-}
 
@@ -49,11 +49,38 @@ showing me that work-life balance is possible in this day and age but more impor
 \footnotesize{This document was possible due to the economic support given by CONACYT.}
 \end{flushright}
 
-\newpage
-
 \tableofcontents
 
 \listoffigures
 
 \listoftables
 
+# List of Abbreviations {-}
+
+```{r abbreviations}
+suppressMessages(library(tidyverse))
+suppressMessages(library(knitr))
+suppressMessages(library(kableExtra))
+tribble(
+  ~Abbreviation, ~Explanation,
+  'AI', 'Artificial Intelligence',
+  'ML', 'Machine Learning',
+  'RL', 'Reinforcement Learning',
+  'ANN', 'Artificial Neural Networks',
+  'DRL', 'Deep Reinforcement Learning',
+  'ALE', 'Arcade Learning Environment',
+  'DQN', 'Deep Q-Networks',
+  'CA', 'Cellular Automata or Cellular Automaton',
+  'MDP', 'Markov Decision Process',
+  'DSM', 'Drossel ans Schwabl Model',
+  'CAM', 'Cellular Automata Machines',
+  'FFEM', 'Forest Fire Environment Maker',
+  'API', 'Application programming interface',
+  'OAGA', 'Open AI Gym API',
+  'MLP', 'Multilayer Perceptron',
+  'POMDP', 'Partially Observable Markov Decision Process'
+) %>% 
+  arrange(Abbreviation) %>% 
+  kable(booktabs = T) %>% 
+  column_spec(1, bold = T)
+```

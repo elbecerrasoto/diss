@@ -107,7 +107,7 @@ The source code for this thesis is openly available at:
 
 We tried to solve the proposed environment using model-free, value-function approximation RL. This approach is justified by the lack of general analytical models for CA dynamics [@ilachinski2001cellular] and their combinatorial explosion of states. For illustration in our small 3x3 environment the combinatorics are $3^9$ grid states multiplied by $3^2$ "helicopter" positions and $2$ internal states for the agent-environment synchronization, giving a total of $2 \times 3^2 \times 3^9 =$ `r 2 * 3^2 * 3^9`, a still manageable quantity by tabular RL standards, however merely scaling to a 16x16 grid leads to an untenable $\approx 10^{124}$ states.
 
-Deep Q Networks (DQN) [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with $n$-step unrolling of the Bellman optimality equation for $Q$ values [@sutton1988learning]. The implementation was made in Python 3.x, the _lingua franca_ of AI and RL. The non-linear $Q$ function approximator was an Artificial Neural Network (ANN). We implemented the _experience replay_ memory as a _double-ended queue_ (deque) data structure, which behaves as a list but allows for efficient "appends" and "pops" from either side ($\mathcal{O}(1)$). (see *https://docs.python.org/3.8/library/collections.html?highlight=collections#collections.deque*). Thus for a fixed size of an _experience replay_, incoming observations are appended to one end and old observations are "popped" from the other.
+DQN [@mnih2013playing][@mnih2015human] meets the previously stated conditions and is well suited for tasks with a discrete set of actions and when sampling from the environment is low-cost. We implemented DQN with $n$-step unrolling of the Bellman optimality equation for $Q$ values [@sutton1988learning]. The implementation was made in Python 3.x, the _lingua franca_ of AI and RL. The non-linear $Q$ function approximator was an ANN. We implemented the _experience replay_ memory as a _double-ended queue_ (deque) data structure, which behaves as a list but allows for efficient "appends" and "pops" from either side ($\mathcal{O}(1)$). (see *https://docs.python.org/3.8/library/collections.html?highlight=collections#collections.deque*). Thus for a fixed size of an _experience replay_, incoming observations are appended to one end and old observations are "popped" from the other.
 
 A high level explanation of our DQN implementation [(see Apendix 1)](#deep-q-networks-dqn-using-open-ai-gym-api) is as follows: The logic of the $e$-greedy policy was abstracted into an "Agent class" which also holds a memory of past observations (_experience replay_), during the training loop the agent performs an action and advances the environment one step, saving the transition tuple $(s,a,r,s')$ into its own memory. Then the agent samples a minibatch of transitions from the memory buffer and feeds it to the ANN model. A forward prediction of $Q$ values for all $9$ actions is computed followed by a backward optimization step. These sequence of agent acts and ANN train steps is iterated during $T$ steps. Each $C$ training steps the weights of the policy and target networks are synchronized.
 
@@ -121,7 +121,7 @@ The input to the ANN models was a one-hot encoding of the CA grid concatenated w
 
 ### ANN Architectures
 
-Three different $Q_{network}$ architectures were used. The models were build using the _Pytorch_ library [@NEURIPS2019_9015]. They were Multilayer Perceptrons (MLP) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the _Pytorch_ defaults (_Kaiming uniform_ [@he2015delving]). The tensors transformations of the layers are described below:
+Three different $Q_{network}$ architectures were used. The models were build using the _Pytorch_ library [@NEURIPS2019_9015]. They were Multilayer Perceptrons (MLPs) with four or three hidden layers and ReLU activations. The weights and biases were initialized under the _Pytorch_ defaults (_Kaiming uniform_ [@he2015delving]). The tensors transformations of the layers are described below:
 
 ```{r mlp-n-parameters}
 A1 <- c(30, 128, 256, 128, 32, 9)
@@ -219,7 +219,10 @@ read_csv('data/04_runs_3x3_v2.csv') %>%
     caption=caption,
     format.args = list(big.mark = ",", scientific = F)
     ) %>%
-  kable_styling(latex_options = c('striped', 'scale_down'))
+  kable_styling(latex_options = c('striped', 'scale_down')) %>%
+  row_spec(0, angle=45) %>%
+  row_spec(6, color=GREEN, bold=T) %>%
+  row_spec(8, color=BROWN, bold=T)
 ```
 
 The comparison of the obtained _mean reward per step_ and _reward standard deviation_ is shown in Figure \@ref(fig:sd-mean). It can be observed that the best runs ($c,a,d,i,g$) also have an smaller _standard deviation_.
@@ -311,7 +314,7 @@ Visual demonstrations are available for the best two runs:
 
 ## Disscusion
 
-The main objective of this thesis is to design and characterize a novel environment for _Reinforcement Learning_. It must be based on Cellular Automata (CA), with the rationale that a handful of well constructed CA based environments would provide an "interesting" set of benchmark tasks for Reinforcement Learning algorithms.
+The main objective of this thesis is to design and characterize a novel environment for _Reinforcement Learning_. It must be based on Cellular Automata, with the rationale that a handful of well constructed CA based environments would provide an "interesting" set of benchmark tasks for Reinforcement Learning algorithms.
 
 The appeal of such tasks arises from the properties of CA. Some theoretical and practical properties that could make CA a good RL benchmark are:
 
@@ -319,7 +322,7 @@ The appeal of such tasks arises from the properties of CA. Some theoretical and 
 2. They can model complex real world phenomena.
 3. Some CA have _universal computation_ capabilities.
 
-Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wildfire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model (DSM) [@drossel1992self]. To further characterize the proposed environment we have applied DQN to try to solve it.
+Under the previous justifications, we have shown that is possible to design a CA based Reinforcement Learning task. Additionally the task has real world semantics, namely a Helicopter extinguishing a wildfire. Our particular proposed environment is an agent affecting cells on top of a Drossel and Schwabl forest fire model [@drossel1992self]. To further characterize the proposed environment we have applied DQN to try to solve it.
 
 ### Effect of Hyperameters
 
