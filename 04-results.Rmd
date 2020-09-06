@@ -207,7 +207,7 @@ The trained agents were evaluated by playing 100,000 steps in the environment fo
 The obtained _return_, per experiment, from interacting with the environment 100,000 steps is shown in Table \@ref(tab:hyper). Five experiments were able to perform better than the base heuristic ($c,a,d,i,g$ runs). Three were worse than random ($h,f,e$ runs) and one ($b$ run) was in between. The maximum obtained _return_ was 640,643 a `r round(640643/503521, 2)` fold increase in performance over the base heuristic (return of 503,521). 
 
 ```{r hyper, message=FALSE}
-caption <- 'Comparision of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.'
+caption <- 'Comparison of obtained returns from the nine runs. The return was computed from playing 100,000 steps per run following the learned policy. The runs are ordered from best to worst and are named from $a$ to $i$, the "heuristic" and "random" baselines are marked as "H" and "R" respectively.'
 opts <- options(knitr.kable.NA = "")
 
 read_csv('data/04_runs_3x3_v2.csv') %>%
