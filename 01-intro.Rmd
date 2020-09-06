@@ -39,8 +39,6 @@ The particular CA that we would be using through this document is the _Drossel a
 3. The $m$ parameter is decreased by $1$ after each "Helicopter" movement.
 4. Before moving, if $m=0$ then the grid is updated following the Forest Fire CA rules, then $m$ is reset to its initial value ($m=1$).
 
-## Appendix A Algorithms
-
 After precisely defining the environment (see Appendix A \@ref(agent-environment-interactions)), the semantics are those of a helicopter trying to extinguish a wildfire in a simulated forest, thus the optimization problem that we want to solve is:
 
 > Minimize the accumulated count of fire cells for a given time interval.

@@ -175,11 +175,17 @@
 
 \textbf{\large{The recent field of Deep Reinforcement Learning promises a new class of general algorithms capable of learning from real or simulated world interactions. Hence the field popularity has exploded in the last years. Despite its potential, real world concrete applications are lacking. This document proposes a novel Reinforcement Learning environment based on Cellular Automata, which are quintessential models of complex systems. Particularly a Forest Fire Cellular Automata was used as underlying dynamics for an agent that can affect the grid configuration by changing fire cells to empty cells. The semantics are those of a \say{Helicopter} trying to extinguishing a wild fire. We applied Deep Q-networks to solve the proposed environment on a $3 \times 3$ grid. We evaluate our agent on a 100,000 steps simulation of the environment. Our results show that Cellular Automata can be used as benchmark for Reinforcement Learning algorithms, likewise its modeling capabilities could help to narrow the gap to real world applications.}}
 
+\hypertarget{resumen}{%
+\chapter*{Resumen}\label{resumen}}
+\addcontentsline{toc}{chapter}{Resumen}
+
+\textbf{\large{El novedoso campo del Aprendizaje Profundo por Refuerzo promete una nueva clase de algoritmos generales capaces de aprender directamente de interacciones con el mundo, ya sean reales o simuladas. Debido a esto la popularidad de este campo ha crecido en los últimos años. A pesar de su enorme potencial, aún faltan aplicaciones concretas en la vida real. En este documento se propone un nuevo ambiente de Aprendizaje por Refuerzo basado en Autómatas Celulares, los cuales son ejemplos característicos de sistemas complejos. Particularmente se usó el Autómata Celular de Incendios Forestales como la dinámica subyacente para un agente, el cual afecta la cuadrícula cambiando celdas tipo fuego por celdas tipo vacías. La semántica corresponde a la de un \say{Helicóptero} tratando de apagar un incendio forestal. Para tratar de resolver el ambiente propuesto se empleó el algoritmo de \emph{Deep Q-networks} sobre una cuadrícula de $3 \times 3$. El agente fue evaluado durante 100,000 pasos de una simulación del ambiente. Nuestros resultados muestran que los Autómatas Celulares pueden ser usados como punto de referencia para algoritmos de Aprendizaje por Refuerzo, además el uso de Autómatas Celulares, por sus capacidades de modelado, podría reducir la brecha entre simulación y aplicación a la vida real.}}
+
 \hypertarget{acknowledgments}{%
 \chapter*{Acknowledgments}\label{acknowledgments}}
 \addcontentsline{toc}{chapter}{Acknowledgments}
 
-Writing is hard. But this is a known fact. What is not known is the particular environment and situations that any writer must endure finishing its work. This thesis is dedicated to all the persons that somehow, consciously or unconsciously, have softened the weight and have let me only to struggle with the hard part of writing and not the harder part of ``everything else''.
+Writing is hard. But this is a known fact. What is not known is the particular environment and situations that any writer must endure finishing its work. I dedicate this thesis to all the persons that somehow, consciously or unconsciously, have reduced the burden of writing by supporting me with ``everything else''. Without them, this work would be impossible to finish.
 
 \begin{flushleft}
 \emph{To my family,\\including pets, for always being there, no matter what.}
@@ -293,9 +299,6 @@ The particular CA that we would be using through this document is the \emph{Dros
 \item
   Before moving, if \(m=0\) then the grid is updated following the Forest Fire CA rules, then \(m\) is reset to its initial value (\(m=1\)).
 \end{enumerate}
-
-\hypertarget{appendix-a-algorithms}{%
-\section{Appendix A Algorithms}\label{appendix-a-algorithms}}
 
 After precisely defining the environment (see Appendix A \ref{agent-environment-interactions}), the semantics are those of a helicopter trying to extinguish a wildfire in a simulated forest, thus the optimization problem that we want to solve is:
 
@@ -1066,7 +1069,7 @@ The comparison of the obtained \emph{mean reward per step} and \emph{reward stan
 
 \begin{figure}
 
-{\centering \includegraphics{becerra_emanuel_CARLv2.0_files/figure-latex/sd-mean-1} 
+{\centering \includegraphics{becerra_emanuel_CARLv2.1_files/figure-latex/sd-mean-1} 
 
 }
 
@@ -1079,7 +1082,7 @@ Furthermore, a comparison of agents following \emph{\(\epsilon\)-greedy} policie
 
 \begin{figure}
 
-{\centering \includegraphics{becerra_emanuel_CARLv2.0_files/figure-latex/sd-mean-epsilon-1} 
+{\centering \includegraphics{becerra_emanuel_CARLv2.1_files/figure-latex/sd-mean-epsilon-1} 
 
 }
 
@@ -1095,7 +1098,7 @@ During the training of each DQN run the change in \emph{rewards} was monitored, 
 
 \begin{figure}
 
-{\centering \includegraphics{becerra_emanuel_CARLv2.0_files/figure-latex/reward-dynamics-1} 
+{\centering \includegraphics{becerra_emanuel_CARLv2.1_files/figure-latex/reward-dynamics-1} 
 
 }
 
@@ -1108,7 +1111,7 @@ Similarly, the values of the error were logged each 10 steps. The error behavior
 
 \begin{figure}
 
-{\centering \includegraphics{becerra_emanuel_CARLv2.0_files/figure-latex/loss-1} 
+{\centering \includegraphics{becerra_emanuel_CARLv2.1_files/figure-latex/loss-1} 
 
 }
 
@@ -1179,8 +1182,8 @@ Encouraging a CA based RL benchmark must involve featuring a broad number of int
 \chapter*{Appendices}\label{appendices}}
 \addcontentsline{toc}{chapter}{Appendices}
 
-\hypertarget{appendix-a-algorithms-1}{%
-\section{Appendix A Algorithms}\label{appendix-a-algorithms-1}}
+\hypertarget{appendix-a-algorithms}{%
+\section{Appendix A Algorithms}\label{appendix-a-algorithms}}
 
 \hypertarget{agent-environment-interactions}{%
 \subsection{Agent-Environment interactions}\label{agent-environment-interactions}}
