@@ -1,0 +1,97 @@
+
+\documentclass[11pt, twoside]{book} % remover openany para tener espacios entre capítulos
+
+\addtolength{\oddsidemargin}{-0.15in}
+\addtolength{\evensidemargin}{-1.07in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+% Cover Environment
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+% Used for generating the cover
+\usepackage{multirow}
+\usepackage{booktabs}
+
+% Turn off page numbering
+\pagenumbering{gobble}
+
+% Caracteres especiales
+\usepackage[utf8]{inputenc}
+% Imagenes
+%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+
+\usepackage{pdfpages}
+\graphicspath{{pics/}}
+
+\begin{document}
+	
+\begin{titlepage}
+
+\begin{changemargin}{-1.6cm}{-0.4cm}
+
+\begin{tabular}{lcr}
+\multirow{8}{*}{
+\centering
+\includegraphics[scale=0.27]{ipn.jpg}}
+& 
+\multirow{6}{*}{
+\textbf{\huge Instituto Politécnico Nacional}} & \multirow{8}{*}{
+\centering
+\includegraphics[scale=0.4]{cic.png}}\\
+&&\\
+&&\\
+&&\\
+&&\\
+&\multirow{2}{*}{
+\textbf{\Large Centro de Investigación en Computación}} &\\
+&&\\
+&&\\
+\cmidrule{2-2}\\
+\end{tabular}
+
+\centering
+\begin{tabular}{c}
+\\
+\\
+\textbf{\huge T E S I S}\\
+\\
+\\
+\textbf{\Large ``Cellular Automata Control}\\
+\textbf{\Large with Deep Reinforcement Learning''}\\
+\\
+\\
+\\
+\textbf{\large Para obtener el grado de:}\\
+\textbf{\LARGE Maestría en Ciencias de la Computación}\\
+\\
+\\
+\\
+\textbf{\large Presenta:}\\
+\textbf{\LARGE Lic. Emanuel Becerra Soto}\\
+\\
+\\
+\\
+\textbf{\large Directores de tesis:}\\
+\textbf{\large Dr. Ricardo Menchaca Méndez}\\
+\textbf{\large Dr. Rolando Menchaca Méndez}\\
+\\
+\\
+\\
+\end{tabular}
+
+\vspace{0.6cm}
+
+\begin{tabular}{cr}
+& \\
+&\makebox[6.5cm][c]{} \textbf{\large Ciudad de México, Septiembre 2020}\\
+\end{tabular}
+
+\end{changemargin}
+
+\end{titlepage}
+
+\end{document}

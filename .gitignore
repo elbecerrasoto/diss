@@ -3,6 +3,11 @@ test/
 *.log
 *.nlo
 
+# Cover Dir
+parameters/cover/*
+!parameters/cover/*.tex
+!parameters/cover/pics
+
 # History files
 .Rhistory
 .Rapp.history

@@ -89,6 +89,4 @@ tribble(
   column_spec(1, bold = T)
 ```
 
-\begin{dontprintpage}
 \includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}
-\end{dontprintpage}

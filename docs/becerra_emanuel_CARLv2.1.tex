@@ -89,8 +89,8 @@
 {\pagenumbering{arabic}}
 
 % Don't  print apage number
-\newenvironment{dontprintpage}
-{\thispagestyle{empty}}
+%\newenvironment{dontprintpage}
+%{\thispagestyle{empty}}
 
 %  Turns off hyphenation of words across multiple lines
 \usepackage[none]{hyphenat}
@@ -104,6 +104,26 @@
 
 % Quotations
 \usepackage{dirtytalk}
+
+%%%%%%%%%%%%% Cover Environment %%%%%%%%%%%%%
+
+\addtolength{\oddsidemargin}{-0.15in}
+\addtolength{\evensidemargin}{-1.07in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+% Cover Environment
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+% Used for generating the cover
+\usepackage{multirow}
+\usepackage{booktabs}
+
+% Images
+\usepackage{graphicx}
+\graphicspath{{pics/}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -132,8 +152,7 @@
 
 \begin{preliminary}
 
-% Cover
-% Include cover here 
+\includepdf[pages=1, pagecommand={}]{pages/cover.pdf}
 
 \includepdf[pages=1, pagecommand={}]{pages/SIP14.pdf}
 
@@ -213,9 +232,7 @@ RL & Reinforcement Learning\\
 \bottomrule
 \end{tabular}
 
-\begin{dontprintpage}
 \includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}
-\end{dontprintpage}
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
