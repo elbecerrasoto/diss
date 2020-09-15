@@ -88,5 +88,3 @@ tribble(
   kable(booktabs = T) %>% 
   column_spec(1, bold = T)
 ```
-
-\includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}

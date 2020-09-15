@@ -104,26 +104,6 @@
 
 % Quotations
 \usepackage{dirtytalk}
-
-%%%%%%%%%%%%% Cover Environment %%%%%%%%%%%%%
-
-\addtolength{\oddsidemargin}{-0.15in}
-\addtolength{\evensidemargin}{-1.07in}
-\addtolength{\textwidth}{1.2in}
-\addtolength{\topmargin}{-.875in}
-\addtolength{\textheight}{1.75in}
-
-% Cover Environment
-\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
-\let\endchangemargin=\endlist
-
-% Used for generating the cover
-\usepackage{multirow}
-\usepackage{booktabs}
-
-% Images
-\usepackage{graphicx}
-\graphicspath{{pics/}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -231,8 +211,6 @@ POMDP & Partially Observable Markov Decision Process\\
 RL & Reinforcement Learning\\
 \bottomrule
 \end{tabular}
-
-\includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
