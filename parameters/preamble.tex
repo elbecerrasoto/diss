@@ -18,6 +18,10 @@
 {\pagestyle{empty}\pagenumbering{roman}}%
 {\pagenumbering{arabic}}
 
+% Don't  print apage number
+\newenvironment{dontprintpage}
+{\thispagestyle{empty}}
+
 %  Turns off hyphenation of words across multiple lines
 \usepackage[none]{hyphenat}
 % Removes section headings from the top of pages
