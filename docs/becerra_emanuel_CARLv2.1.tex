@@ -89,8 +89,8 @@
 {\pagenumbering{arabic}}
 
 % Don't  print apage number
-%\newenvironment{dontprintpage}
-%{\thispagestyle{empty}}
+\newenvironment{dontprintpagenumber}
+{\pagestyle{empty}}
 
 %  Turns off hyphenation of words across multiple lines
 \usepackage[none]{hyphenat}
@@ -211,6 +211,10 @@ POMDP & Partially Observable Markov Decision Process\\
 RL & Reinforcement Learning\\
 \bottomrule
 \end{tabular}
+
+\begin{dontprintpagenumber}
+\includepdf[pages=1, pagecommand={}]{pages/01_cover.pdf}
+\end{dontprintpagenumber}
 
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
